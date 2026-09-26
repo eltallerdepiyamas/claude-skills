@@ -1,0 +1,162 @@
+MANUAL RAPIDO - claude-skills / GitHub
+=======================================
+
+Cheat sheet del sistema de skills de Claude Code sincronizados entre computadoras
+via GitHub. Los skills le dicen a Claude COMO hacer cosas (TouchDesigner, shaders,
+podcast, etc.). El repo es eltallerdepiyamas/claude-skills en GitHub.
+
+
+QUE ES UN SKILL
+---------------
+
+Un skill es una carpeta dentro de ~/claude-skills/ que Claude Code lee cuando
+corres /nombre-del-skill. Le dice como comportarse, que patrones usar, que
+errores evitar.
+
+Cada skill tiene:
+
+    SKILL.md          Las instrucciones principales (el "cerebro" del skill)
+    LEARNINGS.md      Lo que Claude aprendi en proyectos reales - no borrar
+    projects/         Archivos de referencia de proyectos anteriores (tus .md)
+    library/          Shaders, scripts y fragmentos reutilizables
+    templates/        Plantillas de punto de partida
+    references/       Links, docs externas, notas tecnicas
+
+
+SKILLS DISPONIBLES
+------------------
+
+    td-vj-builder         Visuals TouchDesigner para shows en vivo (el que mas usas)
+    td-glsl               Shaders GLSL para TouchDesigner
+    td-glsl-vertex        Shaders de vertices / GLSL MAT
+    td-pops               Particulas y POPs con GLSL compute
+    td-flyer-audioreactivo Animar flyers/posters como loops audio-reactivos en TD
+    sc-designer           Patches de SuperCollider
+    hou-vex               VEX para Houdini
+    remotion-*            Video programatico con Remotion
+    find-skills           Busca skills instalables
+
+
+SETUP EN UNA COMPU NUEVA (una sola vez)
+----------------------------------------
+
+1. Clonar el repo:
+
+        git clone https://github.com/eltallerdepiyamas/claude-skills.git ~/claude-skills
+
+2. Cerrar Claude Code completamente.
+
+3. En CMD (no en bash, no en PowerShell):
+
+        rename "%USERPROFILE%\.claude\skills" skills.bak
+        mklink /J "%USERPROFILE%\.claude\skills" "%USERPROFILE%\claude-skills"
+
+4. Abrir Claude Code y verificar que los skills cargan corriendo /td-vj-builder.
+
+Nota: el backup queda en ~/.claude/skills.bak por si algo sale mal.
+
+
+FLUJO DIARIO - AGREGAR O CAMBIAR ALGO EN EL REPO
+-------------------------------------------------
+
+Siempre desde cualquier terminal con ~/claude-skills como directorio:
+
+    git pull                          primero, por si otra compu hizo cambios
+    (haces lo que necesitas hacer)
+    git add .
+    git commit -m "descripcion corta"
+    git push
+
+En las otras compus, la proxima vez que abras Claude Code:
+
+    git pull                          y ya tienen los cambios
+
+
+CUANDO AGREGAR ARCHIVOS DE UN PROYECTO NUEVO
+--------------------------------------------
+
+Despues de terminar un proyecto con td-vj-builder (u otro skill), guarda los
+.md que genero Claude para que el skill aprenda de ese trabajo:
+
+    ~/claude-skills/td-vj-builder/projects/nombre-proyecto/
+        CLAUDE.md           (o como se llame el research que genero Claude)
+        otros .md           (tareas, handoffs, notas tecnicas)
+
+Los scripts y shaders NO es necesario incluirlos - viven en tu carpeta del proyecto.
+Lo que le importa al skill son los .md con decisiones, patrones y contexto.
+
+Despues:
+
+    cd ~/claude-skills
+    git add .
+    git commit -m "add project: nombre-proyecto"
+    git push
+
+
+PROYECTOS YA EN EL REPO (td-vj-builder)
+-----------------------------------------
+
+    aczino/               Aczino batalla de campeones
+    alan navarro/         Proyecto Alan Navarro
+    along/                Along - shaders 2026
+    austin psych fest/    Austin Psych Fest
+    casa bacardi/         Casa Bacardi 2026 (face tracking + YOLO)
+    escuby/               Escuby
+    mercado libre/        Mercado Libre + sensores Hokuyo
+    paloma murphy/        Paloma Murphy / Casino Marquee
+    eyesy/                Eyesy (referencia de hardware standalone)
+
+
+COMO CREAR UN SKILL NUEVO
+--------------------------
+
+Dentro de ~/claude-skills/, crea una carpeta con el nombre del skill y al
+menos un SKILL.md con las instrucciones. Luego:
+
+    git add .
+    git commit -m "add skill: nombre"
+    git push
+
+Claude Code lo detecta automaticamente en todas las compus que hagan git pull
+y tengan la junction activa.
+
+
+RUTAS IMPORTANTES
+-----------------
+
+    ~/claude-skills/              El repo local (= ~/.claude/skills via junction)
+    ~/.claude/skills.bak/         Backup de los skills originales pre-junction
+    ~/.claude/projects/           Memoria persistente de Claude entre sesiones
+    GitHub: eltallerdepiyamas/claude-skills
+
+
+COSAS QUE PUEDEN SALIR MAL
+---------------------------
+
+Los skills no cargan en Claude Code
+    Verifica que la junction exista:
+        ls -la ~/.claude/ | grep skills
+    Debe mostrar "skills -> /c/Users/.../claude-skills" (con la flecha).
+    Si no, la junction no se creo bien. Cierra Claude Code y vuelve a correr
+    el mklink del paso 3 del setup.
+
+"rename" falla con "el proceso no puede obtener acceso al archivo"
+    Claude Code tiene lock sobre ~/.claude/skills mientras esta corriendo.
+    Cierra Claude Code completamente antes de correr el bat.
+
+git push pide usuario y contrasena
+    Configura tu token de GitHub:
+        git config --global credential.helper store
+    La primera vez te lo pide, despues lo guarda.
+
+Conflicto al hacer git pull
+    Pasa si dos compus editaron el mismo archivo. Claude Code puede resolverlo:
+    abre el archivo conflictivo, busca los bloques con >>>>> y elige cual
+    version queda. Luego git add y git commit.
+
+
+DRIVE EN CADA COMPU
+--------------------
+
+    PC principal (tiani)      I:  (Mi unidad de Google Drive personal)
+    Laptop / otras            agregar cuando se sepa
