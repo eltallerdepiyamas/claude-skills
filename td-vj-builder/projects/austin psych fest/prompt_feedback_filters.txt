@@ -1,0 +1,52 @@
+Necesito que generes 4 filtros GLSL para TouchDesigner, cada uno construido sobre un sistema de feedback. Todos deben ser únicos en su estética y comportamiento, pero compartir el feedback como columna vertebral.
+
+CONTEXTO DE USO:
+- Performance en vivo (VJing), por lo que deben ser:
+  - Optimizados para correr en tiempo real (mínimo 60fps a 1080p)
+  - Controlables vía parámetros expuestos (uniforms) para manipulación en vivo
+  - Reactivos visualmente (que respondan rápido al cambiar parámetros)
+
+REQUISITOS TÉCNICOS:
+- Usa las skills de TouchDesigner que tengo cargadas
+- Cada filtro debe ser un GLSL TOP con su Feedback TOP conectado correctamente
+- Incluye la red completa: nodos, conexiones, y parámetros expuestos
+- Documenta los uniforms clave para control en vivo (al menos 4-6 por filtro)
+- Usa nombres descriptivos para nodos y parámetros
+
+LOS 4 FILTROS DEBEN EXPLORAR ESTAS DIRECCIONES (uno por categoría):
+
+1. FEEDBACK ESPACIAL
+   - Basado en transformaciones geométricas del frame anterior
+   - Ejemplo de dirección: zoom radial + rotación acumulativa tipo "kaleidoscopio temporal"
+   - Que el movimiento sea la firma visual
+
+2. FEEDBACK CROMÁTICO
+   - Basado en manipulación de color y decay del frame anterior
+   - Ejemplo de dirección: separación RGB con desfase temporal + decay no lineal
+   - Que el color sea la firma visual
+
+3. FEEDBACK CON DISTORSIÓN
+   - Basado en displacement maps generados del propio feedback
+   - Ejemplo de dirección: warping orgánico tipo fluido o glitch estructural
+   - Que la deformación sea la firma visual
+
+4. FEEDBACK HÍBRIDO (tu propuesta)
+   - Combina 2 o 3 de las técnicas anteriores de forma creativa
+   - Debe tener una identidad propia que no sea solo la suma de las partes
+   - Sorpréndeme con algo que no sea obvio
+
+PARA CADA FILTRO ENTREGA:
+1. Nombre del filtro y descripción de su "esencia" estética (2-3 líneas)
+2. Código GLSL completo (vertex si aplica + pixel shader) comentado en español
+3. Estructura de red en TouchDesigner: qué TOPs usar, cómo conectarlos, qué parámetros exponer
+4. Lista de uniforms con rango sugerido y descripción de qué controla cada uno
+5. Tips de performance: a qué hay que tenerle cuidado para que no se sature
+
+FORMATO DE ENTREGA:
+- Crea un archivo .md por cada filtro en una carpeta llamada "feedback_filters/"
+- Crea un archivo README.md con índice y descripción general del set
+- Si las skills permiten exportar .tox o .toe, hazlo también
+
+ANTES DE EMPEZAR:
+- Revisa las skills de TouchDesigner que tengo cargadas para entender qué capacidades tienes disponibles
+- Si necesitas aclarar algo sobre mi setup (versión de TD, resolución target, hardware, etc.), pregúntame antes de generar código
