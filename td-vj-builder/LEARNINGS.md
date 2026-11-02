@@ -192,3 +192,27 @@ Formato por entrada:
   fbAmount * 0.8)` para que la estela decaiga suavemente. Detalle
   pequeno pero importante — sin esto, la estela desaparece de golpe y
   se ve como "corte" cada vez que YOLO parpadea.
+
+## 2026-10-23 — CORONA x FUTURE x ULTRA (Future Festival MTY + Ultra CDMX)
+- Construido: 18 visuales generativos audio-reactivos (base1–18) con `_lib/tdvj_core.py` + un builder corto por base; salidas a Resolume (8 columnas + techo) y previz 3D del booth.
+- Convenciones que se quedaron: núcleo compartido `tdvj_core` (contrato + Audio + Salida, builders idempotentes con tag `tdvj`); página Audio ampliada con Smooth, Audio CHOP y Energy; `limpiar_bases.py` manda lo viejo a `/project2/_respaldo` en vez de borrar. Pasó a `boilerplate/` el 2026-11-01.
+- Gustos: NO caleidoscopios, NO líneas apiladas tipo Joy Division, NO metal líquido, NO láser en abanico. Sí: precisión, arquitectura, luz, negro profundo.
+- Problemas y fixes: el techo leía out1 porque la expresión de salidas quedaba cacheada → re-evaluarla cada cuadro y `refresh_salidas()` al final de cada builder.
+
+## 2026-11-01 — LITTLE JESUS (gira, multicam CCTV) — capa de control en vivo
+- Construido: Stream Deck MK.2 con Companion 5.1.1 (páginas ESCENAS, RAND, CAMARAS, FX; botones latch; contador de cámaras con feedback TD→Companion), faders del MIDImix que siguen a la escena activa con takeover, router OSC. Todo en `boilerplate/control/`.
+- Problemas y fixes:
+  - Norton borró `Companion.exe` al instalar → excluir la carpeta de Companion.
+  - Resolume Arena ocupa el puerto OSC 7000 y puede quedarse con el MIDI → TD escucha en 7010; en Windows un dispositivo MIDI = un programa.
+  - El OSC de entrada de Companion no se guarda si el asistente se cierra con la X → terminar el asistente.
+  - `blend_switch` desalineado del menú de escenas (cables revueltos) → `fix_blend_switch.py` reconecta por nombre.
+  - Pads de FX ponían `switch2=2` (entrada inexistente) y un segundo logic por pad mandaba a negro al soltar → quitados; bancos de FX cruzados entre canal 10 y 11 → intercambio de notas en `table1`.
+  - El OSC Out DAT de esta versión de TD no tiene `par.netaddress` → buscar parámetros por etiqueta.
+  - Los parámetros de layouts están ligados por BIND, no por expresión → los scripts deben aceptar ambos modos.
+- Decisión: el color se queda como slot 4 del contrato; el overlay de color del CCTV es una sección global aparte.
+- Pendiente en el show: contrato de 5 en visuales 1–16 (no tienen parámetros) y en los FX hechos a mano; MIDI estándar (fila de arriba visual, de abajo FX); limpiar `/project1` (4 MIDI In).
+
+## 2026-11-01 — library/ poblada y proyectos archivados
+- `library/` ahora tiene shaders reales con índice de origen (`library/README.md`): visuales de Petite Amie, ON TOUR x Mercado Libre y Corona; efectos de Petite Amie, APF, Ed Maverick y Little Jesus; layouts CCTV de Little Jesus; tracking Hokuyo de Mercado Libre.
+- `projects/` actualizado con los .md de Petite Amie, ON TOUR x Mercado Libre, Paloma Murphy, Casa Bacardi, APF y Ed Maverick.
+- Petite Amie: el `.toe` partió de Paloma Murphy y heredó nodos huérfanos que rompían base1–2 → motivo para arrancar siempre del boilerplate y no de un `.toe` viejo.

@@ -102,6 +102,14 @@ Haz esto en orden. Si algo falla, pega el Textport.
 3. Aparecen 2–3 personas en posiciones proporcionales a 7 x 5 m. Prueba Flip / Swap / Origen y confirma
    que se mueven como esperas. Pon una fila en `20 1` → debe desaparecer (fuera del piso).
 
+*Formato TOP (blobs) — lo que pidió Mich:*
+1. En `/project2` crea un **Circle TOP** (fondo negro, círculo blanco, radio ~0.05) y en su Center X pon
+   `0.3*math.sin(absTime.seconds)`. Para 2 personas: otro Circle TOP y un **Composite TOP** (Add).
+2. Hub: Source = **Externo TOP (blobs)**, arrastra el Circle/Composite a **TOP de blobs**.
+3. Status = `top · 2 persona(s) · 2 mancha(s)`; `tracking_input/blob_view` muestra cruces de color sobre
+   cada blob; las bases siguen a los círculos. Cambia el número de círculos → las personas aparecen/desaparecen
+   (no se acumulan).
+
 **C · El paquete**
 1. Corre `builders/herramientas/handoff.py` → revisa que aparezcan los `.tox` en `exports/handoff/`.
 2. **Abre un proyecto de TouchDesigner nuevo y vacío** (File → New).

@@ -9,6 +9,45 @@ This skill builds TouchDesigner content for a live VJ rig. It writes two artifac
 
 The rig is fixed and the skill must respect it exactly. A MIDI sampler maps physical controls to parameters by base number, so **base numbers and the parameter contract are load-bearing — never rename a baseX and never deviate from the 5-slider contract.**
 
+## Boilerplate (preferred for every new show)
+
+`boilerplate/` in this skill is the project skeleton that grew out of ON TOUR x MERCADO LIBRE → CORONA x FUTURE x ULTRA → LITTLE JESUS. Start every show from it instead of copying an old `.toe`:
+
+```
+python ~/claude-skills/td-vj-builder/nuevo_proyecto.py "<show>/01. EDITABLES" "<NOMBRE>"
+```
+
+It copies the skeleton (never overwrites existing files), fills the project `CLAUDE.md`, and stamps `_lib/BOILERPLATE_VERSION` with the repo commit. Each show keeps **its own copy** of the core, so updating the skill never breaks a show already built.
+
+- `_lib/tdvj_core.py` — the shared core: `build_contract` (5 slots + extras + colors + Bypass, page `Audio` with Smooth/Audiochop/Energy, page `Salida` with Resw/Resh), `build_visual(**CONFIG)` / `build_effect(**CONFIG)`, idempotent (keeps slider values and MIDI exports; rebuilds only nodes tagged `tdvj`). **Never edit it for one show.**
+- `_lib/rig.py` — what is specific to the show: base ranges, `AUDIO_SOURCE`, `CAMERA_SWITCH`, `DEFAULT_RES`. The core reads it on import.
+- `_templates/setup_baseXX_visual.py` + `visual.frag` — a builder is a short `CONFIG` dict + one call. Prefer this over the long standalone builders in `templates/` (kept as reference).
+- `builders/build_all.py` · `builders/herramientas/limpiar_bases.py` (moves old nodes to `/project2/_respaldo/baseN`, never deletes) · `aplicar_resolucion.py`.
+- `control/` — the live control layer (see below) plus read-only audit tools.
+
+Improvements to the core go back into `boilerplate/` here, then `git push`.
+
+## Live control layer (`boilerplate/control/`)
+
+One job per controller:
+
+| Controller | Job |
+|---|---|
+| **Stream Deck** (Bitfocus Companion) | **choose**: visual, FX, scene, camera — latched buttons show what is live |
+| **MIDImix** | **continuous**: top row knobs 1–5 = active visual's 5 slots · bottom row knobs 1–5 = active FX's 5 slots (follow what is live, with takeover) · global color section · faders |
+| **Beatstep Pro** (backup) | pads: ch10 top = visuals 1–8, bottom = FX 17–24 · ch11 top = visuals 9–16, bottom = FX 38–45 |
+
+- Companion → OSC `127.0.0.1:7010` → OSC In DAT running `oscin1_callbacks.py` (`/td/<Par> v`, `/td/inc/<Par> d`, `/td/fx i`). **Port 7000 belongs to Resolume Arena.**
+- TD → Companion OSC `127.0.0.1:12320` via `setup_companion_feedback.py`, so buttons stay in sync when something changes from TD, MIDI or pads. Companion's OSC listener only saves if its Configuration Wizard is finished (not closed with X).
+- `gen_companion.py` (plain Python, outside TD) generates the whole `.companionconfig`: pages, latched buttons via custom variables, uniform text size, no top bar. Its JSON format was read from Companion 5.1.1's own code — re-check on a new major version.
+- `setup_scene_faders.py` — faders follow the active scene's float params with takeover.
+- Windows gives each MIDI device to one program: Arena or a DAW can silently steal the MIDImix/Beatstep from TD. Keep one MIDI In CHOP per device.
+- The color overlay for CCTV is a **global section**, not part of each base's contract: palette buttons on the Stream Deck + an amount knob.
+
+## Existing or messy shows
+
+Audit before touching anything. The read-only tools in `control/` write `.md` reports into the project's `control/` folder, which you read directly from disk: `auditoria_project2.py` (bases, switches, dead pages, scripts with invalid indices, errors, contract compliance), `inventario_bases.py` (every control each base has today), `mapa_pads.py` (note → constant → logic → script → action). Any fix that changes the `.toe` is a script with `APPLY = False` by default (prints what it would do), a JSON backup of what it touches, and an explicit apply step after the user pastes the review. Hand-built bases that must keep their network get the contract by binding their real internal parameters to the 5 slots instead of being rebuilt.
+
 ## The rig (memorize this)
 
 ```

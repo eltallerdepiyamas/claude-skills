@@ -72,6 +72,20 @@ En las otras compus, la proxima vez que abras Claude Code:
     git pull                          y ya tienen los cambios
 
 
+EMPEZAR UN SHOW NUEVO (boilerplate de td-vj-builder)
+----------------------------------------------------
+
+Ya no se copia el .toe de un proyecto anterior. Se arranca del boilerplate:
+
+    git pull
+    python ~/claude-skills/td-vj-builder/nuevo_proyecto.py "I:/.../<SHOW>/01. EDITABLES" "NOMBRE"
+
+Eso copia la estructura (_lib/tdvj_core.py, _lib/rig.py, builders, control del
+Stream Deck/MIDI, CLAUDE.md del show). Lo propio del show va en _lib/rig.py.
+Cada show queda con SU copia del nucleo: actualizar el skill no rompe shows viejos.
+Si mejoras el nucleo en un show, regresa el cambio a td-vj-builder/boilerplate/ y push.
+
+
 CUANDO AGREGAR ARCHIVOS DE UN PROYECTO NUEVO
 --------------------------------------------
 
@@ -105,6 +119,8 @@ PROYECTOS YA EN EL REPO (td-vj-builder)
     mercado libre/        Mercado Libre + sensores Hokuyo
     paloma murphy/        Paloma Murphy / Casino Marquee
     eyesy/                Eyesy (referencia de hardware standalone)
+    corona x future x ultra/  Ultra CDMX + Future MTY 2026 (nucleo tdvj_core)
+    little jesus/         Gira Little Jesus (multicam CCTV + Stream Deck/MIDImix)
 
 
 COMO CREAR UN SKILL NUEVO
