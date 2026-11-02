@@ -31,8 +31,12 @@ SKILLS DISPONIBLES
     td-glsl-vertex        Shaders de vertices / GLSL MAT
     td-pops               Particulas y POPs con GLSL compute
     td-flyer-audioreactivo Animar flyers/posters como loops audio-reactivos en TD
+    td-python             Python en TouchDesigner (API, patrones, callbacks)
     sc-designer           Patches de SuperCollider
     hou-vex               VEX para Houdini
+    hou-python            Python (HOM) para Houdini
+    hou-rs                Render batch con Redshift en Houdini
+    draft-preguntas-*     Preguntas de entrevista para podcast (negocios / musica)
     remotion-*            Video programatico con Remotion
     find-skills           Busca skills instalables
 

@@ -10,11 +10,16 @@ Colección de skills de Claude Code para producción audiovisual y VJ.
 - **td-glsl** — Shaders GLSL para GLSL TOP, MAT y COMP
 - **td-glsl-vertex** — Vertex shaders para GLSL MAT (displacement, deformation, instancing)
 - **td-pops** — Compute shaders para el sistema POP (partículas, point clouds)
+- **td-python** — Python en TouchDesigner: API, patrones, scripts de red, callbacks
 
 ### Otros
 - **hou-vex** — VEX code para Houdini SOPs, DOPs, COPs y shaders
+- **hou-python** — Python (HOM) en Houdini: automatización, ROPs, Python SOP
+- **hou-rs** — Render batch con Redshift en Houdini (CLI, iluminación, texturas)
 - **sc-designer** — SuperCollider: síntesis, sound design, composición algorítmica
 - **find-skills** — Descubre e instala nuevas skills
+- **draft-preguntas-entrevista** — Draft de 15 preguntas para podcast de negocios/innovación
+- **draft-preguntas-entrevista-musica** — Draft de 15 preguntas para podcast de la industria musical
 - **remotion-*** — Skills para video con Remotion (React)
 
 ## Estructura de cada skill

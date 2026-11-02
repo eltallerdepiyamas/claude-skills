@@ -10,3 +10,6 @@ Thumbs.db
 # TD project files
 *.toe.bak
 *.tox.bak
+
+# Skills que sincroniza la app de Claude dentro de ~/.claude/skills (no son del repo)
+synced/
