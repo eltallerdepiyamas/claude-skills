@@ -4,8 +4,8 @@
 # exponer_parametros.py  —  los parametros de Prism se ven y se mueven desde base25
 #
 # Copia las pestañas de /project2/base25/prism (Custom, Patterns, Chroma) al COMP base25,
-# con los mismos nombres, rangos, menus y valores actuales, y deja cada parametro del
-# prism con BIND al de base25: se mueve desde cualquiera de los dos.
+# con los mismos nombres, rangos y menus, y cada copia hace BIND al parametro de adentro:
+# se mueve desde cualquiera de los dos.
 # Los que el prism calcula solo (expresiones como Resx = ancho de entrada o
 # Rotsinphase = tiempo) no se exponen: siguen funcionando adentro.
 #
@@ -83,11 +83,11 @@ def run():
             except Exception as e:
                 print('   [!] %s no se pudo copiar: %s' % (tup[0].tupletName, e))
                 continue
+            # el de afuera se liga al de adentro (al reves rompe las secuencias tipo Pattern0/1)
             for s in tup:
                 d = getattr(base.par, s.name)
-                d.val = s.eval()
-                s.bindExpr = "parent().par.%s" % s.name
-                s.mode = ParMode.BIND
+                d.bindExpr = "op('./%s').par.%s" % (INNER, s.name)
+                d.mode = ParMode.BIND
             done += 1
     if skipped:
         print('\n   se quedan adentro (los calcula el prism): %s' % ', '.join(skipped))
