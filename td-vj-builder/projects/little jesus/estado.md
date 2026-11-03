@@ -18,6 +18,8 @@ desde cualquier compu: `controladores.md` (qué hace cada knob/botón/pad), `con
 
 ## Decisiones
 
+- Páginas del Stream Deck ESCENAS, RAND 1, RAND 2 y CAMARAS son **de este show** (escenas de `base17/escena_modular`); otros shows solo llevan VISUALES y FX, y páginas extra si el show las pide.
+
 - Salida a Resolume: recomendado **Spout** (misma compu); NDI solo si Resolume está en otra máquina.
 - Faders 1–3 + MASTER del MIDImix = OSC a Resolume (Visual, Artist, CCTV, master). Faders 4–8 = escena multicam activa (**solo en este show**).
 - MIDImix: fila 1 = visual activo (fase 3) · fila 2 = FX de cámara activo (fase 3) · fila 3 = glitch global.

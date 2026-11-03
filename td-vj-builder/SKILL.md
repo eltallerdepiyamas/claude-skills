@@ -37,6 +37,7 @@ One job per controller:
 | **MIDImix** | **continuous**: top row knobs 1–5 = active visual's 5 slots · bottom row knobs 1–5 = active FX's 5 slots (follow what is live, with takeover) · global color section · faders |
 | **Beatstep Pro** (backup) | pads: ch10 top = visuals 1–8, bottom = FX 17–24 · ch11 top = visuals 9–16, bottom = FX 25–32 (FX numbered contiguously after 24) |
 
+- **Stream Deck pages by show.** Standard: VISUALES and FX (plus MIX when it exists). ESCENAS, RAND 1/RAND 2 and CAMARAS exist only in Little Jesus, because its multicam scenes live in `base17/escena_modular`; `gen_companion.py` in the boilerplate still carries them as that show's example — drop them for a show without `escena_modular`. Add extra pages only when the show needs them.
 - Companion → OSC `127.0.0.1:7010` → OSC In DAT running `oscin1_callbacks.py` (`/td/<Par> v`, `/td/inc/<Par> d`, `/td/fx i`). **Port 7000 belongs to Resolume Arena.**
 - TD → Companion OSC `127.0.0.1:12320` via `setup_companion_feedback.py`, so buttons stay in sync when something changes from TD, MIDI or pads. Companion's OSC listener only saves if its Configuration Wizard is finished (not closed with X).
 - `gen_companion.py` (plain Python, outside TD) generates the whole `.companionconfig`: pages, latched buttons via custom variables, uniform text size, no top bar. Its JSON format was read from Companion 5.1.1's own code — re-check on a new major version.
