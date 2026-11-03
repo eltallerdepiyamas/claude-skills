@@ -35,18 +35,19 @@ One job per controller:
 |---|---|
 | **Stream Deck** (Bitfocus Companion) | **choose**: visual, FX, scene, camera — latched buttons show what is live |
 | **MIDImix** | **continuous**: top row knobs 1–5 = active visual's 5 slots · bottom row knobs 1–5 = active FX's 5 slots (follow what is live, with takeover) · global color section · faders |
-| **Beatstep Pro** (backup) | pads: ch10 top = visuals 1–8, bottom = FX 17–24 · ch11 top = visuals 9–16, bottom = FX 38–45 |
+| **Beatstep Pro** (backup) | pads: ch10 top = visuals 1–8, bottom = FX 17–24 · ch11 top = visuals 9–16, bottom = FX 25–32 (FX numbered contiguously after 24) |
 
 - Companion → OSC `127.0.0.1:7010` → OSC In DAT running `oscin1_callbacks.py` (`/td/<Par> v`, `/td/inc/<Par> d`, `/td/fx i`). **Port 7000 belongs to Resolume Arena.**
 - TD → Companion OSC `127.0.0.1:12320` via `setup_companion_feedback.py`, so buttons stay in sync when something changes from TD, MIDI or pads. Companion's OSC listener only saves if its Configuration Wizard is finished (not closed with X).
 - `gen_companion.py` (plain Python, outside TD) generates the whole `.companionconfig`: pages, latched buttons via custom variables, uniform text size, no top bar. Its JSON format was read from Companion 5.1.1's own code — re-check on a new major version.
-- `setup_scene_faders.py` — faders follow the active scene's float params with takeover.
+- `setup_scene_faders.py` — **optional, multicam shows only**: faders 4–8 follow the active scene's float params with takeover. Elsewhere faders 4–8 stay free; faders 1–3 + MASTER go to Resolume by OSC.
+- `midi_inventario.py` — who reads each CC/note (`BOTONES = True` for notes) and **learn mode**: every control moved is logged once, in order, to `control/learn_log.md`. Turn that into the show's `controladores.md` (physical control → MIDI → what it does) so the user can say "MIDImix knob row 2 col 3". `midi_remap_filas.py` moves a whole knob row to another (frozen values for what gets displaced).
 - Windows gives each MIDI device to one program: Arena or a DAW can silently steal the MIDImix/Beatstep from TD. Keep one MIDI In CHOP per device.
 - The color overlay for CCTV is a **global section**, not part of each base's contract: palette buttons on the Stream Deck + an amount knob.
 
 ## Existing or messy shows
 
-Audit before touching anything. The read-only tools in `control/` write `.md` reports into the project's `control/` folder, which you read directly from disk: `auditoria_project2.py` (bases, switches, dead pages, scripts with invalid indices, errors, contract compliance), `inventario_bases.py` (every control each base has today), `mapa_pads.py` (note → constant → logic → script → action). Any fix that changes the `.toe` is a script with `APPLY = False` by default (prints what it would do), a JSON backup of what it touches, and an explicit apply step after the user pastes the review. Hand-built bases that must keep their network get the contract by binding their real internal parameters to the 5 slots instead of being rebuilt.
+Audit before touching anything. The read-only tools in `control/` write `.md` reports into the project's `control/` folder, which you read directly from disk: `auditoria_project2.py` (bases, switches, dead pages, scripts with invalid indices, errors, contract compliance), `inventario_bases.py` (every control each base has today), `mapa_pads.py` (note → constant → logic → script → action). Any fix that changes the `.toe` is a script with `APPLY = False` by default (prints what it would do), a JSON backup of what it touches, and an explicit apply step after the user pastes the review. Hand-built bases that must keep their network get the contract with `contrato_retrofit.py` (slots 0–1 drive the real parameters by expression, universal Mezcla/Tono/Estela/Bypass nodes, starts at current values, re-runnable, RESTORE) instead of being rebuilt. Other tools: `inventario_project1.py` (map of a legacy master/FX-global network), `renumerar_bases.py` (contiguous base numbers, rewrites path references first), `exponer_parametros.py` (show an imported COMP's pages on its baseXX, bound both ways). Back up with `.tox` before deleting bases. Example of a full cleanup: `projects/little jesus/estado.md`.
 
 ## The rig (memorize this)
 

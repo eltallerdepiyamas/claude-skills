@@ -1,6 +1,8 @@
 # =============================================================
+# BOILERPLATE: OPCIONAL. Solo para shows con escena_modular multicam (Little Jesus).
+#   En otros shows los faders 4-8 quedan libres.
 # setup_scene_faders.py
-# Los faders 4-8 + MASTER del MIDImix controlan los parametros de la
+# Los faders 4-8 del MIDImix controlan los parametros de la
 # escena activa (Modoescena). Al cambiar de escena se reasignan solos.
 #
 # - Parametros: los Float de cada layout_xxx ligados a escena_modular
@@ -16,8 +18,8 @@
 
 SCENE_PATH = '/project2/base17/escena_modular'
 MIDI_IN    = '/project1/midiin1'
-FADERS     = ['ch1ctrl32', 'ch1ctrl50', 'ch1ctrl54', 'ch1ctrl58', 'ch1ctrl62', 'ch1ctrl63']
-LABELS     = ['F4', 'F5', 'F6', 'F7', 'F8', 'MASTER']
+FADERS     = ['ch1ctrl32', 'ch1ctrl50', 'ch1ctrl54', 'ch1ctrl58', 'ch1ctrl62']   # MASTER (CC63) = OSC a Resolume
+LABELS     = ['F4', 'F5', 'F6', 'F7', 'F8']
 
 LIB = r'''
 import re

@@ -1,53 +1,56 @@
-# Fase 2 — Propuesta del contrato de 5 (efectos)
+# Fase 2 — Contrato de 5 (efectos de cámara) · v2 aplicada
 
-Orden fijo de los 5 sliders, igual en todas las bases (así el knob N significa lo mismo siempre):
+> FX renumerados el 2026-11-02: base38–45 → base25–32.
 
-| Slot | Rol | Knob MIDImix |
-|---|---|---|
-| 1 | **Intensidad / mezcla** | knob 1 |
-| 2 | **Velocidad / tiempo** | knob 2 |
-| 3 | **Distorsión / deformación** | knob 3 |
-| 4 | **Color** | knob 4 |
-| 5 | **Firma** (lo más característico del efecto) | knob 5 |
+Orden fijo de los 5 sliders, igual en todas las bases (el knob N significa lo mismo siempre).
+Fila 2 del MIDImix (CC 18, 22, 26, 30, 48) y fila 2 de la página MIX del Stream Deck.
 
-Además, separado de los 5: **Bypass** (toggle) y pestaña **Audio** (`Audioreact`, `Low`, `Mid`, `High`, `Audiotarget`, `Audiomult`).
+| Slot | Rol | Knob fila 2 | Qué esperar al girarlo |
+|---|---|---|---|
+| 1 | **Mezcla** | col 1 (CC18) | 0 = cámara limpia · 100% = efecto completo |
+| 2 | **Tiempo** | col 2 (CC22) | velocidad, o cuánto dura la estela / memoria |
+| 3 | **Distorsión** | col 3 (CC26) | cuánto deforma la imagen |
+| 4 | **Color** | col 4 (CC30) | giro de tono o color del efecto |
+| 5 | **Firma** | col 5 (CC48) | lo más característico del efecto |
 
-## Dos piezas universales que el script agrega a cada base
+Separado de los 5: **Bypass** (toggle) y pestaña **Audio** (`Audioreact`, `Low`, `Mid`, `High`,
+`Audiotarget`, `Audiomult`, `Smooth`): el audio suma sobre el slot que elijas en `Audiotarget`.
 
-Muchas bases no tienen control de mezcla o de color. Para que **todas** tengan sus 5:
+## Piezas universales (✱) que el script agrega cuando la base no lo tiene
 
-- **Mezcla** — un Cross TOP entre la entrada limpia y el efecto. Si la base ya tiene `Drywet`/`Blend`, se usa ese.
-- **Color** — un HSV Adjust al final del efecto (giro de tono). Si la base ya tiene control de color propio, se usa ese.
+- **Mezcla ✱** — Cross TOP entre la entrada limpia y el efecto.
+- **Tono ✱** — HSV Adjust al final (giro de tono 0–360°).
+- **Estela ✱** — Feedback al final del efecto: 0 = sin estela, 100% = estela larga. Es el "Tiempo" de los FX que no tienen velocidad propia.
+- **Pasos** — un knob que recorre las opciones de un menú/toggle (p. ej. 5 modos = 5 zonas del knob).
+- **Macro** — un knob que mueve varios parámetros a la vez (p. ej. los 3 delays RGB).
 
-Con eso, los slots 1 y 4 siempre existen; los slots 2, 3 y 5 salen de los parámetros reales de cada efecto.
+## Contrato por base
 
-## Propuesta por base
-
-`✱` = pieza universal agregada por el script · `❓` = no encontré un buen parámetro, decides tú
-
-| Base | FX | 1 Intensidad | 2 Velocidad | 3 Distorsión | 4 Color | 5 Firma |
+| Base | FX | 1 Mezcla | 2 Tiempo | 3 Distorsión | 4 Color | 5 Firma |
 |---|---|---|---|---|---|---|
-| base18 | Time Machine 4 Glitch | Mezcla ✱ | `Cachesize` (profundidad de tiempo) | `Threshold` | Tono ✱ | `Threshold2` (feedback opacity) |
-| base19 | Slitscan | `Drywet` (pixelate) | `Int` (cache size) | `Blackoffset` | Tono ✱ | `Menu` (ramp) ❓ |
-| base20 | Feedback RGB Delay | `Opacity` (data mosh) | `Bluedelay`/`Reddelay` ❓ | `Size` (filter size) | `Rgba` (edge color) → tono | `Whitewidth` ❓ |
-| base21 | Optical Flow | Mezcla ✱ | ❓ (hoy lo mueve el audio) | `Displaceweight1` | Tono ✱ | `Float` (feedback opacity) |
-| base22 | Liquid Feedback | Mezcla ✱ | ❓ | `Feedbackscale` | Tono ✱ | `Feedbackscale2` (feedback opacity) |
-| base23 | Pixel Sort | Mezcla ✱ | ❓ | ❓ | Tono ✱ | `Feedbackopacity` |
-| base24 | ASCII | `Mastercontrast` | ❓ | `Mastercellsize` | `Mastercolor` → tono | `Asciiactivefilter2` (caracteres / halftone / dither) |
-| base38 | — | `Blend` | `Warprot` | `Warpscale` | Tono ✱ | `Feedbackamt` |
-| base39 | — (shader roto) | `Blend` | `Speed` | `Strength` | Tono ✱ | `Radius` |
-| base40 | — | `Blend` | `Decay` | `Trailblend` | `Colorshift` | `Blendmode` ❓ |
-| base41 | Bloom | `Bloom` (bloom level) | `Feedbackamt` ❓ | `Dispx` | `Glowcolor` → tono | `Glow` |
-| base42 | Light Tunnel | `Blend` | `Pulsespeed` | `Radius` | `Invertamt` | `Feedbackamt` |
-| base43 | RGBA Delay | `Drywet` | ❓ | ❓ | Tono ✱ | ❓ |
-| base44 | Radial Blur | `Drywet` | ❓ | `Strength` | `Redpreshrink` (separación RGB) | `Samples` |
-| base45 | Kaleidoscope | Mezcla ✱ | `Rotatez` (animado) | `Kaleidonum` | Tono ✱ | `Fullmode` ❓ |
+| base18 | Time Machine 4 Glitch | Mezcla ✱ | `Cachesize` (memoria) | `Threshold` | Tono ✱ | `Threshold2` (opacidad feedback) |
+| base19 | Slitscan | `Drywet` | `Int` (cache) | `Blackoffset` | Tono ✱ | `Menu` ramp en **pasos** (dirección del slit) |
+| base20 | Feedback RGB Delay | `Opacity` (data mosh) | **Macro** delay RGB (`Reddelay` / `Bluedelay`) | `Size` | Tono ✱ (el edge color es blanco: girarle el tono no hace nada) | `Preshrink` (bloques del data mosh) |
+| base21 | Optical Flow | Mezcla ✱ | `Float` (estela) | `Displaceweight1` | Tono ✱ | `Displaceweight2` (segunda capa) |
+| base22 | Liquid Feedback | Mezcla ✱ | `Feedbackscale2` (estela) | `Feedbackscale` (zoom) | Tono ✱ | `liquid_feedback/displace1.displaceweighty` (flujo líquido, 0–0.04) |
+| base23 | Pixel Sort | Mezcla ✱ | `Feedbackopacity` (estela) | `pixel_sort/displace1.displaceweighty` (largo del sort, 0–0.05) | Tono ✱ | `pixel_sort/thresh1.threshold` (umbral del sort) |
+| base24 | ASCII | `Mastercontrast` | Estela ✱ | `Mastercellsize` | `Mastercolor` → tono | `Asciiactivefilter2` en **pasos** (caracteres / halftone / dither) |
+| base25 | Warp Feedback | `Blend` | `Feedbackamt` | `Warpscale` | Tono ✱ | `Warprot` |
+| base26 | — | ⛔ fuera del contrato hasta reescribir el shader (está vacío) | | | | |
+| base27 | Trails | `Blend` | `Decay` | `Trailblend` | `Colorshift` | `Blendmode` en **pasos** (5 modos) |
+| base28 | Bloom | `Bloom` | `Feedbackamt` | `Dispx` | `Glowcolor` → tono | `Glow` |
+| base29 | Light Tunnel | `Blend` | `Pulsespeed` | `Radius` | `Invertamt` | `Feedbackamt` |
+| base30 | RGBA Delay | `Drywet` | Estela ✱ | **Macro** separación RGB | Tono ✱ | **Macro** cantidad de delay (`Red`/`Green`/`Bluedelay`) |
+| base31 | Radial Blur | `Drywet` | Estela ✱ | `Strength` | `Redpreshrink` (separación RGB) | `Samples` |
+| base32 | Kaleidoscope | Mezcla ✱ | Velocidad de giro (anima `Rotatez`) | `Kaleidonum` | Tono ✱ | `Fullmode` en **pasos** (on/off) |
 
-## Cosas que encontré de paso
+🔍 = el script de armado imprime los parámetros/uniforms internos de esa base y ahí elegimos;
+si no hay nada útil, se usa la pieza universal más cercana.
 
-- **Visuales base1–16 no tienen ningún parámetro** ni uniforms de GLSL: hay que ver qué hay adentro de cada uno antes de proponer.
-- **base39** tiene el shader vacío: hay que reescribirlo (o borrarla) antes de ponerle contrato.
-- **base45 y base27** leen el MIDI directo de `/project1` (`null3['ch1ctrl56']`, `null50['ch1n26']`): con el contrato eso pasa a los slots y se quita la dependencia.
-- **base20** tiene un `switch1` interno con 4 entradas que no sale a ningún lado: ¿eran variantes del efecto?
-- **base21** ya es audioreactivo por dentro (`optical_flow/null1['low']`): con la pestaña Audio estándar eso se unifica.
-- **base24** ya tiene una pestaña `Master` que hace casi lo mismo que el contrato: es el mejor modelo a seguir.
+## Cambios que trae el contrato
+
+- **base21**: hoy el audio mueve directo `Displaceweight` y `Float`; pasa a la pestaña Audio estándar.
+- **base32**: deja de leer `/project1/null50['ch1n26']`; `Fullmode` queda en el slot 5.
+- **base24**: su pestaña `Master` ya era casi el contrato; solo se le suma la Estela ✱.
+- **base20**: el `switch1` interno de 4 entradas sigue sin salir a nada; se deja como está.
+- **base25–32**: nombres provisionales (Warp Feedback, Trails) para el Stream Deck; cámbialos si quieres.

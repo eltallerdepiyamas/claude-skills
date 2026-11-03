@@ -11,7 +11,8 @@
         ├── CAM_1 ... CAM_5        ← Video Device In TOPs
         ├── base17                 ← LAYOUT DE CÁMARAS (switch interno de layouts)
         ├── base18 – base24        ← EFECTOS post-layout
-        ├── base38 – base45        ← EFECTOS FUTUROS
+        ├── base25                 ← Prism (FX de cámara, sin contrato; antes /project1/PrismTop4)
+        ├── base26 – base32        ← libres para FX nuevos (los anteriores se respaldaron en control/respaldo_tox/)
         └── switch_FINAL           ← routing por "Modo escena"
 ```
 
@@ -559,7 +560,7 @@ void main() {
 | `fix_blend_switch.py` | Alinea `master_switch` y `blend_switch` con el orden del menú `Modoescena` (correr sin `APPLY` para revisar) |
 | `oscin1_callbacks.py` | Contenido del callback del OSC In DAT `oscin1` (router de Companion) |
 | `setup_companion_feedback.py` | TD → Companion (OSC 127.0.0.1:12320): manda `Int`, `Modoescena`, `Menu2` e `Index` a las custom variables `cams`, `escena`, `cam`, `hero` |
-| `setup_scene_faders.py` | Faders 4–8 + MASTER del MIDImix (CC 32, 50, 54, 58, 62, 63) mueven los params Float de la escena activa, con takeover |
+| `setup_scene_faders.py` | Faders 4–8 del MIDImix (CC 32, 50, 54, 58, 62) mueven los params Float de la escena activa, con takeover. **Solo Little Jesus.** MASTER (CC63) = OSC a Resolume |
 
 - Companion manda OSC a `127.0.0.1:7010` (el 7000 lo usa Resolume Arena) → OSC In DAT `oscin1` en `escena_modular`. Rutas: `/td/<Par> valor`, `/td/inc/<Par> delta` y `/td/fx indice` (→ `/project2/switch23`).
 - Los botones mandan el **label** de la escena (`Floating Pieces`), no el índice: reordenar el menú no rompe el Stream Deck, pero **sí** hay que volver a correr `fix_blend_switch.py`.
@@ -577,21 +578,26 @@ void main() {
 | 5 | base22 | Liquid Feedback |
 | 6 | base23 | Pixel Sort |
 | 7 | base24 | ASCII |
-| 8–15 | base38–45 | (sin nombre todavía) |
+| 8 | base25 | Prism (sin contrato) |
+| 9–15 | base26–32 | libres (FX nuevos) |
 
 ### Mapa de salidas de `/project2` (pads del Beatstep)
 
 ```
 VISUALES    pads 1–16          → switch1 / switch3 → switch2  → fit1
 CÁMARAS+FX  pads 17–24, 41–48  → switch23 → fit2               (entrada 0 = base17 limpio; switch4 ya no se usa)
-switch5     pads 25–32,35,38,39 → switch5 → null42             (13 opciones, por identificar)
+switch5     pads 25–32,35,38,39 → (borrado 2026-11-02: era la capa de otro proyecto; esos pads quedan sin uso)
 ```
+
+Pads ordenados (fase 1b, 2026-11-01, `control/fase1b_pads.py`, respaldo en `control/fase1b_backup.json`):
+canal 10 → arriba visuales base1–8 · abajo FX base17–24 · canal 11 → arriba visuales base9–16 · abajo FX base25 (Prism) + base26–32 libres.
+Se quitó el pad `black` (el negro va por MIDImix → Resolume), `chopexec40` duplicado y 11 logic sueltos.
 
 Cada pad = `logicN` → `chopexecN` (`onOffToOn` cambia índices). Pendientes de arreglo:
 - ~~Pads 19–24 ponían `switch2=2`~~ → arreglado en fase 1 (2026-11-01).
 - `switch6`–`21` (vidN vs nullN) tienen índices 1–16 con solo 2 entradas → siempre generativo.
-- ~~`black` ponía `switch2=4`~~ → ahora va a `black_out` (entrada 2 de `switch2`), fase 1.
-- Pad 40 duplica al 9. Pads 33, 34, 36, 37 vacíos (pendiente: definir qué hacen).
+- ~~`black`~~ → quitado en fase 1b.
+- ~~Pad 40 duplicado~~ → quitado. Pads 33, 34, 36, 37 vacíos (pendiente: definir qué hacen).
 - `switch6`–`21` tienen el index por expresión (1–16) con solo 2 entradas → siempre generativo; revisar con los videos `vid`.
 
 ### Roadmap de limpieza (acordado 2026-11-01)

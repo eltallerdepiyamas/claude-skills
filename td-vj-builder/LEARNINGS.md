@@ -216,3 +216,19 @@ Formato por entrada:
 - `library/` ahora tiene shaders reales con índice de origen (`library/README.md`): visuales de Petite Amie, ON TOUR x Mercado Libre y Corona; efectos de Petite Amie, APF, Ed Maverick y Little Jesus; layouts CCTV de Little Jesus; tracking Hokuyo de Mercado Libre.
 - `projects/` actualizado con los .md de Petite Amie, ON TOUR x Mercado Libre, Paloma Murphy, Casa Bacardi, APF y Ed Maverick.
 - Petite Amie: el `.toe` partió de Paloma Murphy y heredó nodos huérfanos que rompían base1–2 → motivo para arrancar siempre del boilerplate y no de un `.toe` viejo.
+
+## 2026-11-02 — LITTLE JESUS — contrato en FX hechos a mano, MIDI y limpieza
+- Construido: contrato de 5 por *retrofit* en 7 FX existentes (`control/contrato_retrofit.py`): página Contrato con slots 0–1 que mueven por expresión el parámetro real escalado a su rango; piezas universales Estela → Tono → Mezcla → Bypass antes de `out1`; arranca en el valor actual (no cambia el look). Registro completo de MIDImix + Beatstep con `midi_inventario.py` (modo learn → `learn_log.md` → `controladores.md`). Renumerado de FX y Prism movido de `/project1` a un base con sus parámetros expuestos.
+- Reglas de TD que costaron errores:
+  - Un COMP se conecta por su conector: `dst.inputConnectors[0].connect(comp.outputConnectors[0])`; `connect(comp)` truena con "Invalid number or type of arguments".
+  - Para recorrer cables usar `inputConnectors[i].connections` / `outputConnectors`, no `.inputs` (con COMPs devuelve sus In internos y te lleva a un `in1` de otro COMP).
+  - La fuente limpia de un FX se busca subiendo por los cables y solo entre nodos de la misma base (`o.parent() == base`) y sin errores.
+  - No guardar rutas/nombres en `storage` para rearmar: caminar desde `out1` saltando los nodos propios (tag `tdvj`) es lo único que sobrevive a re-correr el script.
+  - `comp.fetch()` busca en los padres por default → usar `search=False`.
+  - Renombrar un COMP no actualiza expresiones con su ruta: reescribir `'/project2/baseNN'` en todo el proyecto antes de renombrar.
+  - Copiar un COMP a otro lado rompe sus expresiones relativas (`op('null15')`): leer los valores del original ANTES de copiar.
+  - `Page.appendPar(par=...)` copia también `menuSource` relativo y defaults que fallan → crear el parámetro a mano (estilo, rango, menú fijo) y ligar el de adentro con BIND al de afuera.
+  - Si un script truena a la mitad, `APPLY = True` se queda vivo en el Textport → resetear banderas en `finally`.
+  - Antes de borrar bases, respaldo `.tox` con `comp.save()`; no pisar un respaldo que ya existe.
+- MIDImix de este usuario: CC por columna = 3 knobs + fader (col1: 17/18/19/20 … col4 29/30/31/32, col5 47/48/49/50 … col8 59/60/61/62, master 63); botones fila de arriba n2,5,8…23, abajo n4,7,10…25, bank n26/27, solo n28. Beatstep: pads n45–52 arriba / n37–44 abajo en canal 10 y 11, knobs canal 11, Seq1 canal 1 y Seq2 canal 2 (n61–73).
+- Decisiones: fila 1 visual activo, fila 2 FX activo, fila 3 glitch global; faders 1–3 + master = OSC a Resolume; faders 4–8 a escenas solo en este show. `/project1` queda como "master" de FX globales por línea (V1/V2). Salida: Spout si Resolume está en la misma compu.
