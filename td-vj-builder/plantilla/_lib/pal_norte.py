@@ -1,5 +1,5 @@
 """pal_norte.py: monta una red vieja de Pal Norte (.tox) dentro de una base y recrea lo que usaba afuera."""
-from td import op, project, selectCHOP, constantCHOP, constantTOP, baseCOMP, moviefileinTOP, feedbackTOP, countCHOP, renameCHOP, speedCHOP, tableDAT, rampTOP
+from td import op, project, selectCHOP, constantCHOP, constantTOP, baseCOMP, moviefileinTOP, feedbackTOP, fitTOP, transformTOP, countCHOP, renameCHOP, speedCHOP, tableDAT, rampTOP
 AUDIO = '/project2/audio/master_audio'
 
 
@@ -20,8 +20,8 @@ def montar(n, tox, png=None):
     b = op('/project2/base%d' % n)
     b.allowCooking = True
     r = b.op('red')
-    if r is not None:
-        r.destroy()
+    if r is not None:      # no pisar los cambios a mano
+        return next(o.path for o in r.children if o.OPType == 'outTOP')
     r = b.loadTox(project.folder + '/assets/tox_pal_norte/%s.tox' % tox)
     r.name = 'red'
     for o in r.findChildren(type=feedbackTOP):      # su Reset leia un teclado que ya no existe
@@ -43,13 +43,33 @@ def montar(n, tox, png=None):
     bg.par.colorr = bg.par.colorg = bg.par.colorb = 0
     bg.par.outputresolution = 'custom'
     bg.par.resolutionw, bg.par.resolutionh = 1920, 1080
+    idx = b.op('master_switch') or b.create(constantCHOP, 'master_switch')
+    idx.par.const0name, idx.par.const0value = 'index_logo', 0
+    _chop(b, 'rename1', 'low')
+    _chop(b, 'select1', 'low')
+    _chop(b, 'null1', 'low')
+    rp = b.op('ramp1') or b.create(rampTOP, 'ramp1')
+    rp.par.type = 'circular'
+    for m in r.findChildren(type=moviefileinTOP):
+        if png:
+            m.par.file.mode = type(m.par.file.mode).CONSTANT
+            m.par.file = 'assets/' + png
     if png:
         for nom in ('moviefilein3', 'moviefilein4'):
             m = b.op(nom) or b.create(moviefileinTOP, nom)
             m.par.file = 'assets/' + png
     if r.inputConnectors:
-        r.inputConnectors[0].connect(b.op('moviefilein3'))
-    return b.path + '/red/out1'
+        x = b.op('logo_chico') or b.create(fitTOP, 'logo_chico')
+        x.inputConnectors[0].connect(b.op('moviefilein3'))
+        x.par.outputresolution = 'custom'
+        x.par.resolutionw, x.par.resolutionh = 1920, 1080
+        x.par.fit = 'fitbest'
+        y = b.op('logo_escala') or b.create(transformTOP, 'logo_escala')
+        y.inputConnectors[0].connect(x)
+        y.par.sx = y.par.sy = 0.5
+        y.par.extend = 'zero'
+        r.inputConnectors[0].connect(y)
+    return next(o.path for o in r.children if o.OPType == 'outTOP')
 
 
 def montar_generador(n):
@@ -58,7 +78,7 @@ def montar_generador(n):
     b.allowCooking = True
     r = b.op('red')
     if r is not None:
-        r.destroy()
+        return r.path + '/out1'
     r = b.loadTox(project.folder + '/assets/tox_pal_norte/project1.tox')
     r.name = 'red'
     for c in r.children:

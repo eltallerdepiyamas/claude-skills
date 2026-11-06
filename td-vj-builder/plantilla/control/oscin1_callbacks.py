@@ -157,6 +157,12 @@ def onReceiveOSC(dat, rowIndex, message, byteData, timeStamp, address, args, pee
 	elif len(parts) == 2 and parts[1] == 'foco':
 		# pagina MIX: que parametros mostrar (layout / visual / fx); lo lee mix_feedback
 		TARGET.store('mix_foco_manual', str(args[0]).lower() if args else 'layout')
+	elif len(parts) == 2 and parts[1] == 'resetfb':
+		op('/project2/ui_perform/ui_lib').module.elegir('RESETFB', '')
+	elif len(parts) == 2 and parts[1] == 'thumbs':
+		op('/project2/ui_perform/ui_lib').module.elegir('THUMBS', '')
+	elif len(parts) == 2 and parts[1] == 'rampa':
+		op('/project2/show').par.Rampa = float(args[0]) if args else 0
 	elif len(parts) == 2 and parts[1] == 'reset':
 		resetActivo()
 	elif len(parts) == 2 and parts[1] == 'audio':

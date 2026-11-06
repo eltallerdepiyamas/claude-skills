@@ -21,6 +21,9 @@ if not os.path.exists(SHOW):
     sys.exit('No existe control/show.json: corre primero control/actualizar_companion.py en TouchDesigner.')
 with open(SHOW, encoding='utf-8') as f:
     show = json.load(f)
+# el Stream Deck se acomoda al proyecto: sin escena_modular no hay paginas de camaras ni escenas
+_cfg = os.path.join(HERE, '..', 'proyecto.json')
+SOLO_VISUALES = os.path.exists(_cfg) and not json.load(open(_cfg, encoding='utf-8')).get('modulos', {}).get('escena_modular', True)
 
 cfg = json.loads(gzip.open(SRC).read().decode('utf-8'))
 page1 = cfg['pages']['1']
@@ -109,7 +112,8 @@ def button(text, colors, actions, latch=None, value=None, bar=None):
         if l['type'] == 'text' and txt is None:
             txt = l
     if value is None:
-        _text_layer(txt, text, FONT_SIZE, 0, 100, 'center', BLANCO)
+        larga = max(len(p) for p in text.replace('\n', ' ').split(' '))    # palabra entera: nunca partirla
+        _text_layer(txt, text, min(FONT_SIZE, FONT_SIZE * 8.0 / max(larga, 1)), 0, 100, 'center', BLANCO)
     else:
         val = copy.deepcopy(txt)
         val['id'], val['name'] = 'text1', 'Valor'
@@ -208,26 +212,31 @@ def chunks(name, buttons):
 
 layouts = show.get('layouts', [])
 PAGES = []
-# MULTIVIEW: layouts de varias camaras
-PAGES += chunks('MULTIVIEW', [escena(l['label']) for l in layouts if l.get('familia', 'multiview') == 'multiview'])
-# SINGLE CAM: arriba los layouts de una camara, abajo que camara se ve en ellos (Cam 1-6)
-single = row([escena(l['label'], 'singlecam') for l in layouts if l.get('familia') == 'singlecam'])
-single += [unica(o) for o in (show.get('unica') or {}).get('opciones', [])]
-PAGES += chunks('SINGLE CAM', single)
-PAGES += chunks('VISUALES', [visual(v) for v in show.get('visuales', [])])
-if len(show.get('fx', [])) > 1:                      # solo "Sin FX" = no hay FX todavia
-    PAGES += chunks('FX', [fx(f) for f in show['fx']])
-# CAMARAS (3 filas):  LUGAR 1-4  ·  LUGAR 5 + camaras en multicam (- / + / cuantas)  ·  rotacion
-cam_buttons = [slot(s, i) for i, s in enumerate(show.get('slots', []), start=1)]
-cam_buttons += [step('CAMS\n-', 'Int', -1), step('CAMS\n+', 'Int', 1), button('CAMS', (0x000000, 0x000000), [], value='$(custom:cams)')]
-cam_buttons = row(cam_buttons)
-# rotacion: -/+ ajustan segun el modo (tiempo: lento / rapido · audio: sensibilidad); los textos los manda TD
-cam_buttons += [button('ROTAR', VERDE, [osc('/td/inc/Rotar', 'i', 1)], latch=('rotar', 'ON'), value='$(custom:rotar)'),
-                button('$(custom:rotar_menos)', GRIS, [osc('/td/rotarajuste', 'i', -1)]),
-                button('$(custom:rotar_mas)', GRIS, [osc('/td/rotarajuste', 'i', 1)]),
-                # info siempre visible; tocarlo cambia de modo (Por tiempo / Con el audio)
-                button('ROTACION', GRIS, [osc('/td/inc/Rotarmodo', 'i', 1)], value='$(custom:rotarinfo)')]
-PAGES += chunks('CAMARAS', cam_buttons)
+if SOLO_VISUALES:
+    # bases 1-8 = con logo (pads canal 10) · 9-16 = generativos (canal 11)
+    PAGES += chunks('LOGOS', [visual(v) for v in show.get('visuales', []) if v['base'] <= 8])
+    PAGES += chunks('GENERATIVOS', [visual(v) for v in show.get('visuales', []) if v['base'] > 8])
+else:
+    # MULTIVIEW: layouts de varias camaras
+    PAGES += chunks('MULTIVIEW', [escena(l['label']) for l in layouts if l.get('familia', 'multiview') == 'multiview'])
+    # SINGLE CAM: arriba los layouts de una camara, abajo que camara se ve en ellos (Cam 1-6)
+    single = row([escena(l['label'], 'singlecam') for l in layouts if l.get('familia') == 'singlecam'])
+    single += [unica(o) for o in (show.get('unica') or {}).get('opciones', [])]
+    PAGES += chunks('SINGLE CAM', single)
+    PAGES += chunks('VISUALES', [visual(v) for v in show.get('visuales', [])])
+    if len(show.get('fx', [])) > 1:                      # solo "Sin FX" = no hay FX todavia
+        PAGES += chunks('FX', [fx(f) for f in show['fx']])
+    # CAMARAS (3 filas):  LUGAR 1-4  ·  LUGAR 5 + camaras en multicam (- / + / cuantas)  ·  rotacion
+    cam_buttons = [slot(s, i) for i, s in enumerate(show.get('slots', []), start=1)]
+    cam_buttons += [step('CAMS\n-', 'Int', -1), step('CAMS\n+', 'Int', 1), button('CAMS', (0x000000, 0x000000), [], value='$(custom:cams)')]
+    cam_buttons = row(cam_buttons)
+    # rotacion: -/+ ajustan segun el modo (tiempo: lento / rapido · audio: sensibilidad); los textos los manda TD
+    cam_buttons += [button('ROTAR', VERDE, [osc('/td/inc/Rotar', 'i', 1)], latch=('rotar', 'ON'), value='$(custom:rotar)'),
+                    button('$(custom:rotar_menos)', GRIS, [osc('/td/rotarajuste', 'i', -1)]),
+                    button('$(custom:rotar_mas)', GRIS, [osc('/td/rotarajuste', 'i', 1)]),
+                    # info siempre visible; tocarlo cambia de modo (Por tiempo / Con el audio)
+                    button('ROTACION', GRIS, [osc('/td/inc/Rotarmodo', 'i', 1)], value='$(custom:rotarinfo)')]
+    PAGES += chunks('CAMARAS', cam_buttons)
 
 # MIX: pagina completa de 5 x 3 (sin columna de navegacion)
 #   fila 1  P1 P2 P3 P4 P5       color de su tipo; verde = el que va con el audio (tocar = audio a ese / apagar)
@@ -266,7 +275,7 @@ def foco(nombre, tipo, value, base_fb, lit_fb):
     return b
 
 # fila 2: ESCENA (azul multiview / amarillo single cam: solo hay una escena activa) · VISUAL · FX (si hay)
-FOCO_ESCENA = foco('ESCENA', 'layout', '$(custom:menu_mv)$(custom:menu_sc)',
+FOCO_ESCENA = None if SOLO_VISUALES else foco('ESCENA', 'layout', '$(custom:menu_mv)$(custom:menu_sc)',
                    [('menu_mv', AZUL[0]), ('menu_sc', AMARILLO[0])],
                    [('MULTIVIEW', AZUL[1]), ('SINGLE CAM', AMARILLO[1])])
 FOCO_VISUAL = foco('VISUAL', 'visual', '$(custom:menu_vis)', [('menu_vis', MORADO[0])], [('VISUAL', MORADO[1])])
@@ -319,7 +328,15 @@ ENSAYO_GRID = ENSAYO_GRID + fila([]) + fila([mix_btn_new()])[:4] + [button('VOLV
 ensayo_btn = button('ENSAYO', (0x1A1A1A, ROJO[1]), [goto('ENSAYO')], latch=('rec', 'ON'), value='REC $(custom:rec)')
 reset_btn = button('RESET', ROJO, [osc('/td/reset', 'i', 1)], value='$(custom:mix_foconombre)')   # sliders + movimiento + feedback + videos
 beatstep_btn = button('BEATSTEP', GRIS, [], value='$(custom:bs_canal)')   # ultimo pad: canal-pad + que controla (solo informa)
-MENU_GRID = fila(MENU_GRID[:5]) + fila([mix_btn] + MENU_GRID[5:9]) + [reset_btn, beatstep_btn] + fila([])[:2] + [ensayo_btn]
+if SOLO_VISUALES:
+    # navegacion primero: fila 2 / col 1 sigue siendo AJUSTES (TD la presiona)
+    MENU_GRID = (fila(MENU_GRID[:3] + [button('COLOR A', ROJO, [osc('/td/rampa', 'i', 0)]),
+                                       button('COLOR B', TURQUESA, [osc('/td/rampa', 'i', 1)])])
+                 + [mix_btn, reset_btn, button('RESET\nFEEDBACK', ROJO, [osc('/td/resetfb', 'i', 1)]),
+                    button('ACTUALIZAR\nTHUMBS', GRIS, [osc('/td/thumbs', 'i', 1)]), beatstep_btn]
+                 + fila([])[:4] + [ensayo_btn])
+else:
+    MENU_GRID = fila(MENU_GRID[:5]) + fila([mix_btn] + MENU_GRID[5:9]) + [reset_btn, beatstep_btn] + fila([])[:2] + [ensayo_btn]
 PAGES.insert(0, ('MENU', MENU_GRID))
 PAGES.append(('ENSAYO', ENSAYO_GRID))
 
