@@ -1,0 +1,5471 @@
+[
+ {
+  "name": "MIDI",
+  "tipo": "midiinCHOP",
+  "x": -4850,
+  "y": -5113,
+  "ins": [],
+  "outs": [
+   "select1"
+  ],
+  "refs": [
+   "/project1/select51.chops",
+   "/project1/select57.chops",
+   "/project1/select58.chops",
+   "/project1/select59.chops",
+   "/project2/constant1.const0value",
+   "/project2/constant10.const0value"
+  ],
+  "nrefs": 48,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "select1",
+  "tipo": "selectCHOP",
+  "x": -4400,
+  "y": -2525,
+  "ins": [
+   "MIDI"
+  ],
+  "outs": [
+   "logic91"
+  ],
+  "refs": [
+   "/project2/_respaldo/base25/prism/camSequencer1/OpSeq_cam/datto1.dat",
+   "/project2/_respaldo/base25/prism/camSequencer1/OpSeq_lookat/datto1.dat"
+  ],
+  "nrefs": 2,
+  "dats": [
+   "/project2/setup_base38_liquid_feedback1"
+  ],
+  "ndats": 1,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic91",
+  "tipo": "logicCHOP",
+  "x": -4250,
+  "y": -2525,
+  "ins": [
+   "select1"
+  ],
+  "outs": [
+   "count1"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "count1",
+  "tipo": "countCHOP",
+  "x": -4100,
+  "y": -2525,
+  "ins": [
+   "logic91"
+  ],
+  "outs": [
+   "null51"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null51",
+  "tipo": "nullCHOP",
+  "x": -3950,
+  "y": -2525,
+  "ins": [
+   "count1"
+  ],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "table1",
+  "tipo": "tableDAT",
+  "x": -3652,
+  "y": -4823,
+  "ins": [],
+  "outs": [],
+  "refs": [
+   "/project2/constant1.const0value",
+   "/project2/constant10.const0value",
+   "/project2/constant11.const0value",
+   "/project2/constant12.const0value",
+   "/project2/constant13.const0value",
+   "/project2/constant14.const0value"
+  ],
+  "nrefs": 44,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "parameter4",
+  "tipo": "parameterCOMP",
+  "x": -3025,
+  "y": 650,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "button2",
+  "tipo": "buttonCOMP",
+  "x": -2475,
+  "y": 600,
+  "ins": [],
+  "outs": [
+   "null2"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 5
+ },
+ {
+  "name": "button1",
+  "tipo": "buttonCOMP",
+  "x": -2469,
+  "y": 1000,
+  "ins": [],
+  "outs": [
+   "null1"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 5
+ },
+ {
+  "name": "constant25",
+  "tipo": "constantCHOP",
+  "x": -2333,
+  "y": -6625,
+  "ins": [],
+  "outs": [
+   "logic25"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant26",
+  "tipo": "constantCHOP",
+  "x": -2333,
+  "y": -6725,
+  "ins": [],
+  "outs": [
+   "logic26"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant27",
+  "tipo": "constantCHOP",
+  "x": -2333,
+  "y": -6850,
+  "ins": [],
+  "outs": [
+   "logic27"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant28",
+  "tipo": "constantCHOP",
+  "x": -2333,
+  "y": -6950,
+  "ins": [],
+  "outs": [
+   "logic28"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant29",
+  "tipo": "constantCHOP",
+  "x": -2333,
+  "y": -7100,
+  "ins": [],
+  "outs": [
+   "logic29"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant30",
+  "tipo": "constantCHOP",
+  "x": -2333,
+  "y": -7200,
+  "ins": [],
+  "outs": [
+   "logic30"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant31",
+  "tipo": "constantCHOP",
+  "x": -2333,
+  "y": -7325,
+  "ins": [],
+  "outs": [
+   "logic31"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant32",
+  "tipo": "constantCHOP",
+  "x": -2333,
+  "y": -7525,
+  "ins": [],
+  "outs": [
+   "logic32"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant33",
+  "tipo": "constantCHOP",
+  "x": -2333,
+  "y": -7700,
+  "ins": [],
+  "outs": [
+   "logic69"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant35",
+  "tipo": "constantCHOP",
+  "x": -2333,
+  "y": -7850,
+  "ins": [],
+  "outs": [
+   "logic71"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant36",
+  "tipo": "constantCHOP",
+  "x": -2333,
+  "y": -8000,
+  "ins": [],
+  "outs": [
+   "logic73"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant1",
+  "tipo": "constantCHOP",
+  "x": -2277,
+  "y": -498,
+  "ins": [],
+  "outs": [
+   "logic1"
+  ],
+  "refs": [
+   "/project2/_respaldo/base25/prism/geo1.material"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant2",
+  "tipo": "constantCHOP",
+  "x": -2277,
+  "y": -598,
+  "ins": [],
+  "outs": [
+   "logic2"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant3",
+  "tipo": "constantCHOP",
+  "x": -2277,
+  "y": -723,
+  "ins": [],
+  "outs": [
+   "logic3"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant4",
+  "tipo": "constantCHOP",
+  "x": -2277,
+  "y": -823,
+  "ins": [],
+  "outs": [
+   "logic4"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant5",
+  "tipo": "constantCHOP",
+  "x": -2277,
+  "y": -973,
+  "ins": [],
+  "outs": [
+   "logic5"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant6",
+  "tipo": "constantCHOP",
+  "x": -2277,
+  "y": -1073,
+  "ins": [],
+  "outs": [
+   "logic6"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant7",
+  "tipo": "constantCHOP",
+  "x": -2277,
+  "y": -1198,
+  "ins": [],
+  "outs": [
+   "logic7"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant8",
+  "tipo": "constantCHOP",
+  "x": -2277,
+  "y": -1298,
+  "ins": [],
+  "outs": [
+   "logic8"
+  ],
+  "refs": [
+   "/project1/audioAnalysis/chopexec.fromop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null1",
+  "tipo": "nullCHOP",
+  "x": -2275,
+  "y": 1025,
+  "ins": [
+   "/project2/button1/out1"
+  ],
+  "outs": [
+   "logic65",
+   "logic66"
+  ],
+  "refs": [
+   "/project1/blend_switch2.Scene",
+   "/project1/blend_switch3.Scene",
+   "/project1/curcuitBending/res1.outputresolution",
+   "/project1/curcuitBending1/res1.outputresolution",
+   "/project1/overlays/level2.brightness1",
+   "/project1/overlays/ramp2.period"
+  ],
+  "nrefs": 21,
+  "dats": [
+   "/project2/_respaldo/base24/setup_params"
+  ],
+  "ndats": 1,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic65",
+  "tipo": "logicCHOP",
+  "x": -2275,
+  "y": 925,
+  "ins": [
+   "null1"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec33.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic66",
+  "tipo": "logicCHOP",
+  "x": -2275,
+  "y": 825,
+  "ins": [
+   "null1"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec34.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null2",
+  "tipo": "nullCHOP",
+  "x": -2275,
+  "y": 625,
+  "ins": [
+   "/project2/button2/out1"
+  ],
+  "outs": [
+   "logic67",
+   "logic68"
+  ],
+  "refs": [
+   "/project1/curcuitBending.Fx2",
+   "/project1/curcuitBending.Fx3",
+   "/project1/curcuitBending.Fx4",
+   "/project1/curcuitBending.Fx5",
+   "/project1/curcuitBending.Power",
+   "/project1/curcuitBending.Scaledownres"
+  ],
+  "nrefs": 17,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic67",
+  "tipo": "logicCHOP",
+  "x": -2275,
+  "y": 525,
+  "ins": [
+   "null2"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec36.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic68",
+  "tipo": "logicCHOP",
+  "x": -2275,
+  "y": 425,
+  "ins": [
+   "null2"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec37.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant9",
+  "tipo": "constantCHOP",
+  "x": -2267,
+  "y": -1546,
+  "ins": [],
+  "outs": [
+   "logic9"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant10",
+  "tipo": "constantCHOP",
+  "x": -2267,
+  "y": -1646,
+  "ins": [],
+  "outs": [
+   "logic10"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant11",
+  "tipo": "constantCHOP",
+  "x": -2267,
+  "y": -1771,
+  "ins": [],
+  "outs": [
+   "logic11"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant12",
+  "tipo": "constantCHOP",
+  "x": -2267,
+  "y": -1871,
+  "ins": [],
+  "outs": [
+   "logic12"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant13",
+  "tipo": "constantCHOP",
+  "x": -2267,
+  "y": -2021,
+  "ins": [],
+  "outs": [
+   "logic13"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant14",
+  "tipo": "constantCHOP",
+  "x": -2267,
+  "y": -2121,
+  "ins": [],
+  "outs": [
+   "logic14"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant15",
+  "tipo": "constantCHOP",
+  "x": -2267,
+  "y": -2246,
+  "ins": [],
+  "outs": [
+   "logic15"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant16",
+  "tipo": "constantCHOP",
+  "x": -2267,
+  "y": -2346,
+  "ins": [],
+  "outs": [
+   "logic16"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant17",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -2750,
+  "ins": [],
+  "outs": [
+   "logic17"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant18",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -2850,
+  "ins": [],
+  "outs": [
+   "logic18"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant19",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -2975,
+  "ins": [],
+  "outs": [
+   "logic19"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant20",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -3075,
+  "ins": [],
+  "outs": [
+   "logic20"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant21",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -3225,
+  "ins": [],
+  "outs": [
+   "logic21"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant22",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -3325,
+  "ins": [],
+  "outs": [
+   "logic22"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant23",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -3450,
+  "ins": [],
+  "outs": [
+   "logic23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant24",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -3550,
+  "ins": [],
+  "outs": [
+   "logic24"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant37",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -3775,
+  "ins": [],
+  "outs": [
+   "logic75"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant38",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -3950,
+  "ins": [],
+  "outs": [
+   "logic77"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant39",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -4100,
+  "ins": [],
+  "outs": [
+   "logic79"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant40",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -4250,
+  "ins": [],
+  "outs": [
+   "logic81"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant41",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -4425,
+  "ins": [],
+  "outs": [
+   "logic83"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant42",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -4600,
+  "ins": [],
+  "outs": [
+   "logic85"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant43",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -4750,
+  "ins": [],
+  "outs": [
+   "logic87"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant44",
+  "tipo": "constantCHOP",
+  "x": -2250,
+  "y": -4900,
+  "ins": [],
+  "outs": [
+   "logic89"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec33",
+  "tipo": "chopexecuteDAT",
+  "x": -2100,
+  "y": 925,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec34",
+  "tipo": "chopexecuteDAT",
+  "x": -2100,
+  "y": 825,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec36",
+  "tipo": "chopexecuteDAT",
+  "x": -2100,
+  "y": 525,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec37",
+  "tipo": "chopexecuteDAT",
+  "x": -2100,
+  "y": 425,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "container1",
+  "tipo": "containerCOMP",
+  "x": -1919,
+  "y": 650,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "opviewer1",
+  "tipo": "opviewerCOMP",
+  "x": -1900,
+  "y": 400,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "opviewer2",
+  "tipo": "opviewerCOMP",
+  "x": -1644,
+  "y": 400,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "opviewer3",
+  "tipo": "opviewerCOMP",
+  "x": -1419,
+  "y": 400,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "td_mcp",
+  "tipo": "baseCOMP",
+  "x": -1200,
+  "y": 1200,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "Puente Claude Code (MCP). Ver tools/td_mcp/README.md",
+  "hijos": 4
+ },
+ {
+  "name": "parameter1",
+  "tipo": "parameterCOMP",
+  "x": -1194,
+  "y": 400,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "parameter3",
+  "tipo": "parameterCOMP",
+  "x": -969,
+  "y": 825,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "opviewer4",
+  "tipo": "opviewerCOMP",
+  "x": -969,
+  "y": 600,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "parameter2",
+  "tipo": "parameterCOMP",
+  "x": -969,
+  "y": 400,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic25",
+  "tipo": "logicCHOP",
+  "x": -860,
+  "y": -6627,
+  "ins": [
+   "constant25"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec25.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic26",
+  "tipo": "logicCHOP",
+  "x": -860,
+  "y": -6727,
+  "ins": [
+   "constant26"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec26.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic27",
+  "tipo": "logicCHOP",
+  "x": -860,
+  "y": -6852,
+  "ins": [
+   "constant27"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec27.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic28",
+  "tipo": "logicCHOP",
+  "x": -860,
+  "y": -6952,
+  "ins": [
+   "constant28"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec28.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic29",
+  "tipo": "logicCHOP",
+  "x": -860,
+  "y": -7102,
+  "ins": [
+   "constant29"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec29.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic30",
+  "tipo": "logicCHOP",
+  "x": -860,
+  "y": -7202,
+  "ins": [
+   "constant30"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec30.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic31",
+  "tipo": "logicCHOP",
+  "x": -860,
+  "y": -7327,
+  "ins": [
+   "constant31"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec31.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic32",
+  "tipo": "logicCHOP",
+  "x": -850,
+  "y": -7525,
+  "ins": [
+   "constant32"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec32.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic69",
+  "tipo": "logicCHOP",
+  "x": -850,
+  "y": -7700,
+  "ins": [
+   "constant33"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec35.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic71",
+  "tipo": "logicCHOP",
+  "x": -850,
+  "y": -7850,
+  "ins": [
+   "constant35"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec38.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic73",
+  "tipo": "logicCHOP",
+  "x": -850,
+  "y": -8000,
+  "ins": [
+   "constant36"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec39.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic1",
+  "tipo": "logicCHOP",
+  "x": -812,
+  "y": -500,
+  "ins": [
+   "constant1"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec1.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic2",
+  "tipo": "logicCHOP",
+  "x": -812,
+  "y": -600,
+  "ins": [
+   "constant2"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec2.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic3",
+  "tipo": "logicCHOP",
+  "x": -812,
+  "y": -725,
+  "ins": [
+   "constant3"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec3.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic4",
+  "tipo": "logicCHOP",
+  "x": -812,
+  "y": -825,
+  "ins": [
+   "constant4"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec4.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic5",
+  "tipo": "logicCHOP",
+  "x": -812,
+  "y": -975,
+  "ins": [
+   "constant5"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec5.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic6",
+  "tipo": "logicCHOP",
+  "x": -812,
+  "y": -1075,
+  "ins": [
+   "constant6"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec6.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic7",
+  "tipo": "logicCHOP",
+  "x": -812,
+  "y": -1200,
+  "ins": [
+   "constant7"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec7.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic8",
+  "tipo": "logicCHOP",
+  "x": -812,
+  "y": -1300,
+  "ins": [
+   "constant8"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec8.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic9",
+  "tipo": "logicCHOP",
+  "x": -802,
+  "y": -1548,
+  "ins": [
+   "constant9"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec9.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic10",
+  "tipo": "logicCHOP",
+  "x": -802,
+  "y": -1648,
+  "ins": [
+   "constant10"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec10.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic11",
+  "tipo": "logicCHOP",
+  "x": -802,
+  "y": -1773,
+  "ins": [
+   "constant11"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec11.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic12",
+  "tipo": "logicCHOP",
+  "x": -802,
+  "y": -1873,
+  "ins": [
+   "constant12"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec12.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic13",
+  "tipo": "logicCHOP",
+  "x": -802,
+  "y": -2023,
+  "ins": [
+   "constant13"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec13.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic14",
+  "tipo": "logicCHOP",
+  "x": -802,
+  "y": -2123,
+  "ins": [
+   "constant14"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec14.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic15",
+  "tipo": "logicCHOP",
+  "x": -802,
+  "y": -2248,
+  "ins": [
+   "constant15"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec15.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic16",
+  "tipo": "logicCHOP",
+  "x": -802,
+  "y": -2348,
+  "ins": [
+   "constant16"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec16.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic17",
+  "tipo": "logicCHOP",
+  "x": -785,
+  "y": -2752,
+  "ins": [
+   "constant17"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec17.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic18",
+  "tipo": "logicCHOP",
+  "x": -785,
+  "y": -2852,
+  "ins": [
+   "constant18"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec18.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic19",
+  "tipo": "logicCHOP",
+  "x": -785,
+  "y": -2977,
+  "ins": [
+   "constant19"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec19.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic20",
+  "tipo": "logicCHOP",
+  "x": -785,
+  "y": -3077,
+  "ins": [
+   "constant20"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec20.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic21",
+  "tipo": "logicCHOP",
+  "x": -785,
+  "y": -3227,
+  "ins": [
+   "constant21"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec21.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic22",
+  "tipo": "logicCHOP",
+  "x": -785,
+  "y": -3327,
+  "ins": [
+   "constant22"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec22.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic23",
+  "tipo": "logicCHOP",
+  "x": -785,
+  "y": -3452,
+  "ins": [
+   "constant23"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec23.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic24",
+  "tipo": "logicCHOP",
+  "x": -785,
+  "y": -3552,
+  "ins": [
+   "constant24"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec24.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic75",
+  "tipo": "logicCHOP",
+  "x": -775,
+  "y": -3775,
+  "ins": [
+   "constant37"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec41.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic77",
+  "tipo": "logicCHOP",
+  "x": -775,
+  "y": -3950,
+  "ins": [
+   "constant38"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec42.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic79",
+  "tipo": "logicCHOP",
+  "x": -775,
+  "y": -4100,
+  "ins": [
+   "constant39"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec43.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic81",
+  "tipo": "logicCHOP",
+  "x": -775,
+  "y": -4250,
+  "ins": [
+   "constant40"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec44.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic83",
+  "tipo": "logicCHOP",
+  "x": -775,
+  "y": -4425,
+  "ins": [
+   "constant41"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec45.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic85",
+  "tipo": "logicCHOP",
+  "x": -775,
+  "y": -4600,
+  "ins": [
+   "constant42"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec46.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic87",
+  "tipo": "logicCHOP",
+  "x": -775,
+  "y": -4750,
+  "ins": [
+   "constant43"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec47.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "logic89",
+  "tipo": "logicCHOP",
+  "x": -775,
+  "y": -4900,
+  "ins": [
+   "constant44"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec48.chop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec25",
+  "tipo": "chopexecuteDAT",
+  "x": -685,
+  "y": -6678,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec26",
+  "tipo": "chopexecuteDAT",
+  "x": -685,
+  "y": -6727,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec27",
+  "tipo": "chopexecuteDAT",
+  "x": -685,
+  "y": -6852,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec28",
+  "tipo": "chopexecuteDAT",
+  "x": -685,
+  "y": -6952,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec29",
+  "tipo": "chopexecuteDAT",
+  "x": -685,
+  "y": -7102,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec30",
+  "tipo": "chopexecuteDAT",
+  "x": -685,
+  "y": -7202,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec31",
+  "tipo": "chopexecuteDAT",
+  "x": -685,
+  "y": -7327,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec32",
+  "tipo": "chopexecuteDAT",
+  "x": -675,
+  "y": -7525,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec35",
+  "tipo": "chopexecuteDAT",
+  "x": -675,
+  "y": -7700,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec38",
+  "tipo": "chopexecuteDAT",
+  "x": -675,
+  "y": -7850,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec39",
+  "tipo": "chopexecuteDAT",
+  "x": -675,
+  "y": -8000,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec1",
+  "tipo": "chopexecuteDAT",
+  "x": -637,
+  "y": -500,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec2",
+  "tipo": "chopexecuteDAT",
+  "x": -637,
+  "y": -600,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec3",
+  "tipo": "chopexecuteDAT",
+  "x": -637,
+  "y": -725,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec4",
+  "tipo": "chopexecuteDAT",
+  "x": -637,
+  "y": -825,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec5",
+  "tipo": "chopexecuteDAT",
+  "x": -637,
+  "y": -975,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec6",
+  "tipo": "chopexecuteDAT",
+  "x": -637,
+  "y": -1075,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec7",
+  "tipo": "chopexecuteDAT",
+  "x": -637,
+  "y": -1200,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec8",
+  "tipo": "chopexecuteDAT",
+  "x": -637,
+  "y": -1300,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec9",
+  "tipo": "chopexecuteDAT",
+  "x": -627,
+  "y": -1548,
+  "ins": [],
+  "outs": [],
+  "refs": [
+   "/project2/chopexec10.fromop"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec10",
+  "tipo": "chopexecuteDAT",
+  "x": -627,
+  "y": -1648,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec11",
+  "tipo": "chopexecuteDAT",
+  "x": -627,
+  "y": -1773,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec12",
+  "tipo": "chopexecuteDAT",
+  "x": -627,
+  "y": -1873,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec13",
+  "tipo": "chopexecuteDAT",
+  "x": -627,
+  "y": -2023,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec14",
+  "tipo": "chopexecuteDAT",
+  "x": -627,
+  "y": -2123,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec15",
+  "tipo": "chopexecuteDAT",
+  "x": -627,
+  "y": -2248,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec16",
+  "tipo": "chopexecuteDAT",
+  "x": -627,
+  "y": -2348,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec17",
+  "tipo": "chopexecuteDAT",
+  "x": -610,
+  "y": -2752,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec18",
+  "tipo": "chopexecuteDAT",
+  "x": -610,
+  "y": -2852,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec19",
+  "tipo": "chopexecuteDAT",
+  "x": -610,
+  "y": -2977,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec20",
+  "tipo": "chopexecuteDAT",
+  "x": -610,
+  "y": -3077,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec21",
+  "tipo": "chopexecuteDAT",
+  "x": -610,
+  "y": -3227,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec22",
+  "tipo": "chopexecuteDAT",
+  "x": -610,
+  "y": -3327,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec23",
+  "tipo": "chopexecuteDAT",
+  "x": -610,
+  "y": -3452,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec24",
+  "tipo": "chopexecuteDAT",
+  "x": -610,
+  "y": -3552,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec41",
+  "tipo": "chopexecuteDAT",
+  "x": -600,
+  "y": -3775,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec42",
+  "tipo": "chopexecuteDAT",
+  "x": -600,
+  "y": -3950,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec43",
+  "tipo": "chopexecuteDAT",
+  "x": -600,
+  "y": -4100,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec44",
+  "tipo": "chopexecuteDAT",
+  "x": -600,
+  "y": -4250,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec45",
+  "tipo": "chopexecuteDAT",
+  "x": -600,
+  "y": -4425,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec46",
+  "tipo": "chopexecuteDAT",
+  "x": -600,
+  "y": -4600,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec47",
+  "tipo": "chopexecuteDAT",
+  "x": -600,
+  "y": -4750,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "chopexec48",
+  "tipo": "chopexecuteDAT",
+  "x": -600,
+  "y": -4900,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "folder1_callbacks",
+  "tipo": "textDAT",
+  "x": -580,
+  "y": 365,
+  "ins": [],
+  "outs": [],
+  "refs": [
+   "/project2/folder1.callbacks"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "folder1",
+  "tipo": "folderDAT",
+  "x": -575,
+  "y": 325,
+  "ins": [],
+  "outs": [],
+  "refs": [
+   "/project2/opviewer4.opviewer",
+   "/project2/parameter3.op",
+   "/project2/vid1.file",
+   "/project2/vid10.file",
+   "/project2/vid11.file",
+   "/project2/vid12.file"
+  ],
+  "nrefs": 18,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "play",
+  "tipo": "constantCHOP",
+  "x": -550,
+  "y": -25,
+  "ins": [],
+  "outs": [],
+  "refs": [
+   "/project2/vid1.cue",
+   "/project2/vid10.cue",
+   "/project2/vid11.cue",
+   "/project2/vid12.cue",
+   "/project2/vid13.cue",
+   "/project2/vid14.cue"
+  ],
+  "nrefs": 16,
+  "dats": [
+   "/project2/chopexec1",
+   "/project2/chopexec10",
+   "/project2/chopexec11",
+   "/project2/chopexec12"
+  ],
+  "ndats": 23,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "text1",
+  "tipo": "textDAT",
+  "x": -550,
+  "y": -281,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [
+   "/project2/chopexec1",
+   "/project2/chopexec10",
+   "/project2/chopexec11",
+   "/project2/chopexec12"
+  ],
+  "ndats": 41,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "_respaldo",
+  "tipo": "baseCOMP",
+  "x": -150,
+  "y": -1975,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 27
+ },
+ {
+  "name": "setup_base38_liquid_feedback1",
+  "tipo": "textDAT",
+  "x": 125,
+  "y": -2700,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "base1",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -300,
+  "ins": [],
+  "outs": [
+   "null3"
+  ],
+  "refs": [
+   "/project1/math30.gain",
+   "/project1/overlays/noise1.resolutionh",
+   "/project1/overlays/noise1.resolutionw",
+   "/project1/overlays/ramp1.resolutionh",
+   "/project1/overlays/ramp1.resolutionw",
+   "/project1/overlays/ramp2.resolutionh"
+  ],
+  "nrefs": 390,
+  "dats": [
+   "/project2/_respaldo/scripts_viejos/setup_all_layouts",
+   "/project2/_respaldo/scripts_viejos/setup_rand_layouts",
+   "/project2/_respaldo/scripts_viejos/update_escena_menus",
+   "/project2/base17/escena_modular/demo_exec"
+  ],
+  "ndats": 7,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 8
+ },
+ {
+  "name": "base2",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -425,
+  "ins": [],
+  "outs": [
+   "null4"
+  ],
+  "refs": [
+   "/project2/_respaldo/base20/rgbaDelay.Bluedelay",
+   "/project2/_respaldo/base20/rgbaDelay.Reddelay",
+   "/project2/_respaldo/base22/liquid_feedback/displace1.displaceweighty",
+   "/project2/_respaldo/base23/pixel_sort.Feedbackopacity",
+   "/project2/_respaldo/base23/pixel_sort/displace1.displaceweighty",
+   "/project2/_respaldo/base23/pixel_sort/thresh1.threshold"
+  ],
+  "nrefs": 11,
+  "dats": [
+   "/project2/_respaldo/base24/char_count",
+   "/project2/_respaldo/base24/setup_params",
+   "/project2/setup_base38_liquid_feedback1"
+  ],
+  "ndats": 3,
+  "estado": [
+   "NO-COOK"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base3",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -550,
+  "ins": [],
+  "outs": [
+   "null5"
+  ],
+  "refs": [
+   "/project2/switch8.index"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "NO-COOK"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base4",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -675,
+  "ins": [],
+  "outs": [
+   "null6"
+  ],
+  "refs": [
+   "/project2/switch9.index"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "NO-COOK"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base5",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -800,
+  "ins": [],
+  "outs": [
+   "null7"
+  ],
+  "refs": [
+   "/project2/switch10.index"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "NO-COOK"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base6",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -925,
+  "ins": [],
+  "outs": [
+   "null8"
+  ],
+  "refs": [
+   "/project2/switch11.index"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "NO-COOK"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base7",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -1050,
+  "ins": [],
+  "outs": [
+   "null9"
+  ],
+  "refs": [
+   "/project2/switch12.index"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "NO-COOK"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base8",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -1200,
+  "ins": [],
+  "outs": [
+   "null10"
+  ],
+  "refs": [
+   "/project2/switch13.index"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "NO-COOK"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base9",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -1400,
+  "ins": [],
+  "outs": [
+   "null11"
+  ],
+  "refs": [
+   "/project2/switch14.index"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base10",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -1525,
+  "ins": [],
+  "outs": [
+   "null12"
+  ],
+  "refs": [
+   "/project2/switch15.index"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base11",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -1650,
+  "ins": [],
+  "outs": [
+   "null13"
+  ],
+  "refs": [
+   "/project2/switch16.index"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base12",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -1775,
+  "ins": [],
+  "outs": [
+   "null14"
+  ],
+  "refs": [
+   "/project2/switch17.index"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base13",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -1900,
+  "ins": [],
+  "outs": [
+   "null15"
+  ],
+  "refs": [
+   "/project2/switch18.index"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base14",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -2025,
+  "ins": [],
+  "outs": [
+   "null16"
+  ],
+  "refs": [
+   "/project2/switch19.index"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base15",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -2150,
+  "ins": [],
+  "outs": [
+   "null17"
+  ],
+  "refs": [
+   "/project2/switch20.index"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "NO-COOK"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base16",
+  "tipo": "baseCOMP",
+  "x": 350,
+  "y": -2275,
+  "ins": [],
+  "outs": [
+   "null18"
+  ],
+  "refs": [
+   "/project2/switch21.index"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base21",
+  "tipo": "baseCOMP",
+  "x": 363,
+  "y": -3348,
+  "ins": [],
+  "outs": [
+   "null24"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "NO-COOK"
+  ],
+  "tags": [
+   "tdvj"
+  ],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base19",
+  "tipo": "baseCOMP",
+  "x": 367,
+  "y": -3048,
+  "ins": [],
+  "outs": [
+   "null22"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "NO-COOK"
+  ],
+  "tags": [
+   "tdvj"
+  ],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base20",
+  "tipo": "baseCOMP",
+  "x": 367,
+  "y": -3198,
+  "ins": [],
+  "outs": [
+   "null23"
+  ],
+  "refs": [
+   "/project2/_respaldo/base20/rgbaDelay.Bluedelay",
+   "/project2/_respaldo/base20/rgbaDelay.Reddelay",
+   "/project2/_respaldo/base21/optical_flow/select1.top"
+  ],
+  "nrefs": 3,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "render",
+   "NO-COOK"
+  ],
+  "tags": [
+   "tdvj"
+  ],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base23",
+  "tipo": "baseCOMP",
+  "x": 367,
+  "y": -3648,
+  "ins": [],
+  "outs": [
+   "null26"
+  ],
+  "refs": [
+   "/project2/_respaldo/base23/pixel_sort.Feedbackopacity",
+   "/project2/_respaldo/base23/pixel_sort/displace1.displaceweighty",
+   "/project2/_respaldo/base23/pixel_sort/thresh1.threshold"
+  ],
+  "nrefs": 3,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "NO-COOK"
+  ],
+  "tags": [
+   "tdvj"
+  ],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base24",
+  "tipo": "baseCOMP",
+  "x": 367,
+  "y": -3798,
+  "ins": [],
+  "outs": [
+   "null27"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [
+   "/project2/_respaldo/base24/char_count",
+   "/project2/_respaldo/base24/setup_params"
+  ],
+  "ndats": 2,
+  "estado": [
+   "NO-COOK"
+  ],
+  "tags": [
+   "tdvj"
+  ],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base25",
+  "tipo": "baseCOMP",
+  "x": 367,
+  "y": -4123,
+  "ins": [],
+  "outs": [
+   "null43"
+  ],
+  "refs": [
+   "/project2/_respaldo/base25/prism.Chromatic",
+   "/project2/_respaldo/base25/prism.Distortion",
+   "/project2/_respaldo/base25/prism.Pattern0instances",
+   "/project2/_respaldo/base25/prism.Rotsinphase"
+  ],
+  "nrefs": 4,
+  "dats": [
+   "/project2/_respaldo/base25/prism/camSequencer1/OpSeq_cam/lister/configWatcher/looks",
+   "/project2/_respaldo/base25/prism/camSequencer1/OpSeq_cam/lister/configWatcher/parameter_configs",
+   "/project2/_respaldo/base25/prism/camSequencer1/OpSeq_lookat/lister/configWatcher/looks",
+   "/project2/_respaldo/base25/prism/camSequencer1/OpSeq_lookat/lister/configWatcher/parameter_configs"
+  ],
+  "ndats": 5,
+  "estado": [
+   "NO-COOK"
+  ],
+  "tags": [
+   "tdvj"
+  ],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base17",
+  "tipo": "baseCOMP",
+  "x": 375,
+  "y": -2725,
+  "ins": [],
+  "outs": [
+   "null20"
+  ],
+  "refs": [
+   "/project1/math30.gain",
+   "/project1/overlays/noise1.resolutionh",
+   "/project1/overlays/noise1.resolutionw",
+   "/project1/overlays/ramp1.resolutionh",
+   "/project1/overlays/ramp1.resolutionw",
+   "/project1/overlays/ramp2.resolutionh"
+  ],
+  "nrefs": 239,
+  "dats": [
+   "/project2/_respaldo/scripts_viejos/setup_all_layouts",
+   "/project2/_respaldo/scripts_viejos/setup_rand_layouts",
+   "/project2/_respaldo/scripts_viejos/update_escena_menus",
+   "/project2/setup_base38_liquid_feedback1"
+  ],
+  "ndats": 4,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 11
+ },
+ {
+  "name": "base18",
+  "tipo": "baseCOMP",
+  "x": 375,
+  "y": -2900,
+  "ins": [],
+  "outs": [
+   "null21"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "NO-COOK"
+  ],
+  "tags": [
+   "tdvj"
+  ],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "base22",
+  "tipo": "baseCOMP",
+  "x": 375,
+  "y": -3500,
+  "ins": [],
+  "outs": [
+   "null25"
+  ],
+  "refs": [
+   "/project2/_respaldo/base22/liquid_feedback/displace1.displaceweighty"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "NO-COOK"
+  ],
+  "tags": [
+   "tdvj"
+  ],
+  "comment": "",
+  "hijos": 1
+ },
+ {
+  "name": "null3",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -275,
+  "ins": [
+   "/project2/base1/out1"
+  ],
+  "outs": [
+   "switch6"
+  ],
+  "refs": [
+   "/project1/curcuitBending/transform2.ty",
+   "/project1/curcuitBending1/transform2.ty",
+   "/project2/_respaldo/base20/edge1.offset1",
+   "/project2/_respaldo/base20/edge1.offset2"
+  ],
+  "nrefs": 4,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null4",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -400,
+  "ins": [
+   "/project2/base2/out1"
+  ],
+  "outs": [
+   "switch7"
+  ],
+  "refs": [
+   "/project1/select49.chops"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null5",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -525,
+  "ins": [
+   "/project2/base3/out1"
+  ],
+  "outs": [
+   "switch8"
+  ],
+  "refs": [
+   "/project1/curcuitBending.Amount",
+   "/project1/curcuitBending.Amount2",
+   "/project1/curcuitBending.Vstep"
+  ],
+  "nrefs": 3,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null6",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -650,
+  "ins": [
+   "/project2/base4/out1"
+  ],
+  "outs": [
+   "switch9"
+  ],
+  "refs": [
+   "/project1/lumalevel1.blacklevel"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null7",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -775,
+  "ins": [
+   "/project2/base5/out1"
+  ],
+  "outs": [
+   "switch10"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null8",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -900,
+  "ins": [
+   "/project2/base6/out1"
+  ],
+  "outs": [
+   "switch11"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null9",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -1025,
+  "ins": [
+   "/project2/base7/out1"
+  ],
+  "outs": [
+   "switch12"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null10",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -1175,
+  "ins": [
+   "/project2/base8/out1"
+  ],
+  "outs": [
+   "switch13"
+  ],
+  "refs": [
+   "/project1/curcuitBending.Tx",
+   "/project1/curcuitBending.Ty"
+  ],
+  "nrefs": 2,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null11",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -1375,
+  "ins": [
+   "/project2/base9/out1"
+  ],
+  "outs": [
+   "switch14"
+  ],
+  "refs": [
+   "/project1/curcuitBending.Period"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null12",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -1500,
+  "ins": [
+   "/project2/base10/out1"
+  ],
+  "outs": [
+   "switch15"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null13",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -1625,
+  "ins": [
+   "/project2/base11/out1"
+  ],
+  "outs": [
+   "switch16"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null14",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -1750,
+  "ins": [
+   "/project2/base12/out1"
+  ],
+  "outs": [
+   "switch17"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null15",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -1875,
+  "ins": [
+   "/project2/base13/out1"
+  ],
+  "outs": [
+   "switch18"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null16",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -2000,
+  "ins": [
+   "/project2/base14/out1"
+  ],
+  "outs": [
+   "switch19"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null17",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -2125,
+  "ins": [
+   "/project2/base15/out1"
+  ],
+  "outs": [
+   "switch20"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null18",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -2250,
+  "ins": [
+   "/project2/base16/out1"
+  ],
+  "outs": [
+   "switch21"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null21",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -2875,
+  "ins": [
+   "/project2/base18/out1"
+  ],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null22",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -3025,
+  "ins": [
+   "/project2/base19/out1"
+  ],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null23",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -3175,
+  "ins": [
+   "/project2/base20/out1"
+  ],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null24",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -3325,
+  "ins": [
+   "/project2/base21/out1"
+  ],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null25",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -3475,
+  "ins": [
+   "/project2/base22/out1"
+  ],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null26",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -3625,
+  "ins": [
+   "/project2/base23/out1"
+  ],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null27",
+  "tipo": "nullTOP",
+  "x": 600,
+  "y": -3775,
+  "ins": [
+   "/project2/base24/out1"
+  ],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null20",
+  "tipo": "nullTOP",
+  "x": 613,
+  "y": -2728,
+  "ins": [
+   "/project2/base17/out1"
+  ],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null43",
+  "tipo": "nullTOP",
+  "x": 650,
+  "y": -4100,
+  "ins": [
+   "/project2/base25/out1"
+  ],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null44",
+  "tipo": "nullTOP",
+  "x": 650,
+  "y": -4250,
+  "ins": [],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null45",
+  "tipo": "nullTOP",
+  "x": 650,
+  "y": -4400,
+  "ins": [],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null46",
+  "tipo": "nullTOP",
+  "x": 650,
+  "y": -4550,
+  "ins": [],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null47",
+  "tipo": "nullTOP",
+  "x": 650,
+  "y": -4700,
+  "ins": [],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null48",
+  "tipo": "nullTOP",
+  "x": 650,
+  "y": -4850,
+  "ins": [],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null49",
+  "tipo": "nullTOP",
+  "x": 650,
+  "y": -5000,
+  "ins": [],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null50",
+  "tipo": "nullTOP",
+  "x": 650,
+  "y": -5150,
+  "ins": [],
+  "outs": [
+   "switch23"
+  ],
+  "refs": [
+   "/project1/blend_switch.Scene",
+   "/project1/switch10.index",
+   "/project1/switch5.index"
+  ],
+  "nrefs": 3,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "audiofilein1",
+  "tipo": "audiofileinCHOP",
+  "x": 1050,
+  "y": 650,
+  "ins": [],
+  "outs": [
+   "audiodevout1"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid1",
+  "tipo": "moviefileinTOP",
+  "x": 1100,
+  "y": -350,
+  "ins": [],
+  "outs": [
+   "switch6"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid2",
+  "tipo": "moviefileinTOP",
+  "x": 1100,
+  "y": -450,
+  "ins": [],
+  "outs": [
+   "switch7"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid3",
+  "tipo": "moviefileinTOP",
+  "x": 1100,
+  "y": -550,
+  "ins": [],
+  "outs": [
+   "switch8"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid4",
+  "tipo": "moviefileinTOP",
+  "x": 1100,
+  "y": -650,
+  "ins": [],
+  "outs": [
+   "switch9"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid5",
+  "tipo": "moviefileinTOP",
+  "x": 1100,
+  "y": -750,
+  "ins": [],
+  "outs": [
+   "switch10"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid6",
+  "tipo": "moviefileinTOP",
+  "x": 1100,
+  "y": -850,
+  "ins": [],
+  "outs": [
+   "switch11"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid7",
+  "tipo": "moviefileinTOP",
+  "x": 1100,
+  "y": -950,
+  "ins": [],
+  "outs": [
+   "switch12"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid8",
+  "tipo": "moviefileinTOP",
+  "x": 1100,
+  "y": -1050,
+  "ins": [],
+  "outs": [
+   "switch13"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid10",
+  "tipo": "moviefileinTOP",
+  "x": 1100,
+  "y": -1550,
+  "ins": [],
+  "outs": [
+   "switch15"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid11",
+  "tipo": "moviefileinTOP",
+  "x": 1100,
+  "y": -1650,
+  "ins": [],
+  "outs": [
+   "switch16"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid12",
+  "tipo": "moviefileinTOP",
+  "x": 1100,
+  "y": -1750,
+  "ins": [],
+  "outs": [
+   "switch17"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid13",
+  "tipo": "moviefileinTOP",
+  "x": 1100,
+  "y": -1850,
+  "ins": [],
+  "outs": [
+   "switch18"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid14",
+  "tipo": "moviefileinTOP",
+  "x": 1100,
+  "y": -1950,
+  "ins": [],
+  "outs": [
+   "switch19"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid15",
+  "tipo": "moviefileinTOP",
+  "x": 1100,
+  "y": -2050,
+  "ins": [],
+  "outs": [
+   "switch20"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid16",
+  "tipo": "moviefileinTOP",
+  "x": 1100,
+  "y": -2150,
+  "ins": [],
+  "outs": [
+   "switch21"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vid9",
+  "tipo": "moviefileinTOP",
+  "x": 1125,
+  "y": -1300,
+  "ins": [],
+  "outs": [
+   "switch14"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch6",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -275,
+  "ins": [
+   "vid1",
+   "null3"
+  ],
+  "outs": [
+   "switch1"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch7",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -400,
+  "ins": [
+   "vid2",
+   "null4"
+  ],
+  "outs": [
+   "switch1"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch8",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -500,
+  "ins": [
+   "vid3",
+   "null5"
+  ],
+  "outs": [
+   "switch1"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch9",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -625,
+  "ins": [
+   "vid4",
+   "null6"
+  ],
+  "outs": [
+   "switch1"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch10",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -725,
+  "ins": [
+   "vid5",
+   "null7"
+  ],
+  "outs": [
+   "switch1"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch11",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -850,
+  "ins": [
+   "vid6",
+   "null8"
+  ],
+  "outs": [
+   "switch1"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch12",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -950,
+  "ins": [
+   "vid7",
+   "null9"
+  ],
+  "outs": [
+   "switch1"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch13",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -1075,
+  "ins": [
+   "vid8",
+   "null10"
+  ],
+  "outs": [
+   "switch1"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch14",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -1475,
+  "ins": [
+   "vid9",
+   "null11"
+  ],
+  "outs": [
+   "switch3"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch15",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -1575,
+  "ins": [
+   "vid10",
+   "null12"
+  ],
+  "outs": [
+   "switch3"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch16",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -1675,
+  "ins": [
+   "vid11",
+   "null13"
+  ],
+  "outs": [
+   "switch3"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch17",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -1775,
+  "ins": [
+   "vid12",
+   "null14"
+  ],
+  "outs": [
+   "switch3"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch18",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -1875,
+  "ins": [
+   "vid13",
+   "null15"
+  ],
+  "outs": [
+   "switch3"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch19",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -1975,
+  "ins": [
+   "vid14",
+   "null16"
+  ],
+  "outs": [
+   "switch3"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch20",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -2075,
+  "ins": [
+   "vid15",
+   "null17"
+  ],
+  "outs": [
+   "switch3"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch21",
+  "tipo": "switchTOP",
+  "x": 1525,
+  "y": -2175,
+  "ins": [
+   "vid16",
+   "null18"
+  ],
+  "outs": [
+   "switch3"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch3",
+  "tipo": "switchTOP",
+  "x": 1825,
+  "y": -1600,
+  "ins": [
+   "switch14",
+   "switch15",
+   "switch16",
+   "switch17",
+   "switch18",
+   "switch19",
+   "switch20",
+   "switch21"
+  ],
+  "outs": [
+   "switch2"
+  ],
+  "refs": [
+   "/project2/vis_knobs_parexec.op"
+  ],
+  "nrefs": 1,
+  "dats": [
+   "/project2/base17/escena_modular/oscin1_callbacks",
+   "/project2/chopexec10",
+   "/project2/chopexec11",
+   "/project2/chopexec12"
+  ],
+  "ndats": 9,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch1",
+  "tipo": "switchTOP",
+  "x": 1828,
+  "y": -459,
+  "ins": [
+   "switch6",
+   "switch7",
+   "switch8",
+   "switch9",
+   "switch10",
+   "switch11",
+   "switch12",
+   "switch13"
+  ],
+  "outs": [
+   "switch2"
+  ],
+  "refs": [
+   "/project2/vis_knobs_parexec.op"
+  ],
+  "nrefs": 1,
+  "dats": [
+   "/project2/_respaldo/base24/setup_params",
+   "/project2/base17/VFX2/chopexec1",
+   "/project2/base17/VFX2/replicator1_callbacks",
+   "/project2/base17/escena_modular/blend_switch/chopexec1"
+  ],
+  "ndats": 14,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "audiodevout1",
+  "tipo": "audiodeviceoutCHOP",
+  "x": 1875,
+  "y": 675,
+  "ins": [
+   "audiofilein1"
+  ],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "constant34",
+  "tipo": "constantCHOP",
+  "x": 2650,
+  "y": -1375,
+  "ins": [],
+  "outs": [],
+  "refs": [
+   "/project2/parameter4.op",
+   "/project2/switch10.index",
+   "/project2/switch11.index",
+   "/project2/switch12.index",
+   "/project2/switch13.index",
+   "/project2/switch14.index"
+  ],
+  "nrefs": 17,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch2",
+  "tipo": "switchTOP",
+  "x": 2906,
+  "y": -2444,
+  "ins": [
+   "switch1",
+   "switch3"
+  ],
+  "outs": [
+   "level1"
+  ],
+  "refs": [
+   "/project2/fx_knobs_parexec.op",
+   "/project2/vis_knobs_parexec.op"
+  ],
+  "nrefs": 2,
+  "dats": [
+   "/project2/_respaldo/base24/char_count",
+   "/project2/_respaldo/base24/setup_params",
+   "/project2/base17/VFX2/chopexec1",
+   "/project2/base17/VFX2/replicator1_callbacks"
+  ],
+  "ndats": 26,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "switch23",
+  "tipo": "switchTOP",
+  "x": 2915,
+  "y": -3388,
+  "ins": [
+   "null20",
+   "null21",
+   "null22",
+   "null23",
+   "null24",
+   "null25",
+   "null26",
+   "null27",
+   "null43",
+   "null44",
+   "null45",
+   "null46",
+   "null47",
+   "null48",
+   "null49",
+   "null50"
+  ],
+  "outs": [
+   "level2"
+  ],
+  "refs": [
+   "/project2/fx_knobs_parexec.op"
+  ],
+  "nrefs": 1,
+  "dats": [
+   "/project2/base17/escena_modular/mix_feedback",
+   "/project2/base17/escena_modular/oscin1_callbacks",
+   "/project2/chopexec17",
+   "/project2/chopexec18"
+  ],
+  "ndats": 19,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "level1",
+  "tipo": "levelTOP",
+  "x": 4506,
+  "y": -2244,
+  "ins": [
+   "switch2"
+  ],
+  "outs": [
+   "out1"
+  ],
+  "refs": [
+   "/project2/_respaldo/base21/optical_flow/feedback1.top",
+   "/project2/parameter2.op"
+  ],
+  "nrefs": 2,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "level2",
+  "tipo": "levelTOP",
+  "x": 4515,
+  "y": -3113,
+  "ins": [
+   "switch23"
+  ],
+  "outs": [
+   "out2"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "bypass"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "fx_knobs_lib",
+  "tipo": "textDAT",
+  "x": 4775,
+  "y": 1125,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [
+   "/project2/fx_knobs_exec",
+   "/project2/fx_knobs_parexec"
+  ],
+  "ndats": 2,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "fx_knobs_map",
+  "tipo": "tableDAT",
+  "x": 4775,
+  "y": 975,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [
+   "/project2/fx_knobs_lib"
+  ],
+  "ndats": 1,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "out1",
+  "tipo": "outTOP",
+  "x": 4906,
+  "y": -2244,
+  "ins": [
+   "level1"
+  ],
+  "outs": [
+   "null19"
+  ],
+  "refs": [
+   "/project2/opviewer3.opviewer"
+  ],
+  "nrefs": 1,
+  "dats": [
+   "/project2/_respaldo/scripts_viejos/setup_all_layouts",
+   "/project2/_respaldo/scripts_viejos/setup_rand_layouts",
+   "/project2/setup_base38_liquid_feedback1"
+  ],
+  "ndats": 3,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "out2",
+  "tipo": "outTOP",
+  "x": 4915,
+  "y": -3113,
+  "ins": [
+   "level2"
+  ],
+  "outs": [
+   "/null2",
+   "null28"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "fx_knobs_in",
+  "tipo": "selectCHOP",
+  "x": 4975,
+  "y": 1125,
+  "ins": [],
+  "outs": [
+   "fx_knobs_lag"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "setup_layout_rs_late_show",
+  "tipo": "textDAT",
+  "x": 4975,
+  "y": 625,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "fx_knobs_lag",
+  "tipo": "lagCHOP",
+  "x": 5125,
+  "y": 1125,
+  "ins": [
+   "fx_knobs_in"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/fx_knobs_exec.chop"
+  ],
+  "nrefs": 1,
+  "dats": [
+   "/project2/fx_knobs_cook"
+  ],
+  "ndats": 1,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "fx_knobs_exec",
+  "tipo": "chopexecuteDAT",
+  "x": 5275,
+  "y": 1125,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "fx_knobs_parexec",
+  "tipo": "parameterexecuteDAT",
+  "x": 5275,
+  "y": 975,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "fx_knobs_cook",
+  "tipo": "executeDAT",
+  "x": 5425,
+  "y": 1125,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vis_knobs_lib",
+  "tipo": "textDAT",
+  "x": 5425,
+  "y": 700,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [
+   "/project2/vis_knobs_exec",
+   "/project2/vis_knobs_parexec"
+  ],
+  "ndats": 2,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vis_knobs_map",
+  "tipo": "tableDAT",
+  "x": 5425,
+  "y": 550,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [
+   "/project2/vis_knobs_lib"
+  ],
+  "ndats": 1,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null19",
+  "tipo": "nullTOP",
+  "x": 5525,
+  "y": -1975,
+  "ins": [
+   "out1"
+  ],
+  "outs": [],
+  "refs": [
+   "/project1/select47.top"
+  ],
+  "nrefs": 1,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "null28",
+  "tipo": "nullTOP",
+  "x": 5575,
+  "y": -3125,
+  "ins": [
+   "out2"
+  ],
+  "outs": [],
+  "refs": [
+   "/project1/select2.top",
+   "/project2/base17/escena_modular.Recfuente"
+  ],
+  "nrefs": 2,
+  "dats": [],
+  "ndats": 0,
+  "estado": [
+   "display"
+  ],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vis_knobs_in",
+  "tipo": "selectCHOP",
+  "x": 5625,
+  "y": 700,
+  "ins": [],
+  "outs": [
+   "vis_knobs_lag"
+  ],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vis_knobs_lag",
+  "tipo": "lagCHOP",
+  "x": 5775,
+  "y": 700,
+  "ins": [
+   "vis_knobs_in"
+  ],
+  "outs": [],
+  "refs": [
+   "/project2/vis_knobs_exec.chop"
+  ],
+  "nrefs": 1,
+  "dats": [
+   "/project2/vis_knobs_cook"
+  ],
+  "ndats": 1,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vis_knobs_exec",
+  "tipo": "chopexecuteDAT",
+  "x": 5925,
+  "y": 700,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vis_knobs_parexec",
+  "tipo": "parameterexecuteDAT",
+  "x": 5925,
+  "y": 550,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ },
+ {
+  "name": "vis_knobs_cook",
+  "tipo": "executeDAT",
+  "x": 6075,
+  "y": 700,
+  "ins": [],
+  "outs": [],
+  "refs": [],
+  "nrefs": 0,
+  "dats": [],
+  "ndats": 0,
+  "estado": [],
+  "tags": [],
+  "comment": "",
+  "hijos": 0
+ }
+]

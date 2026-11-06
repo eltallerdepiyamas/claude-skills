@@ -11,23 +11,28 @@ The rig is fixed and the skill must respect it exactly. A MIDI sampler maps phys
 
 ## Boilerplate (preferred for every new show)
 
-`boilerplate/` in this skill is the project skeleton that grew out of ON TOUR x MERCADO LIBRE → CORONA x FUTURE x ULTRA → LITTLE JESUS. Start every show from it instead of copying an old `.toe`:
+`plantilla/` in this skill is the full show template, born from LITTLE JESUS x RIO SALVAJE (2026-11): it includes `BOILERPLATE.toe`, already wired. Start every show from it. (`boilerplate/` is the older skeleton without a `.toe`; do not use it for new shows.)
 
 ```
 python ~/claude-skills/td-vj-builder/nuevo_proyecto.py "<show>/01. EDITABLES" "<NOMBRE>"
 ```
 
-It copies the skeleton (never overwrites existing files), fills the project `CLAUDE.md`, and stamps `_lib/BOILERPLATE_VERSION` with the repo commit. Each show keeps **its own copy** of the core, so updating the skill never breaks a show already built.
+It copies the template (never overwrites existing files), renames the `.toe` to the show, fills `CLAUDE.md` and `proyecto.json`, and stamps `_lib/BOILERPLATE_VERSION`. Each show keeps **its own copy**, so updating the skill never breaks a built show.
 
-- `_lib/tdvj_core.py` — the shared core: `build_contract` (5 slots + extras + colors + Bypass, page `Audio` with Smooth/Audiochop/Energy, page `Salida` with Resw/Resh), `build_visual(**CONFIG)` / `build_effect(**CONFIG)`, idempotent (keeps slider values and MIDI exports; rebuilds only nodes tagged `tdvj`). **Never edit it for one show.**
-- `_lib/rig.py` — what is specific to the show: base ranges, `AUDIO_SOURCE`, `CAMERA_SWITCH`, `DEFAULT_RES`. The core reads it on import.
-- `_templates/setup_baseXX_visual.py` + `visual.frag` — a builder is a short `CONFIG` dict + one call. Prefer this over the long standalone builders in `templates/` (kept as reference).
-- `builders/build_all.py` · `builders/herramientas/limpiar_bases.py` (moves old nodes to `/project2/_respaldo/baseN`, never deletes) · `aplicar_resolucion.py`.
-- `control/` — the live control layer (see below) plus read-only audit tools.
+Then: fill `proyecto.json` with the user (resolution, 5-color palette + background, cameras) -> the user opens the `.toe` (Claude cannot) -> run `armar.py` through the TouchDesigner MCP (or Textport) -> `python control/gen_companion.py` and import into Companion. Opening the `.toe` applies nothing until `armar.py` runs.
 
-Improvements to the core go back into `boilerplate/` here, then `git push`.
+The rig in the template:
+- Visuals `base1-16` -> `switch2` -> `master_visuales`. `base17` = clean scene. FX `base18-32` -> `switch23` -> `master_fx`. Empty bases have cooking off; `build_visual` / `build_effect` turn theirs on. Pads ignore bases with no content (`pad_lib`).
+- Hub `/project2/show`: color correction, audio (always mono), resolution. `/project1` = global FX only. `AUDIO_SOURCE` = `/project2/audio/master_audio`.
+- `/project2/ui_perform`: VISUAL · ESCENA / FX / CAMARAS · SHOW, with captured thumbs; `build_all.py` regenerates them last.
+- Palette: `proyecto.json` -> `_lib/paleta.py` -> `Color1..5`. Scene shaders use `uPhase` and `albumTint`; never hue or RGB.
+- Beatstep: ch 9 scenes, 10/11 visuals and FX; pad lights need Out Device set in the MIDI Mapper.
+- Examples: Formas (`base1`), Trama (`base18`), Multiview, Camara Unica.
+- `_lib/tdvj_core.py` is the shared core: **never edit it for one show.**
 
-## Live control layer (`boilerplate/control/`)
+Improvements go back into `plantilla/` here, then `git push`. To refresh `BOILERPLATE.toe`, use `builders/herramientas/vaciar_show.py` on a copy that has an `ES_BOILERPLATE` file.
+
+## Live control layer (`plantilla/control/`)
 
 One job per controller:
 

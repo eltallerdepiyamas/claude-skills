@@ -1,0 +1,96 @@
+{
+  "_nota": "BORRADOR. Lo unico que se edita por show. armar.py lo lee y deja el .toe listo.",
+  "nombre": "",
+  "artista": "",
+  "fecha": "",
+  "venue": "",
+  "modulos": {
+    "visuales": true,
+    "fx": true,
+    "escena_modular": true
+  },
+  "resolucion": {
+    "w": 1920,
+    "h": 1080
+  },
+  "paleta": {
+    "_nota": "5 colores en orden (uColor1..5 / albumColor(0..4)) + fondo. Salen del arte del show (album, flyer).",
+    "colores": [
+      {
+        "nombre": "amarillo",
+        "rgb": [
+          0.96,
+          0.76,
+          0.06
+        ]
+      },
+      {
+        "nombre": "verde",
+        "rgb": [
+          0.09,
+          0.53,
+          0.36
+        ]
+      },
+      {
+        "nombre": "azul",
+        "rgb": [
+          0.1,
+          0.33,
+          0.78
+        ]
+      },
+      {
+        "nombre": "negro",
+        "rgb": [
+          0.06,
+          0.06,
+          0.07
+        ]
+      },
+      {
+        "nombre": "rojo",
+        "rgb": [
+          0.87,
+          0.12,
+          0.13
+        ]
+      }
+    ],
+    "fondo": {
+      "nombre": "crema",
+      "rgb": [
+        0.93,
+        0.91,
+        0.86
+      ]
+    }
+  },
+  "audio": {
+    "_nota": "Una sola entrada para todo: audioreactivo, rotacion de camaras y la pista de REC.",
+    "entrada": "device",
+    "dispositivo": "",
+    "archivo_ensayo": "media/ensayo.wav"
+  },
+  "camaras": {
+    "_nota": "Solo si modulos.escena_modular = true.",
+    "cuantas": 6,
+    "lugares": 5,
+    "en_multicam": 5
+  },
+  "companion": {
+    "td_escucha": 7010,
+    "companion_escucha": 12321,
+    "_nota_puertos": "7000 = Resolume. 12321 = puerto de fabrica de Companion (su asistente lo regresa a ese)."
+  },
+  "midi": {
+    "midimix": true,
+    "beatstep": true,
+    "beatstep_canal_escenas": 9
+  },
+  "salidas": {
+    "_nota": "TOPs que salen a Resolume / proyector; siguen a la resolucion maestra.",
+    "visuales": "/project2/fit1",
+    "camaras_fx": "/project2/fit2"
+  }
+}

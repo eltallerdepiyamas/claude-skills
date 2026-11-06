@@ -1,0 +1,2 @@
+# Sin dependencias: solo la libreria estandar de Python 3.8+.
+# (El protocolo MCP por stdio se implementa a mano en td_mcp_server.py.)

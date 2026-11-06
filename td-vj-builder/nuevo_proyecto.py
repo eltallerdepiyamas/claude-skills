@@ -3,19 +3,20 @@ nuevo_proyecto.py — arranca un show nuevo desde el boilerplate de td-vj-builde
 
     python nuevo_proyecto.py "<carpeta del proyecto>/01. EDITABLES" "NOMBRE DEL SHOW"
 
-Copia boilerplate/ a la carpeta (sin pisar archivos que ya existan), llena CLAUDE.md con el
-nombre y la fecha, y deja en _lib/BOILERPLATE_VERSION el commit del repo de skills que se usó.
+Copia plantilla/ (con BOILERPLATE.toe, renombrado al show) sin pisar archivos que ya existan,
+llena CLAUDE.md y proyecto.json con el nombre, y deja en _lib/BOILERPLATE_VERSION el commit del repo de skills que se usó.
 El proyecto queda con SU copia del núcleo: actualizar la skill no cambia un show ya armado.
 Para traer un núcleo nuevo a un show: copia a mano boilerplate/_lib/tdvj_core.py.
 """
 import datetime
+import json
 import os
 import shutil
 import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SRC = os.path.join(HERE, 'boilerplate')
+SRC = os.path.join(HERE, 'plantilla')
 
 
 def _version():
@@ -33,7 +34,8 @@ def main(dst, name):
         rel = os.path.relpath(folder, SRC)
         os.makedirs(os.path.join(dst, rel), exist_ok=True)
         for f in files:
-            target = os.path.join(dst, rel, f)
+            destino = name + '.toe' if f == 'BOILERPLATE.toe' else f
+            target = os.path.join(dst, rel, destino)
             if os.path.exists(target):
                 skipped += 1
                 continue
@@ -48,6 +50,13 @@ def main(dst, name):
                 .replace('{{FECHA}}', datetime.date.today().isoformat()))
     with open(claude, 'w', encoding='utf-8') as fh:
         fh.write(text)
+    cfg_path = os.path.join(dst, 'proyecto.json')
+    with open(cfg_path, encoding='utf-8') as fh:
+        cfg = json.load(fh)
+    if not cfg.get('nombre'):
+        cfg['nombre'] = name
+        with open(cfg_path, 'w', encoding='utf-8') as fh:
+            json.dump(cfg, fh, ensure_ascii=False, indent=2)
     with open(os.path.join(dst, '_lib', 'BOILERPLATE_VERSION'), 'w', encoding='utf-8') as fh:
         fh.write(version + '\n')
     print('[ok] %s: %d archivos copiados, %d ya existían (no se tocaron). Boilerplate %s'

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "touchdesigner": {
+      "type": "stdio",
+      "command": "python",
+      "args": [
+        "tools/td_mcp/server/td_mcp_server.py"
+      ],
+      "env": {}
+    }
+  }
+}
