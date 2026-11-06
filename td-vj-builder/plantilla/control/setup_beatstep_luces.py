@@ -4,6 +4,7 @@
 R = op('/project2')
 d = R.op('bs_luces') or R.create(midioutCHOP, 'bs_luces')
 d.par.id = 2
+d.par.autonoteoff = 'none' if 'none' in d.par.autonoteoff.menuNames else 'off' if 'off' in d.par.autonoteoff.menuNames else d.par.autonoteoff.menuNames[0]
 d.nodeX, d.nodeY = R.op('midi_midiin3').nodeX, R.op('midi_midiin3').nodeY - 240
 ex = R.op('bs_luces_exec') or R.create(executeDAT, 'bs_luces_exec')
 ex.nodeX, ex.nodeY = d.nodeX + 200, d.nodeY
@@ -13,7 +14,7 @@ E = '/project2/base17/escena_modular'
 def deseados():
 	out = set()
 	i = op(E).par.Modoescena.menuIndex
-	if i < 16:
+	if i is not None and i < 16:
 		out.add((9, 45 + i if i < 8 else 29 + i))
 	k = int(op('/project2/switch2').par.index.eval())
 	if k < 16:
@@ -24,7 +25,7 @@ def deseados():
 	return out
 
 def onFrameEnd(frame):
-	if frame % 30:
+	if frame % 6:
 		return
 	d = op('bs_luces')
 	antes = me.fetch('prendidos', None, search=False)
@@ -43,4 +44,5 @@ for t in ('start', 'create', 'exit', 'framestart', 'playstatechange', 'devicecha
     if hasattr(ex.par, t):
         setattr(ex.par, t, False)
 ex.par.frameend = True
+print('autonoteoff', d.par.autonoteoff.menuNames, d.par.autonoteoff.eval())
 print('[ok] luces del Beatstep:', ex.module.deseados())

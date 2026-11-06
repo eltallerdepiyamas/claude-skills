@@ -119,7 +119,7 @@ def onFrameEnd(frame):
 
     comp = {'layout': lay, 'visual': vis, 'fx': fx}[foco]
     if foco == 'layout' and p is not None and comp is not None:
-        nombre = p.menuLabels[p.menuIndex]
+        nombre = (p.menuLabels[p.menuIndex] if p.menuLabels else '')
     else:
         nombre = comp.name if comp is not None else '-'
     SCENE.store('mix_comp', comp.path if comp is not None else '')    # lo usa /td/audio (oscin1)
@@ -127,7 +127,7 @@ def onFrameEnd(frame):
     # el layout se muestra como su familia (MULTIVIEW / SINGLE CAM): cada una tiene su color en el Stream Deck
     fams = (SCENE.fetch('menu_nombres', {}, search=False, storeDefault=False) or {}).get('fam', {})
     if foco == 'layout':
-        fam_lay = fams.get(p.menuLabels[p.menuIndex], 'multiview') if p is not None else 'multiview'
+        fam_lay = fams.get(p.menuLabels[p.menuIndex], 'multiview') if p is not None and p.menuLabels else 'multiview'
         foco_txt = 'SINGLE CAM' if fam_lay == 'singlecam' else 'MULTIVIEW'
     else:
         foco_txt = foco.upper()

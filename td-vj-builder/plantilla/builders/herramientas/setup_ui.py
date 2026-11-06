@@ -1,3 +1,4 @@
+import json
 # ─────────────────────────────────────────────────────────────
 # setup_ui.py — UI de PERFORM (/project2/ui_perform, 1920x1080). Idempotente.
 # Una columna por lo que el proyecto TENGA (si no hay FX, no hay columna FX):
@@ -124,6 +125,10 @@ def elegir(tipo, dato):
         tab(*dato.split(':'))
     elif tipo == 'RESET':
         resetear(activo(dato))
+    elif tipo == 'THUMBS':
+        return actualizar_thumbs()
+    elif tipo == 'RESETFB':
+        return resetear_feedbacks()
     elif tipo == 'PAG':
         parent().store('pag_escena', int(dato))
         paginar()
@@ -167,6 +172,31 @@ def tab(grupo, clave):
             c.par.bgcolorr, c.par.bgcolorg, c.par.bgcolorb = r * k, g * k, b * k
     ondas()
     paginar()
+
+
+def actualizar_thumbs():
+    # Vuelve a capturar cada thumb como se ve ahorita, sin reconstruir nada.
+    n = 0
+    for c in parent().children:
+        if c.isCOMP and c.name.startswith('th_') and c.fetch('fuente', None, search=False):
+            o = op(c.fetch('fuente'))
+            if o is not None:
+                o.cook(force=True)
+                o.save(project.folder + '/' + c.fetch('ruta'))
+                c.op('img_p/img').par.reloadpulse.pulse()
+                n += 1
+    return n
+
+
+def resetear_feedbacks():
+    # Busca todos los Feedback TOP cada vez: los que se creen despues entran solos.
+    n = 0
+    for r in (op('/project1'), op('/project2')):
+        for o in r.findChildren(type=feedbackTOP):
+            if '/_respaldo' not in o.path:
+                o.par.resetpulse.pulse()
+                n += 1
+    return n
 
 
 def paginar():
@@ -302,6 +332,9 @@ def thumbs(ui, nombre, x, ytop, cw):
         pi = i % TH_PAG
         px, py = x + (pi % TH_COLS) * (tw + 4), ytop - off - (pi // TH_COLS + 1) * alto
         c, d = marco(ui, 'th_%s_%d' % (nombre.lower(), i), px, py + TH_TXT, tw, th, None, activo, COL[nombre])
+        if top is not None:
+            c.store('fuente', top.path)
+            c.store('ruta', ruta)
         img = d.create(moviefileinTOP, 'img')
         img.par.file = ruta
         img.par.outputresolution = 'eighth'   # thumbs ligeros
@@ -423,7 +456,16 @@ def camaras(ui, x, ytop, cw, tag):
     tagear(tag, lista)
 
 
+def solo_visuales():
+    p = project.folder + '/proyecto.json'
+    return os.path.exists(p) and not json.load(open(p, encoding='utf-8')).get('modulos', {}).get('escena_modular', True)
+
+
 def build():
+    global TH_COLS
+    solo = solo_visuales()
+    if solo:
+        TH_COLS = 8      # VISUAL ocupa dos columnas: 2 filas de 8, como los pads
     ui = R.op('ui_perform') or R.create(containerCOMP, 'ui_perform')
     ui.par.w, ui.par.h = W, H
     ui.comment = 'UI de perform · builders/herramientas/setup_ui.py'
@@ -434,34 +476,43 @@ def build():
     lib = ui.create(textDAT, 'ui_lib')
     lib.text = UI_LIB
     lib.nodeX, lib.nodeY = -400, 0
-    R.op('show').sortCustomPages('Correccion de color', 'Audio', 'Resolucion')
+    R.op('show').sortCustomPages(*[n for n in ('Correccion de color', 'Paleta', 'Audio', 'Resolucion') if any(g.name == n for g in R.op('show').customPages)])
     hay_fx = tiene_pagina(list(range(18, 33)), 'Filter')
     cw = (W - GAP * 4) // 3
     estado = ("'%s   ·   ' + str(round(1000.0 / max(absTime.stepSeconds * 1000.0, 1.0))) + ' FPS'"
               " + {9: '   ·   BEATSTEP CH 9: ESCENAS', 10: '   ·   BEATSTEP CH 10: VISUALES / FX', 11: '   ·   BEATSTEP CH 11: VISUALES / FX'}.get(int(op('/project2/bs_canal')['canal']), '')"
               " + ('   ·   MASTER EN NEGRO' if op('/project2/show').par.Master < 0.98 else '')"
               " + ('   ·   GRABANDO' if op('%s').par.Rec else '')" % (project.name.replace('.toe', ''), ESC))
-    texto(ui, 'titulo', 0, H - TOP_H, W, TOP_H, estado, (0.1, 0.1, 0.11), 20, expr=True)
+    texto(ui, 'titulo', 0, H - TOP_H, W - 470, TOP_H, estado, (0.1, 0.1, 0.11), 20, expr=True)
+    b = texto(ui, 'btn_thumbs', W - 460, H - TOP_H + 4, 220, TOP_H - 8, 'ACTUALIZAR THUMBS', (0.25, 0.25, 0.27), 15)
+    b.store('tipo', 'THUMBS')
+    b.store('dato', '')
+    b = texto(ui, 'btn_resetfb', W - 230, H - TOP_H + 4, 220, TOP_H - 8, 'RESET FEEDBACK', (0.55, 0.12, 0.12), 15)
+    b.store('tipo', 'RESETFB')
+    b.store('dato', '')
     top = H - TOP_H - GAP
     x1, x2, x3 = GAP, GAP * 2 + cw, GAP * 3 + 2 * cw
     y0 = top - TITLE_H - TAB_H - 8
     # VISUAL
     vis = "op('ui_lib').module.activo('VISUAL')"
-    texto(ui, 'tit_visual', x1, top - TITLE_H, cw, TITLE_H, 'VISUAL', tuple(c * 0.55 for c in COL['VISUAL']), 20)
-    contenido(ui, 'VISUAL', x1, y0, cw, vis, 'Visual', "op('/project2/master_visuales')", None,
+    cv = cw * 2 + GAP if solo else cw
+    texto(ui, 'tit_visual', x1, top - TITLE_H, cv, TITLE_H, 'VISUAL', tuple(c * 0.55 for c in COL['VISUAL']), 20)
+    contenido(ui, 'VISUAL', x1, y0, cv, vis, 'Visual', "op('/project2/master_visuales')", None,
               "'VISUAL  ·  ' + op('ui_lib').module.nombre(%s)" % vis)
-    # ESCENA / FX / CAMARAS
-    esc = "op('ui_lib').module.activo('ESCENA')"
-    fx = "op('ui_lib').module.activo('FX')"
-    texto(ui, 'tit_escena', x2, top - TITLE_H, cw, TITLE_H, 'ESCENA', tuple(c * 0.55 for c in COL['ESCENA']), 20)
-    tabs = ([('fx', 'FX')] if hay_fx else []) + [('escena', 'ESCENA'), ('cams', 'CAMARAS')]
-    pestanas(ui, 'media', x2, top - TITLE_H - TAB_H - 4, cw, tabs, COL['ESCENA'])
-    contenido(ui, 'ESCENA', x2, y0, cw, esc, 'Layout', "op('%s/master_video')" % ESC, 'tab_media_escena',
-              "op('ui_lib').module.tipo_escena(%s) + '  ·  ' + op('ui_lib').module.nombre(%s)" % (esc, esc))
-    if hay_fx:
-        contenido(ui, 'FX', x2, y0, cw, fx, 'Filter', "op('/project2/master_fx')", 'tab_media_fx',
-                  "'FX  ·  ' + op('ui_lib').module.nombre(%s)" % fx)
-    camaras(ui, x2, y0, cw, 'tab_media_cams')
+    tabs = []
+    if not solo:
+        # ESCENA / FX / CAMARAS
+        esc = "op('ui_lib').module.activo('ESCENA')"
+        fx = "op('ui_lib').module.activo('FX')"
+        texto(ui, 'tit_escena', x2, top - TITLE_H, cw, TITLE_H, 'ESCENA', tuple(c * 0.55 for c in COL['ESCENA']), 20)
+        tabs = ([('fx', 'FX')] if hay_fx else []) + [('escena', 'ESCENA'), ('cams', 'CAMARAS')]
+        pestanas(ui, 'media', x2, top - TITLE_H - TAB_H - 4, cw, tabs, COL['ESCENA'])
+        contenido(ui, 'ESCENA', x2, y0, cw, esc, 'Layout', "op('%s/master_video')" % ESC, 'tab_media_escena',
+                  "op('ui_lib').module.tipo_escena(%s) + '  ·  ' + op('ui_lib').module.nombre(%s)" % (esc, esc))
+        if hay_fx:
+            contenido(ui, 'FX', x2, y0, cw, fx, 'Filter', "op('/project2/master_fx')", 'tab_media_fx',
+                      "'FX  ·  ' + op('ui_lib').module.nombre(%s)" % fx)
+        camaras(ui, x2, y0, cw, 'tab_media_cams')
     # SHOW
     texto(ui, 'tit_show', x3, top - TITLE_H, cw, TITLE_H, 'SHOW  ·  salida final', tuple(c * 0.55 for c in COL['SHOW']), 20)
     pestanas(ui, 'show', x3, top - TITLE_H - TAB_H - 4, cw,
@@ -469,7 +520,7 @@ def build():
     pv_w = (PREV_H - 8) * 16 // 9
     imagen(ui, 'prev_show', x3 + (cw - pv_w) // 2, y0 - (PREV_H - 8), pv_w, PREV_H - 8, "op('/project1/ndiout1')")
     ys = y0 - PREV_H - 6
-    for k, opx, pag, alto in (('hub', "op('/project2/show')", 'Correccion* Audio Resolucion', ys - 200),) + tuple((k, "op('%s')" % r, '*', ys) for k, _, r in FX_GLOBALES):
+    for k, opx, pag, alto in (('hub', "op('/project2/show')", 'Correccion* Paleta Audio Resolucion', ys - 200),) + tuple((k, "op('%s')" % r, '*', ys) for k, _, r in FX_GLOBALES):
         pc = panel(ui, parameterCOMP, 'par_show_' + k, x3, GAP, cw, alto - GAP)
         setp(pc, ['op'], opx, expr=True)
         setp(pc, ['pagescope'], pag)
@@ -500,7 +551,8 @@ def build():
                             "    c = c.parent() if c.name == 'img_p' else c",
                             "    op('ui_lib').module.elegir(c.fetch('tipo'), c.fetch('dato'))", '    return', ''])
     m = lib.module
-    m.tab('media', 'escena')
+    if not solo:
+        m.tab('media', 'escena')
     m.tab('show', 'hub')
     return ui, tabs
 

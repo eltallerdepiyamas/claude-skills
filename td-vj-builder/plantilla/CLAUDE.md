@@ -23,3 +23,6 @@ Creado el {{FECHA}} desde td-vj-builder ({{VERSION}}). Esta carpeta = `project.f
 - MIDI en `/project2/midi_*`; Beatstep canal 9 escenas, 10 y 11 visuales y FX.
 - Luces de pads: Out Device del Beatstep en el MIDI Mapper.
 - Companion: `python control/gen_companion.py` e importar `control/streamdeck.companionconfig`.
+- Al traer un visual de otro proyecto: `_lib/pal_norte.py` monta su `.tox`; el parametro que mas lo distingue va al slot 5 y lo que valga la pena como extra. Todo lo que pase de 5 aparece en la UI.
+- Barra de la UI: ACTUALIZAR THUMBS y RESET FEEDBACK (encuentra los Feedback nuevos solo).
+- Show sin camaras ni FX: `modulos.escena_modular` y `fx` en false; `armar.py` deja solo visuales con pestana Paleta.

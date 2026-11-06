@@ -30,6 +30,8 @@ VARS = {'Int': 'cams', 'Modoescena': 'escena', 'Menu2': 'cam',
         'Rec': 'rec', 'Demo': 'demo', 'Democada': 'democada', 'Recsel': 'recfuente'}
 
 def value_for(par):
+	if par.isMenu and not par.menuNames:
+		return ''
 	# Modoescena y Menu2 van tal cual: los botones comparan contra su etiqueta para encenderse
 	if par.isMenu and par.name in ('Modoescena', 'Menu2'):
 		return par.menuLabels[par.menuIndex]
