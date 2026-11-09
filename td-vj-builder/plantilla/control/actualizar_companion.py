@@ -94,6 +94,8 @@ def run():
     layouts = [{'name': n, 'label': l, 'familia': fam(n)} for n, l in zip(p.menuNames, p.menuLabels)]
     visuales = [{'base': n, 'nombre': _nombre(op('/project2/base%d' % n))}
                 for n in range(1, 17) if _tiene_contrato(op('/project2/base%d' % n))]
+    if os.path.exists(CTRL + '/bancos.json'):       # el show define sus paginas (ui_bancos.py)
+        visuales = json.load(open(CTRL + '/bancos.json', encoding='utf-8'))
     fx = [{'index': 0, 'nombre': 'Sin FX'}]
     sw = op(FX_SWITCH)
     for i, src in enumerate(sw.inputs if sw is not None else []):

@@ -3,6 +3,7 @@
 #   /td/<Par> valor      -> setea un parametro custom de escena_modular (menus: por nombre, etiqueta o indice)
 #   /td/inc/<Par> delta  -> suma delta a un parametro (en menus recorre las opciones en ciclo, p. ej. Slot1..5;
 #                           en on/off lo invierte, p. ej. Rotar)
+#   /td/ui 1             -> abre la UI de perform como ventana aparte
 #   /td/fx indice        -> elige la entrada de FX_SWITCH (0 = base17 sin FX)
 #   /td/visual base      -> elige el visual baseN (switch2: entrada N-1 = baseN)
 #   /td/foco tipo        -> pagina MIX: muestra los 5 parametros del layout / visual / fx activo
@@ -60,7 +61,7 @@ def setVisual(n):
 	# switch2 = los 16 visuales directo (entrada n-1 = baseN). Si aun existe el esquema viejo
 	# (switch1 = 1-8, switch3 = 9-16), se usa ese.
 	n = int(n)
-	if not 1 <= n <= 16 or VIS_MAIN is None:
+	if n < 1 or VIS_MAIN is None:
 		return
 	if VIS_A is not None and VIS_B is not None and len(VIS_MAIN.inputs) == 2:
 		if n <= 8:
@@ -159,6 +160,8 @@ def onReceiveOSC(dat, rowIndex, message, byteData, timeStamp, address, args, pee
 		TARGET.store('mix_foco_manual', str(args[0]).lower() if args else 'layout')
 	elif len(parts) == 2 and parts[1] == 'resetfb':
 		op('/project2/ui_perform/ui_lib').module.elegir('RESETFB', '')
+	elif len(parts) == 2 and parts[1] == 'ui':
+		op('/perform').par.winopen.pulse()
 	elif len(parts) == 2 and parts[1] == 'thumbs':
 		op('/project2/ui_perform/ui_lib').module.elegir('THUMBS', '')
 	elif len(parts) == 2 and parts[1] == 'rampa':

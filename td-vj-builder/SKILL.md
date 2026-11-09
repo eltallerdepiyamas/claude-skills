@@ -28,7 +28,7 @@ The rig in the template:
 - Palette: `proyecto.json` -> `_lib/paleta.py` -> `Color1..5`. Scene shaders use `uPhase` and `albumTint`; never hue or RGB.
 - Beatstep: ch 9 scenes, 10/11 visuals and FX; pad lights need Out Device set in the MIDI Mapper.
 - Reusing a network from another project: mount its `.tox` with `_lib/pal_norte.py`; put the parameter that most defines its look in slot 5 and useful extras after it. Parameters past 5 show in the UI.
-- UI top bar: ACTUALIZAR THUMBS and RESET FEEDBACK (finds new Feedback TOPs by itself). Shows with `modulos.escena_modular: false` get a visuals-only UI and a Paleta tab in `show`.
+- UI top bar: ACTUALIZAR THUMBS and RESET FEEDBACK (finds new Feedback TOPs by itself). Stream Deck MENU has ABRIR UI (/td/ui opens /perform as a separate window). Shows with `modulos.escena_modular: false` get a visuals-only UI and a Paleta tab in `show`.
 - **Node networks, not only shaders.** Choose what the visual needs. Feedback, time displacement, displacement and glitch looks are usually better as TOP networks: build them with `_lib/red_nodos.py` inside COMP `red`, then pass its out to `build_visual(source=...)` for the 5-slot contract and audio. Bind slots with expressions to `parent(2).par.<Slot>`.
 - Examples: Formas (`base1`), Trama (`base18`), Multiview, Camara Unica.
 - `_lib/tdvj_core.py` is the shared core: **never edit it for one show.**

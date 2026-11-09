@@ -213,9 +213,13 @@ def chunks(name, buttons):
 layouts = show.get('layouts', [])
 PAGES = []
 if SOLO_VISUALES:
-    # bases 1-8 = con logo (pads canal 10) · 9-16 = generativos (canal 11)
-    PAGES += chunks('LOGOS', [visual(v) for v in show.get('visuales', []) if v['base'] <= 8])
-    PAGES += chunks('GENERATIVOS', [visual(v) for v in show.get('visuales', []) if v['base'] > 8])
+    vistos = show.get('visuales', [])
+    grupos = [g for g in ('VISUALES', 'LOGOS') if any(v.get('grupo') == g for v in vistos)]
+    for g in grupos:             # el show define sus paginas (control/bancos.json)
+        PAGES += chunks(g, [visual(v) for v in vistos if v.get('grupo') == g])
+    if not grupos:               # bases 1-8 = con logo · 9-16 = generativos
+        PAGES += chunks('LOGOS', [visual(v) for v in vistos if v['base'] <= 8])
+        PAGES += chunks('GENERATIVOS', [visual(v) for v in vistos if v['base'] > 8])
 else:
     # MULTIVIEW: layouts de varias camaras
     PAGES += chunks('MULTIVIEW', [escena(l['label']) for l in layouts if l.get('familia', 'multiview') == 'multiview'])
@@ -327,6 +331,7 @@ ENSAYO_GRID = [button('DEMO', AZUL, [osc('/td/inc/Demo', 'i', 1)], latch=('demo'
 ENSAYO_GRID = ENSAYO_GRID + fila([]) + fila([mix_btn_new()])[:4] + [button('VOLVER\nAL MENU', GRIS, [goto('MENU')])]
 ensayo_btn = button('ENSAYO', (0x1A1A1A, ROJO[1]), [goto('ENSAYO')], latch=('rec', 'ON'), value='REC $(custom:rec)')
 reset_btn = button('RESET', ROJO, [osc('/td/reset', 'i', 1)], value='$(custom:mix_foconombre)')   # sliders + movimiento + feedback + videos
+ui_btn = button('ABRIR\nUI', GRIS, [osc('/td/ui', 'i', 1)])   # /perform como ventana aparte
 beatstep_btn = button('BEATSTEP', GRIS, [], value='$(custom:bs_canal)')   # ultimo pad: canal-pad + que controla (solo informa)
 if SOLO_VISUALES:
     # navegacion primero: fila 2 / col 1 sigue siendo AJUSTES (TD la presiona)
@@ -334,9 +339,9 @@ if SOLO_VISUALES:
                                        button('COLOR B', TURQUESA, [osc('/td/rampa', 'i', 1)])])
                  + [mix_btn, reset_btn, button('RESET\nFEEDBACK', ROJO, [osc('/td/resetfb', 'i', 1)]),
                     button('ACTUALIZAR\nTHUMBS', GRIS, [osc('/td/thumbs', 'i', 1)]), beatstep_btn]
-                 + fila([])[:4] + [ensayo_btn])
+                 + fila([ui_btn])[:4] + [ensayo_btn])
 else:
-    MENU_GRID = fila(MENU_GRID[:5]) + fila([mix_btn] + MENU_GRID[5:9]) + [reset_btn, beatstep_btn] + fila([])[:2] + [ensayo_btn]
+    MENU_GRID = fila(MENU_GRID[:5]) + fila([mix_btn] + MENU_GRID[5:9]) + [reset_btn, beatstep_btn, ui_btn, None] + [ensayo_btn]
 PAGES.insert(0, ('MENU', MENU_GRID))
 PAGES.append(('ENSAYO', ENSAYO_GRID))
 
