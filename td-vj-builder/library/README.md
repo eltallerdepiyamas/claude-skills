@@ -35,6 +35,14 @@ _Origen de cada archivo. Antes de escribir un shader nuevo, busca aquí algo cer
 | `cimatica.glsl` | corona 2026 (CH10: Chladni con feedback) |
 | `anillos_tiempo.glsl` | corona 2026 (CH10: cordillera en polar; usa cordillera_hist) |
 | `anillo_saturno.glsl` | corona 2026 (CH10: anillo planetario, onda espiral en kick) |
+| `marmol.glsl` | corona 2026 (CH8, recetario 12: domain warping, isolineas) |
+| `test_pattern.glsl` | corona 2026 (CH8, recetario 1/3: reticula de datos raster-noton) |
+| `kinetic_tiles.glsl` | corona 2026 (CH8, recetario 28: Truchet que voltea en ola) |
+| `celdas.glsl` | corona 2026 (CH8, recetario 33: voronoi 3x3, solo bordes) |
+| `lissajous.glsl` | corona 2026 (CH8, recetario 32: XY con fosforo, feedback) |
+| `sdf_morph.glsl` | corona 2026 (CH8, recetario 22: isolineas de SDF que mutan) |
+| `crt.glsl` | corona 2026 (CH8, recetario 36/43: osciladores en CRT) |
+| `scanline_rd.glsl` | corona 2026 (CH8, recetario 44: RD por renglones, tejido) |
 | `bauhaus_ml.glsl` | mercado libre |
 | `campo_bokeh.glsl` | petite amie |
 | `code_rain.glsl` | corona |
