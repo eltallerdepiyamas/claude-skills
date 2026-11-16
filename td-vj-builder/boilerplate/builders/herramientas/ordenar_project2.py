@@ -56,6 +56,10 @@ def cadenas_visuales():
     s2 = R.op('switch2')
     for sw in (s2.inputs if s2 else []):
         ins = sw.inputs
+        # bases 17+ entran directo: baseN/out1 -> nullN -> switch2 (sin vid ni switch propio)
+        if sw.OPType == 'nullTOP' and ins and ins[0].parent().parent() == R:
+            rows.append([ins[0].parent(), None, None, sw])
+            continue
         vid = next((i for i in ins if i.OPType == 'moviefileinTOP'), None)
         nul = next((i for i in ins if i.OPType == 'nullTOP'), None)
         base = nul.inputs[0].parent() if nul is not None and nul.inputs else None
@@ -93,13 +97,15 @@ def pads():
     for d in sorted(R.findChildren(type=chopexecuteDAT, depth=1), key=lambda d: _n(d.name)):
         if d.name.startswith(('vis_knobs', 'fx_knobs')):
             continue
-        lg = op(d.par.chops.eval()) if d.par.chops.eval() else None
+        nombres = [q.name for q in d.pars()]
+        pc = d.par.chops if 'chops' in nombres else (d.par.chop if 'chop' in nombres else None)
+        lg = op(pc.eval()) if pc is not None and pc.eval() else None
         lg = lg if lg is not None and lg.parent() == R else None
         src = lg.inputs[0] if lg is not None and lg.inputs else None
         row = [src, lg, d]
-        if "op('switch2')" in d.text:
+        if "op('switch2')" in d.text or "'switch2'," in d.text:       # elegir('switch2', N) del pad_lib
             vis.append(row)
-        elif "op('switch23')" in d.text:
+        elif "op('switch23')" in d.text or "'switch23'," in d.text:
             fx.append(row)
         else:
             otros.append(row)
@@ -123,14 +129,14 @@ def recuadro(titulo, x0, y0, x1, y1, color):
         a.name = name             # create() ignora el nombre en los annotate: se renombra despues
     a.nodeX, a.nodeY = x0 - 80, y1 - 90
     a.nodeWidth, a.nodeHeight = (x1 - x0) + 160 + 160, (y0 - y1) + 90 + 200
+    nombres = {q.name for q in a.pars()}      # sin hasattr: en TD imprime AttributeError en consola
     for pn, v in (('Titletext', titulo), ('Bodytext', '')):
-        if hasattr(a.par, pn):
+        if pn in nombres:
             setattr(a.par, pn, v)
     for k, c in enumerate('rgb'):
-        p = getattr(a.par, 'Backcolor' + c, None)
-        if p is not None:
-            p.val = color[k] * 0.35
-    if hasattr(a.par, 'Backcoloralpha'):
+        if 'Backcolor' + c in nombres:
+            getattr(a.par, 'Backcolor' + c).val = color[k] * 0.35
+    if 'Backcoloralpha' in nombres:
         a.par.Backcoloralpha = 0.22
     return a
 
@@ -214,12 +220,13 @@ def run():
     y -= max(alto(pv), alto(pf), alto(kr), alto(midrows)) + DY + GAP
     # 2 VISUALES
     vr, vt = cadenas_visuales()
-    poner(vr, 0, y, MORADO, vt, '2 VISUALES  ·  baseN · null · vid · switch  ->  switch2 (entrada N-1 = baseN)  ->  level1 -> out1 -> null19 (a /project1)')
+    poner(vr, 0, y, MORADO, vt, '2 VISUALES  ·  una fila por base: baseN · null · vid · switch  ->  switch2 (entrada N-1 = baseN)  ->  salida a /project1')
     y -= alto(vr) + DY + GAP
     # 3 ESCENA / CAMARAS Y FX
     fr, ft = cadenas_fx()
-    poner(fr, 0, y, NARANJA, ft, '3 ESCENA / CAMARAS Y FX  ·  base17 = escena_modular (entrada 0, sin FX) · baseN FX  ->  switch23  ->  level2 -> out2 -> null28 (a /project1)')
-    y -= alto(fr) + DY + GAP
+    if fr:                        # show sin FX (solo visuales): no hay bloque 3, switch23 va a SISTEMA
+        poner(fr, 0, y, NARANJA, ft, '3 ESCENA / CAMARAS Y FX  ·  base17 = escena_modular (entrada 0, sin FX) · baseN FX  ->  switch23  ->  level2 -> out2 -> null28 (a /project1)')
+        y -= alto(fr) + DY + GAP
     # 4 SISTEMA
     sis = [o for o in (R.op(n) for n in ('show', 'ui_perform', 'td_mcp', '_respaldo')) if o is not None and o.path not in placed]
     resto = sorted([o for o in R.children if o.path not in placed and o not in sis and o.OPType != 'annotateCOMP'],

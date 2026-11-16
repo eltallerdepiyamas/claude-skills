@@ -21,7 +21,7 @@ Creado el {{FECHA}} desde td-vj-builder ({{VERSION}}). Esta carpeta = `project.f
 
 ## Control
 - MIDI en `/project2/midi_*`; Beatstep canal 9 escenas, 10 y 11 visuales y FX. Convencion: pads de arriba (n45-52) = visuales, pads de abajo (n37-44) = FX; CH10 cubre 1-8, CH11 cubre 9-16. Si un show necesita mas, se extiende hacia arriba (CH12, CH13, ...) con la misma estructura, nunca abajo del 9.
-- Luces de pads: Out Device del Beatstep en el MIDI Mapper.
+- Luces del Beatstep: ya no forman parte de los shows (no funcionaron). `control/quitar_beatstep_luces.py` las quita; armar.py lo corre.
 - Companion: `python control/gen_companion.py` e importar `control/streamdeck.companionconfig`.
 - Al traer un visual de otro proyecto: `_lib/pal_norte.py` monta su `.tox`; el parametro que mas lo distingue va al slot 5 y lo que valga la pena como extra. Todo lo que pase de 5 aparece en la UI.
 - Barra de la UI: ACTUALIZAR THUMBS y RESET FEEDBACK (encuentra los Feedback nuevos solo).
@@ -34,7 +34,7 @@ Creado el {{FECHA}} desde td-vj-builder ({{VERSION}}). Esta carpeta = `project.f
 
 ## Agregado 2026-11-15 (de Casa Bacardi y LJ Metropolitan)
 - Stream Deck + XL: `python control/gen_companion_xl.py` (una pagina por canal del Beatstep, de `control/bancos.json`) e importar `control/streamdeck_xl.companionconfig`. En TD, una vez: `control/instalar_xl_osc.py` con `APPLY = True` (perillas, blackout, modo show, reaccion). Shows con camaras: `gen_companion_xl_camaras.py`.
-- Pads y bancos: `BANCOS` en `builders/herramientas/ui_bancos.py` (vacio en la plantilla = no toca nada). De ahi salen `table1`, thumbs por canal, luces y `control/bancos.json`. Comprobar con `probar_pads_bancos.py`.
+- Pads y bancos: `BANCOS` en `builders/herramientas/ui_bancos.py` (vacio en la plantilla = no toca nada). De ahi salen `table1`, thumbs por canal y `control/bancos.json`. Comprobar con `probar_pads_bancos.py`.
 - MODO SHOW (`setup_modo_show.py`): candado de resolucion, fuente de audio, demo, dispositivos y pantallas; boton en la barra de la UI y PARAMETROS EXTRAS para los ajustes del soundcheck.
 - BLACKOUT: boton en SHOW, fundido de 0.8 s a negro; otro toque regresa. El candado nunca lo bloquea.
 - Audio global (`setup_audio_global.py`, hub -> Audio): Autonivel, Reaccion y Suavizado para todo a la vez; pestana AUDIO EN VIVO en SHOW.

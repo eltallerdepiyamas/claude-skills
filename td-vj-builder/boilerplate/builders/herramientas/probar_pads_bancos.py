@@ -4,8 +4,6 @@ R = op('/project2')
 sw, fx = R.op('switch2'), R.op('switch23')
 t = R.op('table1')
 mod = R.op('ui_perform/ui_lib').module
-if not getattr(mod, '_BANCOS', None):
-    raise SystemExit('[alto] BANCOS vacio en builders/herramientas/ui_bancos.py: nada que probar')
 vk = R.op('vis_knobs_lib').module
 print('switch23 entradas', [i.name for i in fx.inputs])
 print('notas repetidas', [n for n in {t[r, 0].val for r in range(t.numRows)} if n and sum(t[r, 0].val == n for r in range(t.numRows)) > 1])
@@ -33,5 +31,6 @@ for canal, slots in mod._BANCOS.items():
         print(canal, pad + 1, note, ex.name, '->', int(sw.par.index.eval()), b.name if b else None, b.fetch('nombre', '') if b else '', 'OK' if ok else 'MAL')
 sw.par.index, fx.par.index = antes
 print('fallas', bad, '· switch2 restaurado', sw.par.index.eval())
-print('luces', R.op('bs_luces_exec').module.deseados(), t[antes[0], 0].val)
+if R.op('bs_luces_exec') is not None:          # las luces del Beatstep ya no son parte de los shows
+    print('luces', R.op('bs_luces_exec').module.deseados(), t[antes[0], 0].val)
 print('errores', [o.path for o in R.findChildren(maxDepth=1) if o.errors(recurse=False) or o.scriptErrors(recurse=False)][:10])

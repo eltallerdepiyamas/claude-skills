@@ -50,6 +50,7 @@ if mods.get('escena_modular', True):
     paso('dispositivos de camara (pestana Dispositivos)', 'builders/herramientas/setup_devices_camaras.py')
 paso('audio global (Autonivel · Reaccion · Suavizado)', 'builders/herramientas/setup_audio_global.py')
 paso('MODO SHOW (candado)', 'builders/herramientas/setup_modo_show.py')
+paso('sin luces del Beatstep (ya no van en los shows)', 'control/quitar_beatstep_luces.py')
 paso('vigia de audio (despierta audioAnalysis)', 'builders/herramientas/setup_vigia_audio.py')
 paso('UI', 'builders/herramientas/setup_ui.py')
 paso('ventana de perform nativa (escala de Windows)', 'builders/herramientas/ajustar_ventana_perform.py')
