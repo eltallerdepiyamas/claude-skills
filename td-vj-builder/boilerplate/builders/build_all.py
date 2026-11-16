@@ -16,8 +16,10 @@ def _by_base(paths):
 
 BUILDERS = _by_base(glob.glob(HERE + '/visuales/setup_base*.py'))
 BUILDERS += _by_base(glob.glob(HERE + '/efectos/setup_base*.py'))
+# layouts de escena_modular (layout_rs_*): después de las bases, antes de las herramientas
+BUILDERS += sorted(glob.glob(HERE + '/layouts/setup_layout_*.py'))
 # herramientas propias del show (si existen): salidas a Resolume, previz…
-for tool in ('setup_salidas.py', 'setup_previz.py'):
+for tool in ('setup_salidas.py', 'setup_previz.py', 'setup_ui.py'):
     if os.path.exists(HERE + '/herramientas/' + tool):
         BUILDERS.append(HERE + '/herramientas/' + tool)
 

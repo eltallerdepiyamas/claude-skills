@@ -1,56 +1,46 @@
-# {{PROYECTO}} — Visuales en tiempo real
+# {{PROYECTO}} — visuales TouchDesigner
 
-Contexto de trabajo del show para la skill `td-vj-builder`. Esta carpeta = `project.folder` (guarda aquí el `.toe`).
-Creado desde el boilerplate {{VERSION}} el {{FECHA}}.
+Creado el {{FECHA}} desde td-vj-builder ({{VERSION}}). Esta carpeta = `project.folder`.
 
-**Alcance:** <!-- fechas, venue, pantallas, qué va en cada una -->
-**Brief:** `research/` (generado con `references/research-prompt.md` de la skill).
-**Gustos / no:** <!-- lo que el usuario pidió evitar -->
+## Arranque
+1. Llenar `proyecto.json` (resolucion, paleta, camaras).
+2. Abrir el `.toe`.
+3. Correr `armar.py` (por MCP o Textport) y despues `python control/gen_companion.py` (o `gen_companion_xl.py` para el Stream Deck + XL).
+4. Visual: `builders/visuales/`. FX: `builders/efectos/`. Escena: `builders/layouts/`. Reconstruir con `builders/build_all.py`.
 
-## Estructura
+## Rig
+- Visuales `base1-16` -> `switch2` -> `master_visuales`.
+- `base17` = escena limpia; FX `base18-32` -> `switch23` -> `master_fx`.
+- `/project1`: `select47`, `select2` -> FX globales -> `color_final` -> `ndiout1`.
+- Hub `/project2/show`: color, audio (siempre mono) y resolucion.
+- Salidas: `master_<que manda>`. Acomodo: de arriba a abajo, una fila por cadena.
+- Bases vacias sin cook; `build_visual` / `build_effect` las prenden. Pads sin contenido no hacen nada.
+- 5 sliders: intensidad · velocidad · distorsion · color · firma, + pagina Audio.
+- Shaders de escena: usar `uPhase`; el color sale de la paleta, nunca hue ni RGB.
+- En la UI se dice ESCENA; "layout" es termino interno.
 
-```
-01. EDITABLES/
-├── <show>.toe
-├── CLAUDE.md                    ← este archivo
-├── _lib/tdvj_core.py            ← núcleo (contrato, audio, resolución, grafo, uniforms) — NO editar por show
-├── _lib/rig.py                  ← lo propio del show: rangos de bases, CHOP de audio, cámaras
-├── _templates/                  ← setup_baseXX_visual.py + visual.frag de ejemplo
-├── shaders/visuales/ · shaders/efectos/
-├── builders/build_all.py        ← corre todos los builders
-├── builders/visuales/ · builders/efectos/   ← setup_baseXX_<nombre>.py
-├── builders/herramientas/       ← limpiar_bases.py · aplicar_resolucion.py (+ salidas/previz del show)
-├── control/                     ← Stream Deck (Companion) + MIDI: ver "Control en vivo"
-├── research/ · media/ · exports/
-```
+## Control
+- MIDI en `/project2/midi_*`; Beatstep canal 9 escenas, 10 y 11 visuales y FX. Convencion: pads de arriba (n45-52) = visuales, pads de abajo (n37-44) = FX; CH10 cubre 1-8, CH11 cubre 9-16. Si un show necesita mas, se extiende hacia arriba (CH12, CH13, ...) con la misma estructura, nunca abajo del 9.
+- Luces de pads: Out Device del Beatstep en el MIDI Mapper.
+- Companion: `python control/gen_companion.py` e importar `control/streamdeck.companionconfig`.
+- Al traer un visual de otro proyecto: `_lib/pal_norte.py` monta su `.tox`; el parametro que mas lo distingue va al slot 5 y lo que valga la pena como extra. Todo lo que pase de 5 aparece en la UI.
+- Barra de la UI: ACTUALIZAR THUMBS y RESET FEEDBACK (encuentra los Feedback nuevos solo).
+- Show sin camaras ni FX: `modulos.escena_modular` y `fx` en false; `armar.py` deja solo visuales con pestana Paleta.
+- Hub `/project2/show`, pestanas (orden: `setup_orden_pestanas.py`): Dispositivos · Resolucion · Audio · LUT · MIDI · Ensayo · Pantallas · Correccion de color. La UI muestra todas las que existan.
+- Resolucion: todo sigue a `show` -> Resolucion (W / H), tambien en vertical. `auditar_resolucion.py` dice que no la sigue; `aplicar_resolucion.py` lo liga. Un TOP con tamano propio a proposito lleva el tag `res_propia`.
+- Pantallas (`setup_test_pantallas.py`): patrones de prueba antes de `ndiout1`; boton PANTALLAS y ABRIR UI en el Stream Deck.
+- MIDI por nombre (`setup_midi_devices.py`): `midi_midiin1` = MIDI Mix, `midi_midiin2` = BeatStep, aunque TD los detecte en otro orden.
+- Al correr el builder de una base, la UI de perform se rehace sola (thumb nuevo incluido). VISUAL y FX muestran todas sus filas; solo ESCENA se pagina.
 
-## Rig (no negociable)
-
-- Visuales `base1`–`16` (página `Visual`) · `base17` = fuente limpia (cámaras) · Efectos `base18`–`24` y `base38`–`45` (página `Filter`).
-  Nunca renombrar/mover/destruir un baseX. Rangos en `_lib/rig.py`.
-- 5 sliders en orden de rol: **1 intensidad · 2 velocidad · 3 distorsión · 4 color · 5 firma** + `Bypass` aparte.
-- Página `Audio` en TODAS las bases: Audioreact · Low/Mid/High · Audiotarget · Audiomult · Smooth · Audio CHOP · Energy.
-- Página `Salida`: Resw/Resh por base.
-
-## Control en vivo (`control/`)
-
-| Controlador | Rol |
-|---|---|
-| **Stream Deck** (Companion) | **elegir**: visual, FX, escena, cámara. Botones que se quedan encendidos. |
-| **MIDImix** | **continuo**: fila de arriba knobs 1–5 = visual activo · fila de abajo knobs 1–5 = FX activo · sección de color · faders. |
-| **Beatstep Pro** (respaldo) | pads: canal 10 = visuales 1–8 (arriba) y FX 17–24 (abajo) · canal 11 = visuales 9–16 y FX 38–45. |
-
-- Companion → OSC `127.0.0.1:7010` → OSC In DAT (`control/oscin1_callbacks.py`). El 7000 lo usa Resolume.
-- TD → Companion OSC `127.0.0.1:12320` (`control/setup_companion_feedback.py`): activar OSC en Companion (asistente → Services).
-- Botones del Stream Deck: `python control/gen_companion.py` → importar `control/streamdeck.companionconfig`.
-
-## Bases ocupadas
-
-| Base | Nombre | Shader / origen | Firma | Estado |
-|---|---|---|---|---|
-
-## Pendientes
-
-## Notas del show
-
-<!-- Tuyo: venue, resolución real, ruta de audio, lo que funcionó en ensayo. La skill no borra esta sección. -->
+## Agregado 2026-11-15 (de Casa Bacardi y LJ Metropolitan)
+- Stream Deck + XL: `python control/gen_companion_xl.py` (una pagina por canal del Beatstep, de `control/bancos.json`) e importar `control/streamdeck_xl.companionconfig`. En TD, una vez: `control/instalar_xl_osc.py` con `APPLY = True` (perillas, blackout, modo show, reaccion). Shows con camaras: `gen_companion_xl_camaras.py`.
+- Pads y bancos: `BANCOS` en `builders/herramientas/ui_bancos.py` (vacio en la plantilla = no toca nada). De ahi salen `table1`, thumbs por canal, luces y `control/bancos.json`. Comprobar con `probar_pads_bancos.py`.
+- MODO SHOW (`setup_modo_show.py`): candado de resolucion, fuente de audio, demo, dispositivos y pantallas; boton en la barra de la UI y PARAMETROS EXTRAS para los ajustes del soundcheck.
+- BLACKOUT: boton en SHOW, fundido de 0.8 s a negro; otro toque regresa. El candado nunca lo bloquea.
+- Audio global (`setup_audio_global.py`, hub -> Audio): Autonivel, Reaccion y Suavizado para todo a la vez; pestana AUDIO EN VIVO en SHOW.
+- Barra de la UI: chip de FPS (verde -> rojo), titulo de SHOW con estado NDI, aviso SIN SENAL por camara. Un texto de la UI nunca se corta: baja la letra y parte renglones.
+- UI cortada en Perform (Windows al 125 %, 150 %): `ajustar_ventana_perform.py` (lo corre `armar.py`).
+- Redes (`red`): sus shaders se cargan con el texto directo, sin syncfile (TD reescribe el archivo con BOM). Uniforms solo con `tdvj_core.bind_vectors`; poner vecN a mano dejaba los defaults 1,1,1,1.
+- Camaras (LJ): `setup_devices_camaras.py` fija cada camara a su puerto USB y agrega Hay camara (`Hay1-6`); UI y Stream Deck solo muestran las que existen. Opcionales: `setup_lut_camaras.py`, `setup_feedback_salto.py`, `setup_salida_led.py`, `prueba_preshow.py` (un dia antes del show).
+- Interior de cada base: `_lib/acomodo.py` lo acomoda solo al construir (bloques por tipo de nodo).
+- Referencias: los visuales tienen que estar al nivel de festivales actuales (MUTEK, Sónar+D, CTM, Unsound, Ars Electronica, Decibel): ver research/referentes_contemporaneos.md; cada show suma sus referencias propias en research/.

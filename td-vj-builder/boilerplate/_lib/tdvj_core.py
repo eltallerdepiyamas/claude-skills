@@ -42,8 +42,8 @@ ROOT          = '/project2'
 # sin cámaras en este show: base17 ya no es el host de escena_modular (2026-10-23, ahora es visual).
 # CAMERA_SWITCH queda solo como fallback de build_effect; los efectos de marca pasan su propio source.
 ESCENA        = ROOT + '/base17/escena_modular'
-CAMERA_SWITCH = ESCENA + '/switch1'
-AUDIO_SOURCE  = '/project1/null4'          # canónico del rig · canales: low mid high (+ otros)
+CAMERA_SWITCH = ROOT + '/base17/switch1'
+AUDIO_SOURCE  = '/project2/audio/master_audio'          # canónico del rig · canales: low mid high (+ otros)
 
 # 2026-10-23: base17–18 alojan visuales (refs. pinterest del cliente; sin cámaras) → marca empieza en base19
 VISUAL_BASES = list(range(1, 19))
@@ -221,6 +221,33 @@ def _band_expr(band):
             "and me.op('audio_smooth')['{b}'] is not None else 0.0)").format(b=band)
 
 
+def master_res_pars():
+    """Ancho y alto de la resolución MAESTRA del show: escena_modular → pestaña Resolucion
+    (ResW / ResH, o los dos primeros números de esa pestaña). None si no existe.
+    Primero el hub /project2/show (W / H): es la fuente de la resolución y existe en todos los shows,
+    también en los que no tienen escena_modular (solo visuales)."""
+    hub = op(ROOT + '/show')
+    if hub is not None and getattr(hub.par, 'W', None) is not None and getattr(hub.par, 'H', None) is not None:
+        return hub.par.W, hub.par.H
+    s = op(ESCENA)
+    if s is None:
+        return None
+    rw = next((getattr(s.par, n) for n in ('Resw', 'ResW') if getattr(s.par, n, None) is not None), None)
+    rh = next((getattr(s.par, n) for n in ('Resh', 'ResH') if getattr(s.par, n, None) is not None), None)
+    if rw is None or rh is None:
+        pg = next((g for g in s.customPages if g.name.lower().startswith('resol')), None)
+        nums = [p for p in pg.pars if p.isNumber] if pg is not None else []
+        if len(nums) < 2:
+            return None
+        rw, rh = nums[0], nums[1]
+    return rw, rh
+
+
+def master_res_exprs():
+    m = master_res_pars()
+    return None if m is None else ["op('%s').par.%s" % (p.owner.path, p.name) for p in m]
+
+
 def build_contract(comp, page_name, five_slots, extras=(), colors=(), resolution=DEFAULT_RES,
                    colmap='repartido', techo=None):
     """Página principal (5 slots + extras + colores + Bypass), página Audio y página Salida."""
@@ -263,16 +290,20 @@ def build_contract(comp, page_name, five_slots, extras=(), colors=(), resolution
     _prune_and_sort(ap, ['Audioreact', 'Low', 'Mid', 'High', 'Audiotarget', 'Audiomult',
                          'Smooth', 'Audiochop', 'Energy'])
 
-    # Salida: resolución propia de cada base
+    # Salida: resolución de la base. Por default SIGUE a la resolución maestra del show (escena_modular →
+    # Resolucion): cambiar esa cambia todo. Si escribes un número a mano en una base, esa base se queda con
+    # el suyo (deja de seguir); builders/herramientas/aplicar_resolucion.py la vuelve a ligar.
     sp = _page(comp, 'Salida')
-    _int(sp, 'Resw', 'Resolución W', 64, 8192, int(resolution[0]))   # default solo al crear: luego manda tu valor
+    _int(sp, 'Resw', 'Resolución W', 64, 8192, int(resolution[0]))
     _int(sp, 'Resh', 'Resolución H', 64, 8192, int(resolution[1]))
-    # cómo se acomoda en las 8 columnas (lo aplica /project2/salidas). Lo dicta SIEMPRE el CONFIG
-    # del builder: es parte del diseño de la base, no se opera en vivo.
-    cm = _menu(sp, 'Colmap', 'Columnas: acomodo', ['repartido', 'repetido'],
-               ['Repartido (un canvas alrededor)', 'Repetido (igual en cada columna)'], colmap)
-    cm.val = colmap
-    keep = ['Resw', 'Resh', 'Colmap']
+    mres = master_res_exprs()
+    if mres:
+        for p, e, d in ((comp.par.Resw, mres[0], resolution[0]), (comp.par.Resh, mres[1], resolution[1])):
+            if p.mode == type(p.mode).CONSTANT and int(p.eval()) == int(d):
+                p.expr = e       # estaba en el default: se liga a la maestra
+    # 'Columnas: acomodo' (Colmap) era de un show con 8 columnas: ya no es parte del contrato de las bases.
+    # El argumento colmap se sigue aceptando para no romper builders viejos, pero no crea nada.
+    keep = ['Resw', 'Resh']
     if techo:   # versión propia para el techo (out_techo, cuadrada); si no, el techo recorta out1 a 1:1
         _int(sp, 'Techores', 'Techo: resolución (1:1)', 64, 8192, int(techo))
         keep.append('Techores')
@@ -570,6 +601,47 @@ def refresh_salidas():
             p.expr = e                          # re-asignar fuerza a evaluar de nuevo
 
 
+# ─────────────────────────────────────────────────────────────── UI al dia
+UI_FLAG = 'tdvj_ui_pendiente'
+
+
+def refresh_ui():
+    """Al construir una base, la UI de perform se rehace sola: el visual / FX nuevo aparece con su thumb
+    sin correr nada mas. Se hace unos cuadros despues y UNA sola vez aunque corran varios builders
+    seguidos (build_all.py ya rehace la UI al final y cancela esta recarga)."""
+    root = op(ROOT)
+    if root is None or root.op('ui_perform') is None:
+        return
+    if not os.path.isfile(project.folder + '/builders/herramientas/setup_ui.py'):
+        return
+    if root.fetch(UI_FLAG, False, search=False):
+        return
+    root.store(UI_FLAG, True)
+    run("import sys\nm = sys.modules.get('tdvj_core')\nif m is not None:\n    m._rebuild_ui()", delayFrames=3)
+
+
+def _rebuild_ui():
+    root = op(ROOT)
+    if root is None or not root.fetch(UI_FLAG, False, search=False):
+        return                                   # alguien mas ya la rehizo
+    root.unstore(UI_FLAG)
+    show = root.op('show')
+    pasos = ['builders/herramientas/setup_ui.py']
+    if show is not None and getattr(show.par, 'Colorar', None) is not None:
+        pasos.insert(0, 'builders/herramientas/paleta_show.py')     # show solo visuales: liga la paleta de la base nueva
+    for rel in pasos:
+        path = project.folder + '/' + rel
+        if not os.path.isfile(path):
+            continue
+        try:
+            with open(path, encoding='utf-8') as f:
+                exec(compile(f.read(), path, 'exec'), dict(globals(), __file__=path, __name__='__tdvj_ui__'))
+        except Exception:
+            import traceback
+            traceback.print_exc()
+            warn('no pude rehacer la UI con %s' % rel)
+
+
 # ─────────────────────────────────────────────────────────────── builders
 def build_visual(base, shader, five_slots, signature_extras=(), color_uniforms=(),
                  source=None, feedback=False, extra=None, page='Visual', resolution=DEFAULT_RES,
@@ -590,6 +662,7 @@ def build_visual(base, shader, five_slots, signature_extras=(), color_uniforms=(
     """
     check_range(base, VISUAL_BASES, 'visuales (1–18)')
     comp = find_base(base)
+    comp.allowCooking = True    # las bases vacias estan apagadas; al construirse se prenden
     build_contract(comp, page, five_slots, signature_extras, color_uniforms, resolution=resolution,
                    colmap=colmap, techo=1080 if techo else None)
     clear_managed(comp)
@@ -654,9 +727,22 @@ def build_visual(base, shader, five_slots, signature_extras=(), color_uniforms=(
         if ot is not None:
             ot.destroy()            # ya no hay versión de techo: salidas vuelve a recortar out1
     refresh_salidas()
+    refresh_ui()
     log('%s listo (visual%s%s) ← %s' % (comp.path, ' + input' if source else ' puro',
                                          ' + techo' if techo else '', shader))
+    _acomodar(comp)
     return comp
+
+
+def _acomodar(comp):
+    """Acomodo unico del interior (_lib/acomodo.py): bloques por tipo de nodo, de arriba a abajo."""
+    try:
+        import importlib
+        import acomodo
+        importlib.reload(acomodo)
+        acomodo.interior(comp)
+    except Exception as e:
+        warn('%s: no se pudo acomodar el interior (%s); la base funciona igual' % (comp.path, e))
 
 
 def build_effect(base, shader, five_slots, signature_extras=(), color_uniforms=(),
@@ -668,6 +754,7 @@ def build_effect(base, shader, five_slots, signature_extras=(), color_uniforms=(
     """
     check_range(base, EFFECT_BASES, 'efectos (19–24, 38–45)')
     comp = find_base(base)
+    comp.allowCooking = True    # las bases vacias estan apagadas; al construirse se prenden
     build_contract(comp, page, five_slots, signature_extras, color_uniforms)
     clear_managed(comp)
 
@@ -698,5 +785,7 @@ def build_effect(base, shader, five_slots, signature_extras=(), color_uniforms=(
             traceback.print_exc()
             warn('%s: falló extra — la base queda conectada pero sin esos uniforms' % comp.path)
     check_uniforms(abspath, _bind_vectors(g, specs))
+    refresh_ui()
     log('%s listo (efecto%s) ← %s' % (comp.path, ' + feedback' if feedback else '', shader))
+    _acomodar(comp)
     return comp

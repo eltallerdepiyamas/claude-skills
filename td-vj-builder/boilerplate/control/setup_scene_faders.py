@@ -7,6 +7,7 @@
 #
 # - Parametros: los Float de cada layout_xxx ligados a escena_modular
 #   (sin colores, sin camcount/camfit, sin Escena activa), en orden.
+#   Layouts de layout_core (layout_rs_*): los Float de su pagina Layout (5 slots + extras).
 # - Takeover: un fader no toma control hasta pasar por el valor actual,
 #   asi nada salta al cambiar de escena.
 # - scene_faders_map (Table DAT) muestra que mueve cada fader.
@@ -17,7 +18,7 @@
 # =============================================================
 
 SCENE_PATH = '/project2/base17/escena_modular'
-MIDI_IN    = '/project1/midiin1'
+MIDI_IN    = '/project2/midi_midiin1'
 FADERS     = ['ch1ctrl32', 'ch1ctrl50', 'ch1ctrl54', 'ch1ctrl58', 'ch1ctrl62']   # MASTER (CC63) = OSC a Resolume
 LABELS     = ['F4', 'F5', 'F6', 'F7', 'F8']
 
@@ -42,8 +43,31 @@ def layout_for(name):
     return lay
 
 
+def foco():
+    """Visual / FX enfocado en AJUSTES (None = escena). Lo guarda mix_feedback en mix_comp."""
+    path = SCENE.fetch('mix_comp', '', search=False, storeDefault=False)
+    c = op(path) if path else None
+    return c if c is not None and c.parent().path == '/project2' else None
+
+
+def clave():
+    c = foco()
+    return c.path if c is not None else SCENE.par.Modoescena.eval()
+
+
+def extras(c):
+    """Segunda capa: los parametros de la pagina despues de los 5 de contrato (los 5 van en knobs)."""
+    pg = next((g for g in c.customPages if g.name in ('Visual', 'Filter')), None)
+    if pg is None:
+        return []
+    return [p for p in pg.pars if p.isFloat and p.style not in ('RGB', 'RGBA')][5:5 + len(FADERS)]
+
+
 def scene_pars(name=None):
-    """Parametros master (en escena_modular) que mueve cada fader."""
+    """Parametros que mueve cada fader: escena = sus sliders · visual / FX = sus extras."""
+    c = foco()
+    if c is not None and name is None:
+        return extras(c)
     lay = layout_for(name or SCENE.par.Modoescena.eval())
     if lay is None:
         return []
@@ -64,11 +88,16 @@ def scene_pars(name=None):
         mp = getattr(SCENE.par, names[-1], None) if names else None
         if mp is not None:
             out.append(mp)
+    if not out:
+        # layouts nuevos (layout_core): sus sliders viven en su pagina Layout, en orden de rol
+        pg = next((g for g in lay.customPages if g.name == 'Layout'), None)
+        if pg is not None:
+            out = [p for p in pg.pars if p.isFloat and p.style not in ('RGB', 'RGBA')]
     return out[:len(FADERS)]
 
 
 def refresh(*args):
-    state['scene'] = SCENE.par.Modoescena.eval()
+    state['scene'] = clave()
     state['armed'] = set()
     state['prev'] = {}
     t = op('scene_faders_map')
@@ -85,7 +114,7 @@ def refresh(*args):
 def on_fader(chname, val):
     if chname not in FADERS:
         return
-    if state['scene'] != SCENE.par.Modoescena.eval():
+    if state['scene'] != clave():
         refresh()
     i = FADERS.index(chname)
     pars = scene_pars()

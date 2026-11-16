@@ -11,7 +11,7 @@ The rig is fixed and the skill must respect it exactly. A MIDI sampler maps phys
 
 ## Boilerplate (preferred for every new show)
 
-`plantilla/` in this skill is the full show template, born from LITTLE JESUS x RIO SALVAJE (2026-11): it includes `BOILERPLATE.toe`, already wired. Start every show from it. (`boilerplate/` is the older skeleton without a `.toe`; do not use it for new shows.)
+`boilerplate/` in this skill is the full show template, born from LITTLE JESUS x RIO SALVAJE (2026-11): it includes `BOILERPLATE.toe`, already wired. Start every show from it. **"Boilerplate" and "plantilla" mean the same thing**: this one folder, `boilerplate/`, the mirror of the user's TouchDesigner template folder `FREELANCE/BOILERPLATE_TD` (the one with the `ES_BOILERPLATE` flag). There is no other template folder.
 
 ```
 python ~/claude-skills/td-vj-builder/nuevo_proyecto.py "<show>/01. EDITABLES" "<NOMBRE>"
@@ -33,9 +33,9 @@ The rig in the template:
 - Examples: Formas (`base1`), Trama (`base18`), Multiview, Camara Unica.
 - `_lib/tdvj_core.py` is the shared core: **never edit it for one show.**
 
-Improvements go back into `plantilla/` here, then `git push`. To refresh `BOILERPLATE.toe`, use `builders/herramientas/vaciar_show.py` on a copy that has an `ES_BOILERPLATE` file.
+Improvements go into `FREELANCE/BOILERPLATE_TD` and are mirrored into `boilerplate/` here (text files only; never the `.token` of the TD MCP), then `git push`. To refresh `BOILERPLATE.toe`, use `builders/herramientas/vaciar_show.py` on a copy that has an `ES_BOILERPLATE` file.
 
-## Live control layer (`plantilla/control/`)
+## Live control layer (`boilerplate/control/`)
 
 One job per controller:
 
@@ -48,7 +48,7 @@ One job per controller:
 - **Stream Deck pages by show.** Standard: VISUALES and FX (plus MIX when it exists). ESCENAS, RAND 1/RAND 2 and CAMARAS exist only in Little Jesus, because its multicam scenes live in `base17/escena_modular`; `gen_companion.py` in the boilerplate still carries them as that show's example — drop them for a show without `escena_modular`. Add extra pages only when the show needs them.
 - Companion → OSC `127.0.0.1:7010` → OSC In DAT running `oscin1_callbacks.py` (`/td/<Par> v`, `/td/inc/<Par> d`, `/td/fx i`). **Port 7000 belongs to Resolume Arena.**
 - TD → Companion OSC `127.0.0.1:12320` via `setup_companion_feedback.py`, so buttons stay in sync when something changes from TD, MIDI or pads. Companion's OSC listener only saves if its Configuration Wizard is finished (not closed with X).
-- **Stream Deck + XL** (9×4 keys, 6 touch-strip screens, 6 knobs; Companion sees a 9×6 grid: row 4 = screens, row 5 = knobs at columns 0,2,3,5,6,8): `plantilla/control/gen_companion_xl.py` makes one page per Beatstep channel from `control/bancos.json` — 16 pads 8×2 like the UI thumbs, fixed rows (color A/B, audio, sens, reset, reset feedback · blackout, modo show, abrir UI, thumbs, demo, rec), channel tabs on the right, knobs 1–5 = the live visual's 5 slots (screens show name and %, tap = that slot follows the audio), knob 6 = global audio Reaccion. Run `plantilla/control/instalar_xl_osc.py` once with `APPLY = True` (adds `/td/xl/...` to `oscin1_callbacks.py` — the source file, not just the DAT — creates `show/xl_feedback`, and stores `streamdeck_xl` so `mix_feedback` stops "pressing" key 1/1/0, which on the XL is a pad). Camera shows: `plantilla/control/gen_companion_xl_camaras.py` (Little Jesus Metropolitan). The 15-key `gen_companion.py` stays as backup.
+- **Stream Deck + XL** (9×4 keys, 6 touch-strip screens, 6 knobs; Companion sees a 9×6 grid: row 4 = screens, row 5 = knobs at columns 0,2,3,5,6,8): `boilerplate/control/gen_companion_xl.py` makes one page per Beatstep channel from `control/bancos.json` — 16 pads 8×2 like the UI thumbs, fixed rows (color A/B, audio, sens, reset, reset feedback · blackout, modo show, abrir UI, thumbs, demo, rec), channel tabs on the right, knobs 1–5 = the live visual's 5 slots (screens show name and %, tap = that slot follows the audio), knob 6 = global audio Reaccion. Run `boilerplate/control/instalar_xl_osc.py` once with `APPLY = True` (adds `/td/xl/...` to `oscin1_callbacks.py` — the source file, not just the DAT — creates `show/xl_feedback`, and stores `streamdeck_xl` so `mix_feedback` stops "pressing" key 1/1/0, which on the XL is a pad). Camera shows: `boilerplate/control/gen_companion_xl_camaras.py` (Little Jesus Metropolitan). The 15-key `gen_companion.py` stays as backup.
 - `gen_companion.py` (plain Python, outside TD) generates the whole `.companionconfig`: pages, latched buttons via custom variables, uniform text size, no top bar. Its JSON format was read from Companion 5.1.1's own code — re-check on a new major version.
 - `setup_scene_faders.py` — **optional, multicam shows only**: faders 4–8 follow the active scene's float params with takeover. Elsewhere faders 4–8 stay free; faders 1–3 + MASTER go to Resolume by OSC.
 - `midi_inventario.py` — who reads each CC/note (`BOTONES = True` for notes) and **learn mode**: every control moved is logged once, in order, to `control/learn_log.md`. Turn that into the show's `controladores.md` (physical control → MIDI → what it does) so the user can say "MIDImix knob row 2 col 3". `midi_remap_filas.py` moves a whole knob row to another (frozen values for what gets displaced).

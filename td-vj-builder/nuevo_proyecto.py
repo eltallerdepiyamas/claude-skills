@@ -3,7 +3,7 @@ nuevo_proyecto.py — arranca un show nuevo desde el boilerplate de td-vj-builde
 
     python nuevo_proyecto.py "<carpeta del proyecto>/01. EDITABLES" "NOMBRE DEL SHOW"
 
-Copia plantilla/ (con BOILERPLATE.toe, renombrado al show) sin pisar archivos que ya existan,
+Copia boilerplate/ (con BOILERPLATE.toe, renombrado al show) sin pisar archivos que ya existan,
 llena CLAUDE.md y proyecto.json con el nombre, y deja en _lib/BOILERPLATE_VERSION el commit del repo de skills que se usó.
 El proyecto queda con SU copia del núcleo: actualizar la skill no cambia un show ya armado.
 Para traer un núcleo nuevo a un show: copia a mano boilerplate/_lib/tdvj_core.py.
@@ -16,7 +16,7 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SRC = os.path.join(HERE, 'plantilla')
+SRC = os.path.join(HERE, 'boilerplate')
 
 
 def _version():
