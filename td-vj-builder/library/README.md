@@ -20,7 +20,7 @@ proyecto salió y qué rangos quedaron buenos.
 
 _Origen de cada archivo. Antes de escribir un shader nuevo, busca aquí algo cercano y adáptalo._
 
-### visuals/ (50)
+### visuals/ (55)
 
 | Archivo | Proyecto |
 |---|---|
@@ -74,6 +74,11 @@ _Origen de cada archivo. Antes de escribir un shader nuevo, busca aquí algo cer
 | `cortinas.glsl` | casa bacardi · corona capital |
 | `pixel_sort.glsl` | casa bacardi · corona capital |
 | `ron_liquido_causticas.glsl` | casa bacardi · corona capital |
+| `red_nodos.glsl` | casa bacardi · corona capital |
+| `contornos.glsl` | casa bacardi · corona capital |
+| `campo.glsl` | casa bacardi · corona capital |
+| `armonografo.glsl` | casa bacardi · corona capital |
+| `pulso_neon_v2.glsl` | casa bacardi · corona capital |
 
 ### effects/ (25)
 

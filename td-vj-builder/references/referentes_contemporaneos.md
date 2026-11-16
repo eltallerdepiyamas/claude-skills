@@ -52,6 +52,11 @@ el showcase de Derivative y Interactive & Immersive HQ. Para shaders: Shadertoy 
 | Cortinas de luz / moiré | capas de líneas con paralaje y aberturas que abre el bajo | `visuals/cortinas.glsl` |
 | Pixel sort / derretido digital | feedback con umbral: lo brillante gotea por columnas | `visuals/pixel_sort.glsl` |
 | Luz a través de líquido | cáusticas: dos capas de voronoi (F2−F1) deformadas, destellos en los nudos | `visuals/ron_liquido_causticas.glsl` |
+| Red de nodos (plexus) | nodos en rejilla suelta, segmentos entre vecinos cercanos; el kick abre el radio | `visuals/red_nodos.glsl` |
+| Mapa topográfico | curvas de nivel con `fract` + `fwidth`, curva maestra cada 5, picos que levanta el kick | `visuals/contornos.glsl` |
+| Limaduras / campo de fuerza | trazos por celda orientados a un curl noise de baja frecuencia, máscara de negro | `visuals/campo.glsl` |
+| Dibujo vectorial (armonógrafo) | suma de péndulos 3D proyectada + feedback; se dibuja un tramo con traslape (`absTime.stepSeconds`) | `visuals/armonografo.glsl` |
+| Líneas neón con pulsos | listón de líneas por banda + halo + paquetes de luz por kick + ecos | `visuals/pulso_neon_v2.glsl` |
 
 Siguientes a explorar (no hechos aún): atractores con millones de puntos (POPs / instancing, ver skill `td-pops`),
 point clouds de escaneo, campos de partículas con fluido real, raymarching volumétrico de humo, láser vectorial
