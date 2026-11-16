@@ -55,3 +55,5 @@ for o in R.children:
         cajas.setdefault((round(o.nodeX / 60), round(o.nodeY / 60)), []).append(o.name)
 enc = [v for v in cajas.values() if len(v) > 1]
 print('pads movidos a la fila de su base:', movidos, '| encimados que quedan:', enc)
+# regla: todo acomodo termina con los recuadros de titulo de cada grupo
+exec(open(project.folder + '/builders/herramientas/recuadros_project2.py', encoding='utf-8').read())

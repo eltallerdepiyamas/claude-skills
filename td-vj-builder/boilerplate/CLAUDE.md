@@ -14,7 +14,7 @@ Creado el {{FECHA}} desde td-vj-builder ({{VERSION}}). Esta carpeta = `project.f
 - `/project1`: `select47`, `select2` -> FX globales -> `color_final` -> `ndiout1`.
 - Hub `/project2/show`: color, audio (siempre mono) y resolucion.
 - Salidas: `master_<que manda>`. Acomodo: de arriba a abajo, una fila por cadena.
-- **Acomodo de la red (regla del usuario):** por tipo de nodo y facil de ubicar al entrar. Todo lo que no es visual (MIDI, tablas, audio, hub, UI, control) va ARRIBA. Lo vertical es solo para los visuales (y FX si hay): bajan una fila por base, con su cadena de pad constant -> logic -> chopexec a la izquierda en la misma fila. Nada encimado. Visual nuevo: `builders/herramientas/acomodar_pads.py` lo pone en su fila. NO usar `ordenar_project2.py` para todo /project2.
+- **Acomodo de la red (regla del usuario):** por tipo de nodo y facil de ubicar al entrar. Todo lo que no es visual (MIDI, tablas, audio, hub, UI, control) va ARRIBA. Lo vertical es solo para los visuales (y FX si hay): bajan una fila por base, con su cadena de pad constant -> logic -> chopexec a la izquierda en la misma fila. Nada encimado. **Siempre con recuadros de titulo** (annotate `zona_*`) alrededor de cada grupo: `builders/herramientas/recuadros_project2.py` los dibuja sin mover nodos (acomodar_pads.py lo corre al final); si aparece un nodo sin grupo, agregarlo a `GRUPOS`. Visual nuevo: `builders/herramientas/acomodar_pads.py` lo pone en su fila. NO usar `ordenar_project2.py` para todo /project2.
 - Bases vacias sin cook; `build_visual` / `build_effect` las prenden. Pads sin contenido no hacen nada.
 - 5 sliders: intensidad · velocidad · distorsion · color · firma, + pagina Audio.
 - Shaders de escena: usar `uPhase`; el color sale de la paleta, nunca hue ni RGB.
