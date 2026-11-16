@@ -68,7 +68,7 @@ def run():
     cb = osc.par.callbacks.eval() if osc is not None and hasattr(osc.par, 'callbacks') else None
     if cb is not None:
         with open(CTRL + '/oscin1_callbacks.py', encoding='utf-8') as f:
-            cb.text = f.read()
+            cb.text = f.read().lstrip('\ufeff')     # un BOM al inicio rompe el DAT ("Cannot find function onReceiveOSC")
         print('[ok] router OSC actualizado (%s)' % cb.path)
     else:
         print('[aviso] no encontre oscin1 / su DAT de callbacks en', SCENE_PATH)
@@ -102,10 +102,23 @@ def run():
         b = _resolve(src)
         if i > 0 and _tiene_contrato(b):
             fx.append({'index': i, 'nombre': _nombre(b)})
-    slots = [{'par': 'Slot%d' % i, 'opciones': list(getattr(scene.par, 'Slot%d' % i).menuLabels)}
-             for i in range(1, 6) if getattr(scene.par, 'Slot%d' % i, None) is not None]
+    # Solo las camaras que existen en este show: show.Hay{N} (pestana Dispositivos, setup_devices_camaras.py).
+    # Sin Hay{N} (show sin esa pestana) cuentan las 6.
+    _sh = op('/project2/show')
+    def _hay(lbl):
+        m = re.search(r'(\d+)', str(lbl))
+        if not m or _sh is None:
+            return True
+        p = getattr(_sh.par, 'Hay%s' % m.group(1), None)
+        return True if p is None else bool(p.eval())
+
+    # Tantos Lugares como camaras haya (el MULTIVIEW solo lee SLOT_1..Int)
+    _n_cams = sum(1 for i in range(1, 7) if _hay('Cam %d' % i))
+    slots = [{'par': 'Slot%d' % i,
+              'opciones': [o for o in getattr(scene.par, 'Slot%d' % i).menuLabels if _hay(o)]}
+             for i in range(1, 6) if getattr(scene.par, 'Slot%d' % i, None) is not None][:_n_cams]
     m2 = getattr(scene.par, 'Menu2', None)
-    unica = {'par': 'Menu2', 'opciones': list(m2.menuLabels)} if m2 is not None else None
+    unica = {'par': 'Menu2', 'opciones': [o for o in m2.menuLabels if _hay(o)]} if m2 is not None else None
     show = {'layouts': layouts, 'visuales': visuales, 'fx': fx, 'slots': slots, 'unica': unica}
     # nombres para la pagina MENU del Stream Deck (mix_feedback manda lo activo de cada pagina)
     scene.store('menu_nombres', {'fam': {l['label']: l['familia'] for l in layouts},

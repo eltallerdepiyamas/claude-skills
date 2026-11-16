@@ -27,7 +27,9 @@ BG = (0.06, 0.06, 0.07)
 COL = {'ESCENA': (0.18, 0.49, 0.88), 'VISUAL': (0.64, 0.23, 0.77), 'FX': (0.91, 0.45, 0.11), 'SHOW': (0.08, 0.72, 0.72), 'CAMARAS': (0.13, 0.70, 0.35)}
 UI_VIEJA = ['container1', 'opviewer1', 'opviewer2', 'opviewer3', 'opviewer4',
             'parameter1', 'parameter2', 'parameter3', 'parameter4',
-            'button2', 'null2', 'logic67', 'logic68', 'chopexec36', 'chopexec37']
+            'button2', 'null2']
+# OJO: logic67 / logic68 / chopexec36 / chopexec37 NO van aqui: en shows con mas pads son cadenas de pads
+# (p. ej. logic67 = pad de la fila 49 de table1 en Casa Bacardi). Mandarlas al respaldo rompe esos pads.
 
 
 def tiene_pagina(rango, pagina):
@@ -104,7 +106,73 @@ def todos(o, pagina):
     return ' '.join(out) or 'NADA'
 
 
+FUNDIDO = 0.8        # segundos del fundido del boton BLACKOUT (a negro y de regreso)
+
+
+def fundir_master(destino, seg=None):
+    """Lleva show.Master a destino con una rampa suave, cuadro por cuadro."""
+    p = op('/project2/show').par.Master
+    a = float(p.eval())
+    n = max(2, int((FUNDIDO if seg is None else seg) * project.cookRate))
+    serie = parent().fetch('fundido_n', 0, search=False) + 1      # un fundido nuevo cancela al anterior
+    parent().store('fundido_n', serie)
+    for i in range(1, n + 1):
+        t = i / float(n)
+        t = t * t * (3.0 - 2.0 * t)
+        run("if op('/project2/ui_perform').fetch('fundido_n', 0, search=False) == args[1]: op('/project2/show').par.Master = args[0]",
+            a + (destino - a) * t, serie, delayFrames=i)
+
+
+def sin_senal(i):
+    """Camara i en vivo (dispositivo activo) pero sin cuadros entrando."""
+    v = op('/project2/base17/escena_modular/cam' + str(i) + '_vivo')
+    c = op('info_cam' + str(i))
+    if v is None or c is None or not v.par.active.eval():
+        return False
+    return c['capture_fps'] < 1
+
+
+def ndi_estado():
+    """(texto, ok) de la salida NDI."""
+    n = op('/project1/ndiout1')
+    c = op('info_ndi')
+    if n is None or c is None:
+        return ('', True)
+    if not n.par.active.eval():
+        return ('NDI APAGADO', False)
+    k = int(c['num_connected'])
+    return ('NDI SIN RECEPTOR', False) if k < 1 else ('NDI OK  ·  ' + str(k), True)
+
+
+def candado():
+    """MODO SHOW puesto (show.Modoshow, builders/herramientas/setup_modo_show.py)."""
+    p = getattr(op('/project2/show').par, 'Modoshow', None)
+    return bool(p.eval()) if p is not None else False
+
+
 def elegir(tipo, dato):
+    if tipo in ('MODOSHOW', 'CANDADOAJ'):
+        p = getattr(op('/project2/show').par, 'Modoshow' if tipo == 'MODOSHOW' else 'Candadoajustes', None)
+        if p is not None:
+            p.val = not p.eval()
+            lib = op('/project2/show/modoshow_lib')
+            if lib is not None:
+                lib.module.aplicar()        # de inmediato (el parameterexecute lo repite, es idempotente)
+        return
+    if tipo == 'BLACKOUT':
+        # fundido a negro; otro toque regresa al nivel que tenia (el candado nunca lo bloquea)
+        p = op('/project2/show').par.Master
+        if parent().fetch('en_negro', False, search=False) and p.eval() < 0.5:
+            parent().store('en_negro', False)
+            fundir_master(parent().fetch('master_antes', 1.0, search=False) or 1.0)
+        else:
+            if p.eval() > 0.02:
+                parent().store('master_antes', p.eval())
+            parent().store('en_negro', True)
+            fundir_master(0.0)
+        return
+    if candado() and tipo in ('THUMBS', 'FUENTE', 'CAMFUENTE'):
+        return      # con candado: ni recapturar thumbs (congela) ni cambiar fuentes
     if tipo == 'ESCENA':
         op('%s').par.Modoescena = dato
     elif tipo == 'VISUAL':
@@ -317,7 +385,9 @@ def thumbs(ui, nombre, x, ytop, cw):
     tw = (cw - (TH_COLS - 1) * 4) // TH_COLS
     th = tw * 9 // 16
     alto = th + TH_TXT + 4
-    off = 30 if len(items) > TH_PAG else 0
+    # solo ESCENA se pagina (1-8 / 9-16); VISUAL y FX enseñan todas sus filas, una debajo de otra
+    pag = TH_PAG if nombre == 'ESCENA' else 10 ** 6
+    off = 30 if len(items) > pag else 0
     if off:
         wb = (cw - 4) // 2
         for n, txt in ((1, '1 - 8'), (2, '9 - 16')):
@@ -329,7 +399,7 @@ def thumbs(ui, nombre, x, ytop, cw):
         if top is not None:
             top.cook(force=True)
             top.save(project.folder + '/' + ruta)
-        pi = i % TH_PAG
+        pi = i % pag
         px, py = x + (pi % TH_COLS) * (tw + 4), ytop - off - (pi // TH_COLS + 1) * alto
         c, d = marco(ui, 'th_%s_%d' % (nombre.lower(), i), px, py + TH_TXT, tw, th, None, activo, COL[nombre])
         if top is not None:
@@ -342,14 +412,26 @@ def thumbs(ui, nombre, x, ytop, cw):
         c.store('tipo', nombre)
         c.store('dato', dato)
         texto(ui, 'lab_%s_%d' % (nombre.lower(), i), px, py, tw, TH_TXT, (label.upper() + '   ' + pad).strip(), (0.1, 0.1, 0.11), 10)
-    filas = (min(len(items), TH_PAG) + TH_COLS - 1) // TH_COLS
+    filas = (min(len(items), pag) + TH_COLS - 1) // TH_COLS
     return ytop - off - filas * alto - 6
 
 
 def texto(ui, name, x, y, w, h, txt, rgb, size=16, expr=False):
     t = panel(ui, textCOMP, name, x, y, w, h)
     setp(t, ['text'], txt, expr=expr)
-    setp(t, ['fontsizex', 'fontsize'], size)
+    # REGLA DE LA UI (de LJ): un texto siempre se lee. Si no cabe en su ancho, baja la letra y se parte en
+    # renglones, nunca se corta. El Text COMP solo parte renglones con Type = 'multiline'; scaletofit es la
+    # ultima red: si aun asi no cabe en el panel, encoge la letra.
+    setp(t, ['type'], 'multiline')
+    setp(t, ['wordwrap'], True)
+    setp(t, ['scaletofit'], 'onlyshrink')
+    chico = max(9, int(round(size * 0.72)))
+    for n in ('fontsizex', 'fontsize'):
+        q = getattr(t.par, n, None)
+        if q is not None:
+            q.expr = ("%d if max([len(r) for r in str(me.par.text.eval()).split(chr(10))] or [0]) * %g <= me.par.w - 10 else %d"
+                      % (size, size * 0.62, chico))
+            break
     setp(t, ['fontbold', 'bold'], True)
     color(t, rgb)
     return t
@@ -368,11 +450,34 @@ def tagear(tag, ops):
         o.tags.add(tag)
 
 
+def _preview_expr(cw):
+    """Devuelve expresiones (w_expr, h_expr, x_expr_fmt) para que el preview de la UI respete
+    DINAMICAMENTE el aspect del canvas del show (W/H del hub). Al cambiar W/H desde la pestaña
+    Resolucion, el preview se adapta solo sin necesidad de reconstruir la UI."""
+    max_h = PREV_H - 8
+    max_w = cw - 16
+    asp = "(op('/project2/show').par.W / max(op('/project2/show').par.H, 1))"
+    # ancho = min(max_w, max_h * aspect); alto = min(max_h, max_w / aspect).
+    w_expr = "int(min(%d, %d * %s))" % (max_w, max_h, asp)
+    h_expr = "int(min(%d, %d / max(%s, 0.1)))" % (max_h, max_w, asp)
+    return w_expr, h_expr
+
+
+def _bind_preview_dims(cont, base_x, ytop, cw, w_expr, h_expr):
+    """Ata w, h, x (centrado horizontal) e y (fondeado abajo) del container a expresiones."""
+    cont.par.w.expr = w_expr
+    cont.par.h.expr = h_expr
+    cont.par.x.expr = "%d + (%d - me.par.w) / 2" % (base_x, cw)
+    cont.par.y.expr = "%d - me.par.h" % ytop
+
+
 def contenido(ui, nombre, x, ytop, cw, opexpr, pagina, prev, tag, tipo_expr):
     """preview -> thumbs -> barra 'que es' + RESET -> parametros (todo lo de un tab)."""
     antes = set(ui.children)
-    pv_w = (PREV_H - 8) * 16 // 9
-    imagen(ui, 'prev_' + nombre.lower(), x + (cw - pv_w) // 2, ytop - (PREV_H - 8), pv_w, PREV_H - 8, prev)
+    w_expr, h_expr = _preview_expr(cw)
+    # placeholder; luego las expr las ajustan
+    cont = imagen(ui, 'prev_' + nombre.lower(), x, ytop - (PREV_H - 8), cw, PREV_H - 8, prev)
+    _bind_preview_dims(cont, x, ytop, cw, w_expr, h_expr)
     y = thumbs(ui, nombre, x, ytop - PREV_H - 6, cw)
     rgb = COL[nombre]
     texto(ui, 'tipo_' + nombre.lower(), x, y - 34, cw - 130, 34, tipo_expr, tuple(c * 0.4 for c in rgb), 15, expr=True)
@@ -412,7 +517,11 @@ def camaras(ui, x, ytop, cw, tag):
     # lo que sale al aire, siempre a la vista
     ph = 170
     pw = ph * 16 // 9
-    lista.append(imagen(ui, 'prev_cams', x + (cw - pw) // 2, ytop - ph, pw, ph, "op('%s/master_video')" % ESC))
+    pv = imagen(ui, 'prev_cams', x + (cw - pw) // 2, ytop - ph, pw, ph, "op('%s/master_video')" % ESC)
+    asp = "(op('/project2/show').par.W / max(op('/project2/show').par.H, 1))"      # mismo aspecto que la salida
+    _bind_preview_dims(pv, x, ytop, cw, "int(min(%d, %d * %s))" % (cw - 16, ph, asp),
+                       "int(min(%d, %d / max(%s, 0.1)))" % (ph, cw - 16, asp))
+    lista.append(pv)
     ytop -= ph + 6
     # toda la fuente a la vez
     w = cw // 3
@@ -426,14 +535,25 @@ def camaras(ui, x, ytop, cw, tag):
     th = tw * 9 // 16
     alto = th + 20 + 24 + 8
     y0 = ytop - 34
-    for n in range(6):
-        i = n + 1
+    # solo las camaras que existen en este show (show.Hay{N}, pestana Dispositivos; sin ella, las 6)
+    SH = op('/project2/show')
+    def _hay(i):
+        p = getattr(SH.par, 'Hay%d' % i, None) if SH is not None else None
+        return True if p is None else bool(p.eval())
+    activas = [i for i in range(1, 7) if _hay(i)]
+    filas = max(1, (len(activas) + 2) // 3)
+    for n, i in enumerate(activas):
         px, py = x + (n % 3) * (tw + 4), y0 - (n // 3 + 1) * alto
-        act = "(op('%s/layout_rs_camara_unica') is not None and op('%s').par.Modoescena in ('layout_rs_camara_unica', 'layout_sc_formas') and op('%s').par.Menu2 == 'CAM_%d')" % (ESC, ESC, ESC, i)
+        # borde encendido = la Camara unica elegida (la que ven las escenas de una camara), este la escena que este
+        act = "(op('%s').par.Menu2 == 'CAM_%d')" % (ESC, i)
         c, d = marco(ui, 'th_cam_%d' % i, px, py + 44, tw, th, None, act, v)
         d.par.top.expr = "op('%s/CAM_%d')" % (ESC, i)
         c.store('tipo', 'CAM'); c.store('dato', 'CAM_%d' % i)
         lista.append(c)
+        av = texto(ui, 'aviso_cam%d' % i, px + 6, py + 44 + th // 2 - 16, tw - 12, 32, 'SIN SEÑAL', (0.85, 0.10, 0.10), 15)
+        av.par.display.expr = "op('ui_lib').module.sin_senal(%d)" % i
+        setp(av, ['layer'], 5)
+        lista.append(av)
         lista.append(texto(ui, 'mon_txt%d' % i, px, py + 24, tw, 20, "op('%s').par.Nombre%d.eval().upper()" % (ESC, i), (0.1, 0.1, 0.11), 12, expr=True))
         fw = tw // 3
         sw = "op('%s/cam%d_fuente')" % (ESC, i)
@@ -443,12 +563,15 @@ def camaras(ui, x, ytop, cw, tag):
                 getattr(b.par, 'bgcolor' + ch).expr = "%g * (1.0 if %s.par.index == %d else 0.22)" % (v[j], sw, k)
             b.store('tipo', 'CAMFUENTE'); b.store('dato', '%d:%s' % (i, m))
             lista.append(b)
-    ybajo = y0 - 2 * alto - 6
+    ybajo = y0 - filas * alto - 6
     pc = panel(ui, parameterCOMP, 'par_cams', x, GAP, cw, ybajo - GAP)      # un panel, pestanas nativas arriba
     setp(pc, ['op'], "op('%s')" % ESC, expr=True)
     setp(pc, ['pagescope'], 'Camaras Slots')
     setp(pc, ['pagenames'], True)
-    setp(pc, ['parscope'], 'Nombre* Int Menu2 Camfit Vivoprendido Slot* Rotar*')
+    # Nombre / Lugares solo de las camaras que existen (el MULTIVIEW lee SLOT_1..Int)
+    _noms = ' '.join('Nombre%d' % i for i in activas) or 'Nombre1'
+    _slots = ' '.join('Slot%d' % i for i in range(1, len(activas) + 1)) or 'Slot1'
+    setp(pc, ['parscope'], _noms + ' Int Menu2 Camfit Vivoprendido ' + _slots + ' Rotar*')
     setp(pc, ['builtin'], False)
     setp(pc, ['custom'], True)
     setp(pc, ['header'], False)
@@ -476,18 +599,60 @@ def build():
     lib = ui.create(textDAT, 'ui_lib')
     lib.text = UI_LIB
     lib.nodeX, lib.nodeY = -400, 0
-    R.op('show').sortCustomPages(*[n for n in ('Correccion de color', 'Paleta', 'Audio', 'Resolucion') if any(g.name == n for g in R.op('show').customPages)])
+    # estado de las camaras en vivo y de la salida NDI (los leen sin_senal / ndi_estado de ui_lib)
+    if op(ESC) is not None:
+        for i in range(1, 7):
+            ic = ui.create(infoCHOP, 'info_cam%d' % i)
+            ic.par.op = '%s/cam%d_vivo' % (ESC, i)
+            ic.nodeX, ic.nodeY = -400, -150 * i
+    ic = ui.create(infoCHOP, 'info_ndi')
+    ic.par.op = '/project1/ndiout1'
+    ic.nodeX, ic.nodeY = -400, -150 * 7
+    # orden preferido al principio; lo que no esta en la lista (MIDI, Ensayo, futuras) queda al final en su orden
+    _order_pref = ('Correccion de color', 'Paleta', 'Audio', 'Resolucion', 'MIDI', 'Ensayo')
+    _show = R.op('show')
+    _first = [n for n in _order_pref if any(g.name == n for g in _show.customPages)]
+    _rest = [g.name for g in _show.customPages if g.name not in _first]
+    _show.sortCustomPages(*(_first + _rest))
     hay_fx = tiene_pagina(list(range(18, 33)), 'Filter')
     cw = (W - GAP * 4) // 3
-    estado = ("'%s   ·   ' + str(round(1000.0 / max(absTime.stepSeconds * 1000.0, 1.0))) + ' FPS'"
+    estado = ("'%s'"
               " + {9: '   ·   BEATSTEP CH 9: ESCENAS', 10: '   ·   BEATSTEP CH 10: VISUALES / FX', 11: '   ·   BEATSTEP CH 11: VISUALES / FX'}.get(int(op('/project2/bs_canal')['canal']), '')"
               " + ('   ·   MASTER EN NEGRO' if op('/project2/show').par.Master < 0.98 else '')"
-              " + ('   ·   GRABANDO' if op('%s').par.Rec else '')" % (project.name.replace('.toe', ''), ESC))
-    texto(ui, 'titulo', 0, H - TOP_H, W - 470, TOP_H, estado, (0.1, 0.1, 0.11), 20, expr=True)
-    b = texto(ui, 'btn_thumbs', W - 460, H - TOP_H + 4, 220, TOP_H - 8, 'ACTUALIZAR THUMBS', (0.25, 0.25, 0.27), 15)
+              " + ('   ·   GRABANDO' if ((op('%s') is not None and op('%s').par.Rec) or getattr(op('/project2/show').par, 'Rec', 0)) else '')"
+              % (project.name.replace('.toe', ''), ESC, ESC))
+    BW = 200      # botones de la barra: EXTRAS · MODO SHOW · ACTUALIZAR THUMBS · RESET FEEDBACK
+    texto(ui, 'titulo', 0, H - TOP_H, W - 4 * (BW + 10) - 100, TOP_H, estado, (0.1, 0.1, 0.11), 20, expr=True)
+    # FPS: verde a la velocidad del proyecto, se va a rojo conforme baja (60 % o menos = rojo)
+    fps = "(1.0 / max(absTime.stepSeconds, 0.001))"
+    t3 = texto(ui, 'bar_fps', W - 4 * (BW + 10) - 94, H - TOP_H + 4, 84, TOP_H - 8, "str(int(round(%s))) + ' FPS'" % fps,
+               (0.1, 0.4, 0.2), 15, expr=True)
+    salud = "max(0.0, min(1.0, (%s / project.cookRate - 0.6) / 0.35))" % fps
+    for k, ch in enumerate('rgb'):
+        getattr(t3.par, 'bgcolor' + ch).expr = '%g + (%g - %g) * %s' % ((0.85, 0.10, 0.10)[k], (0.10, 0.50, 0.25)[k], (0.85, 0.10, 0.10)[k], salud)
+    # EXTRAS: con el candado puesto decide si tambien se bloquean los ajustes del soundcheck (Candadoajustes).
+    # Naranja = bloqueados; sin MODO SHOW se ve apagado.
+    caj = "bool(getattr(op('/project2/show').par, 'Candadoajustes', 0))"
+    cand = "bool(getattr(op('/project2/show').par, 'Modoshow', 0))"
+    b = texto(ui, 'btn_candadoaj', W - 4 * (BW + 10), H - TOP_H + 4, BW, TOP_H - 8,
+              "'PARAMETROS EXTRAS' + chr(10) + ('BLOQUEADOS' if %s else 'LIBRES')" % caj, (0.25, 0.25, 0.27), 13, expr=True)
+    for k, (on, off) in enumerate(((0.85, 0.25), (0.45, 0.25), (0.10, 0.27))):
+        getattr(b.par, 'bgcolor' + 'rgb'[k]).expr = '(%g if %s else %g) * (1.0 if %s else 0.45)' % (on, caj, off, cand)
+    b.store('tipo', 'CANDADOAJ')
+    b.store('dato', '')
+    # MODO SHOW (candado): rojo = puesto (setup_modo_show.py)
+    b = texto(ui, 'btn_modoshow', W - 3 * (BW + 10), H - TOP_H + 4, BW, TOP_H - 8,
+              "'MODO SHOW  ·  CANDADO' if %s else 'MODO SHOW'" % cand, (0.25, 0.25, 0.27), 15, expr=True)
+    for k, (on, off) in enumerate(((0.80, 0.25), (0.10, 0.25), (0.10, 0.27))):
+        getattr(b.par, 'bgcolor' + 'rgb'[k]).expr = '%g if %s else %g' % (on, cand, off)
+    b.store('tipo', 'MODOSHOW')
+    b.store('dato', '')
+    b = texto(ui, 'btn_thumbs', W - 2 * (BW + 10), H - TOP_H + 4, BW, TOP_H - 8, 'ACTUALIZAR THUMBS', (0.25, 0.25, 0.27), 15)
+    for k, ch in enumerate('rgb'):          # apagado con candado: no hace nada
+        getattr(b.par, 'bgcolor' + ch).expr = '%g if %s else %g' % (0.10, cand, (0.25, 0.25, 0.27)[k])
     b.store('tipo', 'THUMBS')
     b.store('dato', '')
-    b = texto(ui, 'btn_resetfb', W - 230, H - TOP_H + 4, 220, TOP_H - 8, 'RESET FEEDBACK', (0.55, 0.12, 0.12), 15)
+    b = texto(ui, 'btn_resetfb', W - (BW + 10), H - TOP_H + 4, BW, TOP_H - 8, 'RESET FEEDBACK', (0.55, 0.12, 0.12), 15)
     b.store('tipo', 'RESETFB')
     b.store('dato', '')
     top = H - TOP_H - GAP
@@ -514,13 +679,53 @@ def build():
                       "'FX  ·  ' + op('ui_lib').module.nombre(%s)" % fx)
         camaras(ui, x2, y0, cw, 'tab_media_cams')
     # SHOW
-    texto(ui, 'tit_show', x3, top - TITLE_H, cw, TITLE_H, 'SHOW  ·  salida final', tuple(c * 0.55 for c in COL['SHOW']), 20)
+    hay_audio_vivo = getattr(R.op('show').par, 'Autonivel', None) is not None      # setup_audio_global.py
+    # titulo de SHOW = estado de la salida NDI (rojo si esta apagada o nadie la recibe)
+    nd = "op('ui_lib').module.ndi_estado()"
+    ts = texto(ui, 'tit_show', x3, top - TITLE_H, cw, TITLE_H, "'SHOW   ·   ' + (%s[0] or 'salida final')" % nd,
+               tuple(c * 0.55 for c in COL['SHOW']), 20, expr=True)
+    for k, ch in enumerate('rgb'):
+        getattr(ts.par, 'bgcolor' + ch).expr = '%g if %s[1] else %g' % (COL['SHOW'][k] * 0.55, nd, (0.85, 0.10, 0.10)[k])
     pestanas(ui, 'show', x3, top - TITLE_H - TAB_H - 4, cw,
-             [('hub', 'CONTROLES')] + [(k, l) for k, l, _ in FX_GLOBALES], COL['SHOW'])
-    pv_w = (PREV_H - 8) * 16 // 9
-    imagen(ui, 'prev_show', x3 + (cw - pv_w) // 2, y0 - (PREV_H - 8), pv_w, PREV_H - 8, "op('/project1/ndiout1')")
+             [('hub', 'CONTROLES')] + ([('audio', 'AUDIO EN VIVO')] if hay_audio_vivo else [])
+             + [(k, l) for k, l, _ in FX_GLOBALES], COL['SHOW'])
+    w_expr, h_expr = _preview_expr(cw)
+    cont_show = imagen(ui, 'prev_show', x3, y0 - (PREV_H - 8), cw, PREV_H - 8, "op('/project1/ndiout1')")
+    _bind_preview_dims(cont_show, x3, y0, cw, w_expr, h_expr)
     ys = y0 - PREV_H - 6
-    for k, opx, pag, alto in (('hub', "op('/project2/show')", 'Correccion* Paleta Audio Resolucion', ys - 200),) + tuple((k, "op('%s')" % r, '*', ys) for k, _, r in FX_GLOBALES):
+    # emergencia, siempre a la vista: BLACKOUT (fundido de 0.8 s a negro; otro toque regresa)
+    negro = "(op('/project2/show').par.Master < 0.5)"
+    b = texto(ui, 'btn_blackout', x3, ys - 46, cw, 46, "'EN NEGRO  ·  TOCA PARA VOLVER' if %s else 'BLACKOUT'" % negro,
+              (0.45, 0.10, 0.10), 17, expr=True)
+    b.par.bgcolorr.expr = '0.95 if %s else 0.45' % negro
+    b.store('tipo', 'BLACKOUT')
+    b.store('dato', '')
+    ys -= 52
+    # AUDIO EN VIVO: onda y bandas + lo que se toca por track (Autonivel · Reaccion · Suavizado · Gain)
+    if hay_audio_vivo:
+        a1 = panel(ui, opviewerCOMP, 'onda_vivo', x3, ys - 120, cw, 116)
+        setp(a1, ['opviewer'], "op('/project2/audio/audio_gain')", expr=True)
+        a2 = panel(ui, opviewerCOMP, 'bandas_vivo', x3, ys - 196, cw, 72)
+        setp(a2, ['opviewer'], "op('/project2/audio/master_audio')", expr=True)
+        ya = ys - 200 - 14
+        bloques = []
+        grupos = [('reaccion', 'Sepreaccion Autonivel Reaccion Suavizado', 4), ('nivel', 'Sepnivel Audiogain*', 2)]
+        if getattr(R.op('show').par, 'Golpesens', None) is not None:       # Paleta Audio (si el show la tiene)
+            grupos.append(('golpes', 'Sepgolpes Golpesens', 2))
+        for clave, scope, filas in grupos:
+            hb = filas * 23 + 8
+            pa = panel(ui, parameterCOMP, 'par_show_audio_' + clave, x3, ya - hb, cw, hb)
+            setp(pa, ['op'], "op('/project2/show')", expr=True)
+            setp(pa, ['pagescope'], 'Audio')
+            setp(pa, ['parscope'], scope)
+            setp(pa, ['pagenames'], False)
+            setp(pa, ['builtin'], False)
+            setp(pa, ['custom'], True)
+            setp(pa, ['header'], False)
+            bloques.append(pa)
+            ya -= hb + 30
+        tagear('tab_show_audio', [a1, a2] + bloques)
+    for k, opx, pag, alto in (('hub', "op('/project2/show')", '*', ys - 200),) + tuple((k, "op('%s')" % r, '*', ys) for k, _, r in FX_GLOBALES):
         pc = panel(ui, parameterCOMP, 'par_show_' + k, x3, GAP, cw, alto - GAP)
         setp(pc, ['op'], opx, expr=True)
         setp(pc, ['pagescope'], pag)
@@ -549,7 +754,18 @@ def build():
     px.par.valuechange = False
     px.text = chr(10).join(['def onOffToOn(panelValue):', '    c = panelValue.owner',
                             "    c = c.parent() if c.name == 'img_p' else c",
-                            "    op('ui_lib').module.elegir(c.fetch('tipo'), c.fetch('dato'))", '    return', ''])
+                            # defensivo (1): si el panel no tiene 'tipo' almacenado, lo ignoramos.
+                            # Esto protege de btn_* externos (p. ej. selector de camara) que no tienen contrato.
+                            "    tipo = c.fetch('tipo', '', search=False)",
+                            "    if not tipo:", "        return",
+                            # defensivo (2): si el panel está en una pestaña inactiva (enable=False /
+                            # display=False), ignoramos. Esto evita que un thumb de FX dispare acciones
+                            # sobre thumbs de MULTIVIEW subyacentes y viceversa.
+                            "    try:",
+                            "        if not bool(c.par.enable.eval()): return",
+                            "        if not bool(c.par.display.eval()): return",
+                            "    except Exception:", "        pass",
+                            "    op('ui_lib').module.elegir(tipo, c.fetch('dato', '', search=False))", '    return', ''])
     m = lib.module
     if not solo:
         m.tab('media', 'escena')
@@ -562,6 +778,12 @@ def perform(ui):
     w.par.winop = ui.path
     setp(w, ['winw'], W)
     setp(w, ['winh'], H)
+    # La UI mide 1920x1080 en pixeles reales. Con la escala de Windows (125 %, 150 %) y 'usedpiscale'
+    # se dibuja mas grande que el monitor y se corta arriba y a la derecha: se abre nativa y sin bordes.
+    setp(w, ['dpiscaling'], 'native')
+    setp(w, ['borders'], False)
+    setp(w, ['justifyh'], 'left')
+    setp(w, ['justifyv'], 'top')
     return w
 
 
@@ -580,6 +802,13 @@ def respaldo_ui_vieja():
 
 
 ui, secs = build()
+if R.fetch('tdvj_ui_pendiente', False, search=False):      # la UI ya esta al dia: cancela la recarga pendiente
+    R.unstore('tdvj_ui_pendiente')
 w = perform(ui)
 print('[ok] %s · pestanas centro: %s' % (ui.path, [t[1] for t in secs]))
 print('[ok] UI vieja al respaldo:', respaldo_ui_vieja())
+
+# Pestanas de thumbs por canal del Beatstep (BANCOS de ui_bancos.py): van encima de lo construido arriba
+_p = project.folder + '/builders/herramientas/ui_bancos.py'
+if os.path.exists(_p):
+    exec(compile(open(_p, encoding='utf-8').read(), _p, 'exec'), dict(globals(), __file__=_p))

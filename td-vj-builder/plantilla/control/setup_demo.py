@@ -173,6 +173,21 @@ def onFrameStart(frame):
     now = absTime.seconds
     if not activo:
         me.store('activo', True)
+        # saltar a la primera escena que cumpla el filtro de familia (Demofam)
+        fam = (getattr(p, 'Demofam', None).eval() if getattr(p, 'Demofam', None) is not None else 'all')
+        names = p.Modoescena.menuNames
+        n = len(names)
+        cur = p.Modoescena.menuIndex
+        if fam != 'all':
+            for i in range(n):
+                idx = (cur + i) %% max(n, 1)
+                cand = S.op(names[idx])
+                is_ss = cand is not None and 'tdvj_fam_singlecam' in cand.tags
+                if (fam == 'singleshot' and is_ss) or (fam == 'multiview' and not is_ss):
+                    cur = idx
+                    break
+            if p.Modoescena.menuIndex != cur:
+                p.Modoescena.menuIndex = cur
         me.store('inicio', p.Modoescena.menuIndex)
         begin(now)
         if p.Demograbar.eval():
@@ -182,8 +197,19 @@ def onFrameStart(frame):
     cada = max(3.0, float(p.Democada.eval()))
     if t >= cada:
         restore()
-        n = len(p.Modoescena.menuNames)
-        sig = (p.Modoescena.menuIndex + 1) %% max(n, 1)
+        names = p.Modoescena.menuNames
+        n = len(names)
+        fam = (getattr(p, 'Demofam', None).eval() if getattr(p, 'Demofam', None) is not None else 'all')
+        sig = p.Modoescena.menuIndex
+        # avance con filtro: brinca las escenas que no cumplen la familia seleccionada
+        for _ in range(n):
+            sig = (sig + 1) %% max(n, 1)
+            if fam == 'all':
+                break
+            cand = S.op(names[sig])
+            is_ss = cand is not None and 'tdvj_fam_singlecam' in cand.tags
+            if (fam == 'singleshot' and is_ss) or (fam == 'multiview' and not is_ss):
+                break
         if p.Demounavez.eval() and sig == me.fetch('inicio', 0, storeDefault=False):
             p.Demo.val = False          # dio la vuelta: el siguiente frame apaga (y deja de grabar)
             return
@@ -235,6 +261,15 @@ def run():
         return
     pg = _page(scene)
     _toggle(pg, 'Demo', 'Demo automatico', False)
+    # filtro de familia: 'all' graba todas; 'multiview' solo multiview; 'singleshot' solo single shot
+    famp = getattr(scene.par, 'Demofam', None)
+    if famp is None:
+        famp = pg.appendMenu('Demofam', label='Familia a grabar')[0]
+    famp.label = 'Familia a grabar'
+    keep_fam = famp.eval() if famp.eval() in ('all', 'multiview', 'singleshot') else 'all'
+    famp.menuNames = ['all', 'multiview', 'singleshot']
+    famp.menuLabels = ['Todas', 'Solo Multiview', 'Solo Single Shot']
+    famp.val = keep_fam
     p = getattr(scene.par, 'Democada', None)
     if p is None:
         p = pg.appendFloat('Democada', label='Segundos por escena')[0]

@@ -232,3 +232,19 @@ Formato por entrada:
   - Antes de borrar bases, respaldo `.tox` con `comp.save()`; no pisar un respaldo que ya existe.
 - MIDImix de este usuario: CC por columna = 3 knobs + fader (col1: 17/18/19/20 … col4 29/30/31/32, col5 47/48/49/50 … col8 59/60/61/62, master 63); botones fila de arriba n2,5,8…23, abajo n4,7,10…25, bank n26/27, solo n28. Beatstep: pads n45–52 arriba / n37–44 abajo en canal 10 y 11, knobs canal 11, Seq1 canal 1 y Seq2 canal 2 (n61–73).
 - Decisiones: fila 1 visual activo, fila 2 FX activo, fila 3 glitch global; faders 1–3 + master = OSC a Resolume; faders 4–8 a escenas solo en este show. `/project1` queda como "master" de FX globales por línea (V1/V2). Salida: Spout si Resolume está en la misma compu.
+
+## 2026-11-15 — CASA BACARDI x CORONA CAPITAL — CH9 nivel festival, Stream Deck + XL, puertos de LJ
+- Construido: Ron Liquido v2 con causticas (base9) y 7 visuales nuevos en CH9 9-10 a 9-16: Cordillera (base43, ridgeline con historia de audio), Laser (44), Seda (45), Reaccion (46, Gray-Scott), Slit Scan (47), Cortinas (48), Pixel Sort (49). Todos a `library/visuals/` (+ builders con red en `library/visuals/builders/`). Guia nueva: `references/referentes_contemporaneos.md`.
+- Rangos que funcionaron: Gray-Scott con D=(1, 0.5) y laplaciano 3x3 (-1 / 0.2 / 0.05), dt=1, 6 pasos por cuadro a 960x540 float32; mitosis (f .0367, k .0649) · coral (.0545, .0635) · laberinto (.029, .057). Laser con estela 0.86. Seda con estela 0.985 y 10 emisores finos (sigma^2 2.5e-5). Pixel sort: crestas pow 14, umbral 0.25.
+- Problemas y fixes:
+  - **Uniforms de una red propia: siempre `tdvj_core.bind_vectors`.** Asignar `vecNname` / `vecNvalue*` a mano sin subir `seq.vec.numBlocks` deja el uniform en su default (1,1,1,1): la siembra de Reaccion pintaba un disco gigante cada cuadro.
+  - **Gray-Scott: si `k < sqrt(f)/2 - f` hay un estado lleno estable y todo se vuelve una mancha.** Guardar `k = max(k, sqrt(f)/2 - f + 0.0015)`. Los parametros "coral" clasicos (.0545, .062) caen justo en el borde.
+  - Laplaciano con `texelFetch` y coordenadas enteras (`(ij + SZ) % SZ`), no con `uTD2DInfos[0].res` y `texture()`.
+  - **Text DAT con `syncfile` + asignarle `.text` = TD reescribe el archivo con BOM** (y se acumulan: hubo `\xef\xbb\xbf` dos veces) y el GLSL truena con "unexpected LEFT_ANGLE" en la linea 1. En redes propias: cargar el texto directo (`.lstrip('\ufeff')`), sin syncfile; para cambiar el shader se rehace la red. Mismo bug que el BOM de `oscin1_callbacks` en LJ.
+  - Voronoi para causticas: buscar 5x5 vecinos (no 3x3) o F2 se corta en franjas.
+  - En GLSL de TD `F1` / `F2` chocan con algo predefinido: usar otros nombres.
+  - Los visuales con feedback no se ven bien con una sola captura (`ver_salida` cocina un cuadro): para revisarlos, un Execute DAT temporal que haga `cook(force=True)` cada cuadro.
+  - `UI_VIEJA` de `setup_ui.py` traia `logic67` / `logic68`: son cadenas de pads (fila 49 de table1). Quitados de la lista.
+  - `ui_bancos.py`: al destruir paneles, su DAT acoplado se va con ellos → revisar `c.valid` antes de destruir.
+  - Companion cambia de carpeta por version (`%APPDATA%/companion/v5.0` → `v5.1`): buscar la `v*` mas nueva, no fijarla.
+- Nombres/convenciones: CH9 = OTROS (no circulares) · CH10 = CIRCULARES · CH11 = LOGOS. El Stream Deck + XL usa una pagina por canal con el mismo 8x2 que la UI.

@@ -70,12 +70,18 @@ def send(par):
 	if par.name.startswith('Rotar'):
 		send_rotar()
 
+def send_pantallas():
+	# estado del Test Pantallas (par toggle en /project2/show.Pantallas)
+	s = op('/project2/show')
+	out('pantallas', 'ON' if (s is not None and hasattr(s.par, 'Pantallas') and s.par.Pantallas.eval()) else '')
+
 def send_all():
 	for n in VARS:
 		p = getattr(parent().par, n, None)
 		if p is not None:
 			send(p)
 	send_rotar()
+	send_pantallas()
 
 def onValueChange(par, prev):
 	send(par)
@@ -119,7 +125,52 @@ def run():
     pe.par.valuechange = True
 
     pe.module.send_all()
+
+    # feedback de los params del hub /project2/show (pagina PANTALLAS)
+    show = op('/project2/show')
+    if show is not None:
+        pe2 = _replace(show, parameterexecuteDAT, 'companion_feedback_show', -1200, -1400)
+        pe2.text = PAREXEC_SHOW
+        pe2.par.op = show.path
+        pe2.par.pars = ('Pantallas Patron Monitor Pantallacompleta Ndi Glowon Glowforma Glowvel')
+        if hasattr(pe2.par, 'onpulse'):
+            pe2.par.onpulse = False
+        pe2.par.valuechange = True
+        pe2.module.send_all()
     print('[ok] TD -> Companion en %s:%d. Estado actual enviado.' % (COMPANION_HOST, COMPANION_PORT))
+
+
+PAREXEC_SHOW = '''# params de /project2/show -> custom variables de Companion
+VARS = {'Pantallas': 'pantallas', 'Patron': 'patron', 'Monitor': 'monitor',
+        'Pantallacompleta': 'fullscreen', 'Ndi': 'ndi',
+        'Glowon': 'glowon', 'Glowforma': 'glowforma', 'Glowvel': 'glowvel'}
+
+def value_for(par):
+	if par.isToggle:
+		return 'ON' if par.eval() else ''
+	if par.isMenu and par.menuNames:
+		return par.menuLabels[par.menuIndex].upper()
+	if par.isFloat:
+		return '%.1f' % par.eval()
+	return str(int(par.eval()))
+
+def out(name, value):
+	op('/project2/base17/escena_modular/companion_out').sendOSC('/custom-variable/%s/value' % name, [value])
+
+def send(par):
+	name = VARS.get(par.name)
+	if name:
+		out(name, value_for(par))
+
+def send_all():
+	for n in VARS:
+		p = getattr(parent().par, n, None)
+		if p is not None:
+			send(p)
+
+def onValueChange(par, prev):
+	send(par)
+'''
 
 
 run()

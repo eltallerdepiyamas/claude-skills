@@ -1,6 +1,8 @@
 """pal_norte.py: monta una red vieja de Pal Norte (.tox) dentro de una base y recrea lo que usaba afuera."""
 from td import op, project, selectCHOP, constantCHOP, constantTOP, baseCOMP, moviefileinTOP, feedbackTOP, fitTOP, transformTOP, countCHOP, renameCHOP, speedCHOP, tableDAT, rampTOP
 AUDIO = '/project2/audio/master_audio'
+# resolucion: siempre la del show (hub /project2/show), nunca un numero fijo
+RES_W, RES_H = "op('/project2/show').par.W", "op('/project2/show').par.H"
 
 
 def _chop(b, nombre, canal):
@@ -36,13 +38,14 @@ def montar(n, tox, png=None):
     _chop(b, 'math_mid', 'mid')
     _chop(b, 'math_high', 'high')
     k = b.op('constant2') or b.create(constantCHOP, 'constant2')
-    k.par.const0name, k.par.const0value, k.par.const1name, k.par.const1value = 'resX', 1920, 'resY', 1080
+    k.par.const0name, k.par.const1name = 'resX', 'resY'
+    k.par.const0value.expr, k.par.const1value.expr = RES_W, RES_H
     _vacio(b, ('bg_scanlines', 'out1'))
     _vacio(b, ('project1', 'null20'))
     bg = b.op('BG') or b.create(constantTOP, 'BG')
     bg.par.colorr = bg.par.colorg = bg.par.colorb = 0
     bg.par.outputresolution = 'custom'
-    bg.par.resolutionw, bg.par.resolutionh = 1920, 1080
+    bg.par.resolutionw.expr, bg.par.resolutionh.expr = RES_W, RES_H
     idx = b.op('master_switch') or b.create(constantCHOP, 'master_switch')
     idx.par.const0name, idx.par.const0value = 'index_logo', 0
     _chop(b, 'rename1', 'low')
@@ -62,7 +65,7 @@ def montar(n, tox, png=None):
         x = b.op('logo_chico') or b.create(fitTOP, 'logo_chico')
         x.inputConnectors[0].connect(b.op('moviefilein3'))
         x.par.outputresolution = 'custom'
-        x.par.resolutionw, x.par.resolutionh = 1920, 1080
+        x.par.resolutionw.expr, x.par.resolutionh.expr = RES_W, RES_H
         x.par.fit = 'fitbest'
         y = b.op('logo_escala') or b.create(transformTOP, 'logo_escala')
         y.inputConnectors[0].connect(x)
@@ -98,7 +101,8 @@ def montar_generador(n):
     sp = b.op('speed1') or b.create(speedCHOP, 'speed1')
     sp.inputConnectors[0].connect(b.op('math_low'))
     k2 = b.op('constant2') or b.create(constantCHOP, 'constant2')
-    k2.par.const0name, k2.par.const0value, k2.par.const1name, k2.par.const1value = 'resX', 1920, 'resY', 1080
+    k2.par.const0name, k2.par.const1name = 'resX', 'resY'
+    k2.par.const0value.expr, k2.par.const1value.expr = RES_W, RES_H
     t = b.op('rampas') or b.create(tableDAT, 'rampas')
     t.clear()
     t.appendRow(['pos', 'r', 'g', 'b', 'a'])

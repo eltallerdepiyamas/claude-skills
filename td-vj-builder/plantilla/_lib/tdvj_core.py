@@ -223,7 +223,12 @@ def _band_expr(band):
 
 def master_res_pars():
     """Ancho y alto de la resolución MAESTRA del show: escena_modular → pestaña Resolucion
-    (ResW / ResH, o los dos primeros números de esa pestaña). None si no existe."""
+    (ResW / ResH, o los dos primeros números de esa pestaña). None si no existe.
+    Primero el hub /project2/show (W / H): es la fuente de la resolución y existe en todos los shows,
+    también en los que no tienen escena_modular (solo visuales)."""
+    hub = op(ROOT + '/show')
+    if hub is not None and getattr(hub.par, 'W', None) is not None and getattr(hub.par, 'H', None) is not None:
+        return hub.par.W, hub.par.H
     s = op(ESCENA)
     if s is None:
         return None
@@ -296,12 +301,9 @@ def build_contract(comp, page_name, five_slots, extras=(), colors=(), resolution
         for p, e, d in ((comp.par.Resw, mres[0], resolution[0]), (comp.par.Resh, mres[1], resolution[1])):
             if p.mode == type(p.mode).CONSTANT and int(p.eval()) == int(d):
                 p.expr = e       # estaba en el default: se liga a la maestra
-    # cómo se acomoda en las 8 columnas (lo aplica /project2/salidas). Lo dicta SIEMPRE el CONFIG
-    # del builder: es parte del diseño de la base, no se opera en vivo.
-    cm = _menu(sp, 'Colmap', 'Columnas: acomodo', ['repartido', 'repetido'],
-               ['Repartido (un canvas alrededor)', 'Repetido (igual en cada columna)'], colmap)
-    cm.val = colmap
-    keep = ['Resw', 'Resh', 'Colmap']
+    # 'Columnas: acomodo' (Colmap) era de un show con 8 columnas: ya no es parte del contrato de las bases.
+    # El argumento colmap se sigue aceptando para no romper builders viejos, pero no crea nada.
+    keep = ['Resw', 'Resh']
     if techo:   # versión propia para el techo (out_techo, cuadrada); si no, el techo recorta out1 a 1:1
         _int(sp, 'Techores', 'Techo: resolución (1:1)', 64, 8192, int(techo))
         keep.append('Techores')
@@ -599,6 +601,47 @@ def refresh_salidas():
             p.expr = e                          # re-asignar fuerza a evaluar de nuevo
 
 
+# ─────────────────────────────────────────────────────────────── UI al dia
+UI_FLAG = 'tdvj_ui_pendiente'
+
+
+def refresh_ui():
+    """Al construir una base, la UI de perform se rehace sola: el visual / FX nuevo aparece con su thumb
+    sin correr nada mas. Se hace unos cuadros despues y UNA sola vez aunque corran varios builders
+    seguidos (build_all.py ya rehace la UI al final y cancela esta recarga)."""
+    root = op(ROOT)
+    if root is None or root.op('ui_perform') is None:
+        return
+    if not os.path.isfile(project.folder + '/builders/herramientas/setup_ui.py'):
+        return
+    if root.fetch(UI_FLAG, False, search=False):
+        return
+    root.store(UI_FLAG, True)
+    run("import sys\nm = sys.modules.get('tdvj_core')\nif m is not None:\n    m._rebuild_ui()", delayFrames=3)
+
+
+def _rebuild_ui():
+    root = op(ROOT)
+    if root is None or not root.fetch(UI_FLAG, False, search=False):
+        return                                   # alguien mas ya la rehizo
+    root.unstore(UI_FLAG)
+    show = root.op('show')
+    pasos = ['builders/herramientas/setup_ui.py']
+    if show is not None and getattr(show.par, 'Colorar', None) is not None:
+        pasos.insert(0, 'builders/herramientas/paleta_show.py')     # show solo visuales: liga la paleta de la base nueva
+    for rel in pasos:
+        path = project.folder + '/' + rel
+        if not os.path.isfile(path):
+            continue
+        try:
+            with open(path, encoding='utf-8') as f:
+                exec(compile(f.read(), path, 'exec'), dict(globals(), __file__=path, __name__='__tdvj_ui__'))
+        except Exception:
+            import traceback
+            traceback.print_exc()
+            warn('no pude rehacer la UI con %s' % rel)
+
+
 # ─────────────────────────────────────────────────────────────── builders
 def build_visual(base, shader, five_slots, signature_extras=(), color_uniforms=(),
                  source=None, feedback=False, extra=None, page='Visual', resolution=DEFAULT_RES,
@@ -684,9 +727,22 @@ def build_visual(base, shader, five_slots, signature_extras=(), color_uniforms=(
         if ot is not None:
             ot.destroy()            # ya no hay versión de techo: salidas vuelve a recortar out1
     refresh_salidas()
+    refresh_ui()
     log('%s listo (visual%s%s) ← %s' % (comp.path, ' + input' if source else ' puro',
                                          ' + techo' if techo else '', shader))
+    _acomodar(comp)
     return comp
+
+
+def _acomodar(comp):
+    """Acomodo unico del interior (_lib/acomodo.py): bloques por tipo de nodo, de arriba a abajo."""
+    try:
+        import importlib
+        import acomodo
+        importlib.reload(acomodo)
+        acomodo.interior(comp)
+    except Exception as e:
+        warn('%s: no se pudo acomodar el interior (%s); la base funciona igual' % (comp.path, e))
 
 
 def build_effect(base, shader, five_slots, signature_extras=(), color_uniforms=(),
@@ -729,5 +785,7 @@ def build_effect(base, shader, five_slots, signature_extras=(), color_uniforms=(
             traceback.print_exc()
             warn('%s: falló extra — la base queda conectada pero sin esos uniforms' % comp.path)
     check_uniforms(abspath, _bind_vectors(g, specs))
+    refresh_ui()
     log('%s listo (efecto%s) ← %s' % (comp.path, ' + feedback' if feedback else '', shader))
+    _acomodar(comp)
     return comp

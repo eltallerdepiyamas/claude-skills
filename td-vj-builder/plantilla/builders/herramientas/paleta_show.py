@@ -25,4 +25,6 @@ for k in range(1, 17):
     n += 1
 S.sortCustomPages('Correccion de color', 'Paleta', 'Audio', 'Resolucion')
 print('visuales ligados', n, 'B', S.par.Colorbr.eval(), S.par.Colorbg.eval(), S.par.Colorbb.eval())
-print('base1 Color1', R.op('base1').par.Color1r.eval(), R.op('base1').par.Color1g.eval(), R.op('base1').par.Color1b.eval())
+_b = next((R.op('base%d' % k) for k in range(1, 17) if R.op('base%d' % k) is not None and hasattr(R.op('base%d' % k).par, 'Color1r')), None)
+if _b is not None:      # base1 puede estar vacia: se lee el primer visual que tenga paleta
+    print(_b.name, 'Color1', _b.par.Color1r.eval(), _b.par.Color1g.eval(), _b.par.Color1b.eval())

@@ -41,8 +41,19 @@ if mods.get('escena_modular', True):
     paso('entradas con la paleta', 'builders/herramientas/setup_entradas.py')
 if not mods.get('escena_modular', True):
     paso('paleta en show', 'builders/herramientas/paleta_show.py')
+paso('reset MIDI (ch1n26 visual · ch1n27 color)', 'builders/herramientas/setup_midi_reset.py')
+paso('ensayo (pestana REC)', 'builders/herramientas/setup_ensayo.py')
+paso('monitor MIDI (pestana MIDI con panic)', 'builders/herramientas/setup_midi_monitor.py')
+paso('MIDI por nombre (MIDI Mix / BeatStep siempre en su lugar)', 'builders/herramientas/setup_midi_devices.py')
+paso('test de pantallas (pestana Pantallas)', 'builders/herramientas/setup_test_pantallas.py')
+if mods.get('escena_modular', True):
+    paso('dispositivos de camara (pestana Dispositivos)', 'builders/herramientas/setup_devices_camaras.py')
+paso('audio global (Autonivel · Reaccion · Suavizado)', 'builders/herramientas/setup_audio_global.py')
+paso('MODO SHOW (candado)', 'builders/herramientas/setup_modo_show.py')
 paso('UI', 'builders/herramientas/setup_ui.py')
+paso('ventana de perform nativa (escala de Windows)', 'builders/herramientas/ajustar_ventana_perform.py')
+paso('orden de pestanas del hub', 'builders/herramientas/setup_orden_pestanas.py')
 paso('Stream Deck', 'control/actualizar_companion.py')
 if cfg.get('modulos', {}).get('escena_modular', True):
     paso('diagnostico', 'control/diag_todo.py')
-print('==== listo. Fuera de TD: python control/gen_companion.py e importar en Companion ====')
+print('==== listo. Fuera de TD: python control/gen_companion.py (o gen_companion_xl.py para el + XL) e importar en Companion ====')

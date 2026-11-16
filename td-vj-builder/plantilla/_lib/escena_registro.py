@@ -25,8 +25,8 @@ except ImportError:
 
 import tdvj_core as core
 
-PREFIXES = ('layout_mv_', 'layout_sc_', 'layout_rs_', 'layout_')
-FAMILIAS = ('multiview', 'singlecam')      # orden en el menu: primero multiview, luego single cam
+PREFIXES = ('layout_mv_', 'layout_sc_', 'layout_sp_', 'layout_rs_', 'layout_')
+FAMILIAS = ('multiview', 'splitscreen', 'singlecam')      # orden en el menu: multiview, split screen, single shot
 
 
 def familia(comp):

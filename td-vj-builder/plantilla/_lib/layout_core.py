@@ -135,7 +135,7 @@ def _contract(comp, page_name, five_slots, extras, colors, audio_target):
 
 
 def build_layout(name, shader, five_slots, extras=(), colors=(), hero=False, num_cams=5,
-                 audio_target=None, page='Layout', sources=None):
+                 audio_target=None, page='Layout', sources=None, familia=None):
     """Layout CCTV: cam_in_1..N → GLSL (sTD2DInputs[0..N-1]) → bypass(cam 1) → out1.
 
     name:         layout_<algo> (Base COMP dentro de escena_modular; se crea si falta).
@@ -257,11 +257,13 @@ def build_layout(name, shader, five_slots, extras=(), colors=(), hero=False, num
     core.check_uniforms(abspath, core._bind_vectors(g, specs))
 
     # familia: single cam si todas sus entradas son la misma fuente (SLOT_UNICA); si no, multiview
-    familia = 'singlecam' if sources and len(set(sources)) == 1 else 'multiview'
+    # familia= la fuerza (p. ej. 'splitscreen'); escena_registro conoce multiview · splitscreen · singlecam
+    familia = familia or ('singlecam' if sources and len(set(sources)) == 1 else 'multiview')
     for t in list(comp.tags):
         if t.startswith('tdvj_fam_'):
             comp.tags.remove(t)
     comp.tags.add('tdvj_fam_' + familia)
     core.log('%s listo (%d cámaras · %s) ← %s' % (comp.path, num_cams, familia, shader))
     registro.registrar(name)
+    core._acomodar(comp)
     return comp

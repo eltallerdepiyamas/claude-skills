@@ -9,6 +9,9 @@ Organiza por categoría:
 - effects/   (circuito cerrado, camelCase, sTD2DInputs[0..1])
 - layouts/   (multi-cámara, sTD2DInputs[0..4])
 
+Los que llevan red propia (historia, simulacion, Texture 3D) guardan su builder en `visuals/builders/`: el shader solo no basta.
+Criterio de nivel y tecnica por look: `references/referentes_contemporaneos.md`.
+
 Nombra describiendo el look, no el proyecto (ej. effects/ghost_trail.frag,
 visuals/neon_grid.glsl). Cuando muevas uno aquí, anota en LEARNINGS.md de qué
 proyecto salió y qué rangos quedaron buenos.
@@ -17,7 +20,7 @@ proyecto salió y qué rangos quedaron buenos.
 
 _Origen de cada archivo. Antes de escribir un shader nuevo, busca aquí algo cercano y adáptalo._
 
-### visuals/ (42)
+### visuals/ (50)
 
 | Archivo | Proyecto |
 |---|---|
@@ -63,6 +66,14 @@ _Origen de cada archivo. Antes de escribir un shader nuevo, busca aquí algo cer
 | `tile_constellation.glsl` | corona |
 | `tower_climb.glsl` | corona |
 | `warp_burst.glsl` | corona |
+| `cordillera.glsl` (+ `cordillera_hist.glsl`) | casa bacardi · corona capital (2026-11) |
+| `laser.glsl` | casa bacardi · corona capital |
+| `seda.glsl` | casa bacardi · corona capital |
+| `reaccion.glsl` (+ `reaccion_sim.glsl`) | casa bacardi · corona capital |
+| `slit_scan.glsl` (+ `slit_scan_src.glsl`, `slit_scan_mapa.glsl`) | casa bacardi · corona capital |
+| `cortinas.glsl` | casa bacardi · corona capital |
+| `pixel_sort.glsl` | casa bacardi · corona capital |
+| `ron_liquido_causticas.glsl` | casa bacardi · corona capital |
 
 ### effects/ (25)
 

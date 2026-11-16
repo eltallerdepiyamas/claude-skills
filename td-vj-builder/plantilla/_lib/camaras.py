@@ -36,6 +36,9 @@ def _cam6(scene):
     black.par.alpha = 1.0
     black.par.outputresolution = 'custom'
     black.par.resolutionw, black.par.resolutionh = core.DEFAULT_RES
+    mres = core.master_res_exprs()          # sigue a la resolucion del show
+    if mres:
+        black.par.resolutionw.expr, black.par.resolutionh.expr = mres
     dev = scene.create(videodeviceinTOP, 'videodevin6')
     sw = scene.create(switchTOP, 'CAM_6')
     sw.inputConnectors[0].connect(black)
@@ -182,11 +185,17 @@ def _unica(scene, names, labels):
     p.menuLabels = labels
     if p.eval() not in names:
         p.val = names[0]
-    s = scene.op('SLOT_UNICA')
+    # SLOT_UNICA puede estar como el selectTOP original O como switchTOP con blend (cuando
+    # setup_transicion_camaras.py lo convirtio). En ese caso el selectTOP 'actual' vive en
+    # SLOT_UNICA_NOW y SLOT_UNICA es un switchTOP que interpola PREV<->NOW.
+    s = scene.op('SLOT_UNICA_NOW')
+    if s is None:
+        s = scene.op('SLOT_UNICA')
     if s is None:
         s = scene.create(selectTOP, 'SLOT_UNICA')
         s.tags.add(TAG)
         ref = scene.op('SLOT_%d' % N_SLOTS)
         if ref is not None:
             s.nodeX, s.nodeY = ref.nodeX, ref.nodeY - 200
-    s.par.top.expr = 'parent().par.Menu2.eval()'
+    if s.OPType == 'selectTOP':          # el switchTOP de la transicion no tiene 'top'
+        s.par.top.expr = 'parent().par.Menu2.eval()'

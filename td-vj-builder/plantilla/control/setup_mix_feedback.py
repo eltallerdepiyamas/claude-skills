@@ -104,7 +104,10 @@ def onFrameEnd(frame):
         out.sendOSC('/custom-variable/mix_ir/value', [str(n)])
         # cambio desde el Beatstep / mouse: "presiona" el boton MIX de la pagina 1 (MENU) del Stream Deck.
         # Si vino del Stream Deck no hace falta: sus botones ya saltan solos.
-        if absTime.seconds - SCENE.fetch('deck_t', -99, search=False, storeDefault=False) > 1.0:
+        # Con el Stream Deck + XL (instalar_xl_osc.py marca show 'streamdeck_xl') no se presiona nada: las
+        # perillas siempre muestran los 5 parametros, y en el XL esa tecla es un pad (dispararia un visual).
+        xl = op('/project2/show').fetch('streamdeck_xl', False, search=False, storeDefault=False)
+        if not xl and absTime.seconds - SCENE.fetch('deck_t', -99, search=False, storeDefault=False) > 1.0:
             out.sendOSC('/location/1/1/0/press', [1])
     manual = SCENE.fetch('mix_foco_manual', None, search=False, storeDefault=False)
     orden = ('layout', 'visual', 'fx')

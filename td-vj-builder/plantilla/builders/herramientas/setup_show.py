@@ -25,7 +25,7 @@ MIDI_IN = '/project2/midi_midiin1'
 COLOR_CC = {           # cc -> (parametro, min, max)
     51: ('Brillo', 0.0, 2.0),
     55: ('Contraste', 0.5, 1.5),
-    59: ('Negros', 0.0, 0.3),
+    59: ('Negros', 0.0, 0.8),   # 0.3 se quedaba corto (LJ 2026-11-14)
     52: ('Saturacion', 0.0, 2.0),
     63: ('Master', 0.0, 1.0),
     16: ('Audiogain', 0.0, 2.0),
@@ -96,7 +96,7 @@ def hub():
         pg.appendToggle('Colorbypass', label='Bypass color')
     fpar(pg, c, 'Brillo', 'Brillo', 0.0, 2.0, 1.0)
     fpar(pg, c, 'Contraste', 'Contraste', 0.5, 1.5, 1.0)
-    fpar(pg, c, 'Negros', 'Negros', 0.0, 0.3, 0.0)
+    fpar(pg, c, 'Negros', 'Negros', 0.0, 0.8, 0.0)
     fpar(pg, c, 'Saturacion', 'Saturacion', 0.0, 2.0, 1.0)
     fpar(pg, c, 'Master', 'Master (a negro)', 0.0, 1.0, 1.0)
     if hasattr(c.par, 'Colormidi'):

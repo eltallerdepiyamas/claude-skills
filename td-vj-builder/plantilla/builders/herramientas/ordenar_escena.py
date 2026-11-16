@@ -16,4 +16,14 @@ if RESTAURAR:
     print('[ok] restaurado')
 else:
     json.dump({o.path: [o.nodeX, o.nodeY, list(o.color)] for o in S.children}, open(F, 'w', encoding='utf-8'), indent=0)
-    print('[ok] escena_modular acomodada: %d nodos' % orden_escena.acomodar(S))
+    n = orden_escena.acomodar(S)
+    xs = [o.nodeX for o in S.children if o.OPType != 'annotateCOMP']
+    ys = [o.nodeY for o in S.children if o.OPType != 'annotateCOMP']
+    pos = {}
+    for o in S.children:
+        if o.OPType != 'annotateCOMP' and o.dock is None:
+            pos.setdefault((o.nodeX, o.nodeY), []).append(o.name)
+    enc = [v for v in pos.values() if len(v) > 1]
+    print('[ok] escena_modular acomodada: %d nodos | ancho %d alto %d | encimados %d %s | recuadros %d' % (
+        n, max(xs) - min(xs), max(ys) - min(ys), len(enc), enc[:3],
+        len([o for o in S.children if o.OPType == 'annotateCOMP'])))

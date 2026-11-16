@@ -1,7 +1,7 @@
 """red_nodos.py: construye visuales como redes de nodos dentro de una base (no solo shaders).
 
     b, r = red_nodos.base(n)                     # base prendida, con COMP 'red' limpio
-    logo = red_nodos.logo(r)                     # entrada de logo fit a 1080p
+    logo = red_nodos.logo(r)                     # entrada de logo fit a la resolucion del show
     x = red_nodos.nodo(r, td.levelTOP, 'nivel', [logo], opacity=0.9)
     fuente = red_nodos.salida(r, x)              # out1 de la red; pasar a build_visual(source=fuente)
 
@@ -41,7 +41,8 @@ def audio(r):
 
 def logo(r, archivo='assets/logo_murcielago.png'):
     m = nodo(r, td.moviefileinTOP, 'logo_in', file=archivo)
-    return nodo(r, td.fitTOP, 'logo', [m], outputresolution='custom', resolutionw=1920, resolutionh=1080, fit='fitbest')
+    return nodo(r, td.fitTOP, 'logo', [m], outputresolution='custom',
+                resolutionw="=op('/project2/show').par.W", resolutionh="=op('/project2/show').par.H", fit='fitbest')
 
 
 def salida(r, x):

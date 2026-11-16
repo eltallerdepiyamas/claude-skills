@@ -64,6 +64,7 @@ NARANJA = (0x3A1E08, 0xE8741C)
 AMARILLO = (0x3A3008, 0xD9A400)   # SINGLE CAM (azul = MULTIVIEW)
 ROJO     = (0x3A0C0C, 0xE02424)   # grabando
 TURQUESA = (0x0E8C8C, 0x14B8B8)   # navegacion: 'que estoy viendo' (titulo de AJUSTES y su acceso)
+ROSA     = (0x3A0E2A, 0xE63C8A)   # UI de perform abierta
 
 # nombre que se ve de la pagina de los 5 parametros (internamente sigue siendo 'MIX')
 MIX_LABEL = 'AJUSTES'
@@ -137,7 +138,10 @@ def _streamdeck_id():
     """ID del Stream Deck en el Companion de esta compu (lo lee de su base de datos, de una copia)."""
     try:
         import sqlite3, shutil, tempfile
-        db = os.path.join(os.environ.get('APPDATA', ''), 'companion', 'v5.0', 'db.sqlite')
+        import glob     # la carpeta de la version mas nueva de Companion (v5.0, v5.1, ...)
+        dbs = glob.glob(os.path.join(os.environ.get('APPDATA', ''), 'companion', 'v*', 'db.sqlite'))
+        dbs.sort(key=lambda p: [int(x) for x in os.path.basename(os.path.dirname(p))[1:].split('.') if x.isdigit()])
+        db = dbs[-1] if dbs else ''
         tmp = tempfile.mkdtemp()
         for s in ('', '-wal', '-shm'):
             if os.path.exists(db + s):
@@ -214,10 +218,10 @@ layouts = show.get('layouts', [])
 PAGES = []
 if SOLO_VISUALES:
     vistos = show.get('visuales', [])
-    grupos = [g for g in ('VISUALES', 'LOGOS') if any(v.get('grupo') == g for v in vistos)]
-    for g in grupos:             # el show define sus paginas (control/bancos.json)
+    grupos = list(dict.fromkeys(v.get('grupo') for v in vistos if v.get('grupo')))   # p.ej. VISUALES, LOGOS
+    for g in grupos:             # el show define sus paginas (control/bancos.json, ui_bancos.py)
         PAGES += chunks(g, [visual(v) for v in vistos if v.get('grupo') == g])
-    if not grupos:               # bases 1-8 = con logo · 9-16 = generativos
+    if not grupos:               # bases 1-8 = con logo (pads canal 10) · 9-16 = generativos (canal 11)
         PAGES += chunks('LOGOS', [visual(v) for v in vistos if v['base'] <= 8])
         PAGES += chunks('GENERATIVOS', [visual(v) for v in vistos if v['base'] > 8])
 else:
@@ -329,26 +333,42 @@ ENSAYO_GRID = [button('DEMO', AZUL, [osc('/td/inc/Demo', 'i', 1)], latch=('demo'
                button('FUENTE', GRIS, [osc('/td/inc/Recsel', 'i', 1)], value='$(custom:recfuente)'),
                button('REC', ROJO, [osc('/td/inc/Rec', 'i', 1)], latch=('rec', 'ON'), value='$(custom:rec)')]
 ENSAYO_GRID = ENSAYO_GRID + fila([]) + fila([mix_btn_new()])[:4] + [button('VOLVER\nAL MENU', GRIS, [goto('MENU')])]
+# PANTALLAS: menu de ajustes del test pattern. Toda la fila 1 = salida (prendido + patron + monitor + FS + NDI).
+# Fila 2 = glow. Fila 3 = volver. Cada boton toca /td/show/inc/<Par> (cycle en menus / toggle en bools / delta en floats).
+PANTALLAS_GRID = [button('PRENDIDO', ROJO, [osc('/td/show/inc/Pantallas', 'i', 1)], latch=('pantallas', 'ON'), value='$(custom:pantallas)'),
+                  button('PATRON', GRIS, [osc('/td/show/inc/Patron', 'i', 1)], value='$(custom:patron)'),
+                  button('MONITOR', GRIS, [osc('/td/show/inc/Monitor', 'i', 1)], value='$(custom:monitor)'),
+                  button('FULL\nSCREEN', GRIS, [osc('/td/show/inc/Pantallacompleta', 'i', 1)], latch=('fullscreen', 'ON'), value='$(custom:fullscreen)'),
+                  button('NDI', VERDE, [osc('/td/show/inc/Ndi', 'i', 1)], latch=('ndi', 'ON'), value='$(custom:ndi)'),
+                  button('GLOW', TURQUESA, [osc('/td/show/inc/Glowon', 'i', 1)], latch=('glowon', 'ON'), value='$(custom:glowon)'),
+                  button('GLOW\nFORMA', GRIS, [osc('/td/show/inc/Glowforma', 'i', 1)], value='$(custom:glowforma)'),
+                  button('GLOW\nVEL -', GRIS, [osc('/td/show/inc/Glowvel', 'f', -0.25)]),
+                  button('GLOW\nVEL', (0x000000, 0x000000), [], value='$(custom:glowvel)'),
+                  button('GLOW\nVEL +', GRIS, [osc('/td/show/inc/Glowvel', 'f', 0.25)])]
+PANTALLAS_GRID = PANTALLAS_GRID + [None] * 4 + [button('VOLVER\nAL MENU', GRIS, [goto('MENU')])]
 ensayo_btn = button('ENSAYO', (0x1A1A1A, ROJO[1]), [goto('ENSAYO')], latch=('rec', 'ON'), value='REC $(custom:rec)')
 reset_btn = button('RESET', ROJO, [osc('/td/reset', 'i', 1)], value='$(custom:mix_foconombre)')   # sliders + movimiento + feedback + videos
-ui_btn = button('ABRIR\nUI', GRIS, [osc('/td/ui', 'i', 1)])   # /perform como ventana aparte
+ui_btn = button('ABRIR\nUI', ROSA, [osc('/td/inc/ui', 'i', 1)], latch=('ui', 'ON'), value='$(custom:ui)')   # toggle /perform como ventana aparte
 beatstep_btn = button('BEATSTEP', GRIS, [], value='$(custom:bs_canal)')   # ultimo pad: canal-pad + que controla (solo informa)
+pantallas_btn = button('PANTALLAS', (0x1A1A1A, ROJO[1]), [goto('PANTALLAS')], latch=('pantallas', 'ON'), value='$(custom:pantallas)')
 if SOLO_VISUALES:
     # navegacion primero: fila 2 / col 1 sigue siendo AJUSTES (TD la presiona)
     MENU_GRID = (fila(MENU_GRID[:3] + [button('COLOR A', ROJO, [osc('/td/rampa', 'i', 0)]),
                                        button('COLOR B', TURQUESA, [osc('/td/rampa', 'i', 1)])])
                  + [mix_btn, reset_btn, button('RESET\nFEEDBACK', ROJO, [osc('/td/resetfb', 'i', 1)]),
                     button('ACTUALIZAR\nTHUMBS', GRIS, [osc('/td/thumbs', 'i', 1)]), beatstep_btn]
-                 + fila([ui_btn])[:4] + [ensayo_btn])
+                 + fila([ui_btn, pantallas_btn])[:4] + [ensayo_btn])
 else:
-    MENU_GRID = fila(MENU_GRID[:5]) + fila([mix_btn] + MENU_GRID[5:9]) + [reset_btn, beatstep_btn, ui_btn, None] + [ensayo_btn]
+    MENU_GRID = fila(MENU_GRID[:5]) + fila([mix_btn] + MENU_GRID[5:9]) + [reset_btn, beatstep_btn, ui_btn, pantallas_btn, ensayo_btn]
 PAGES.insert(0, ('MENU', MENU_GRID))
 PAGES.append(('ENSAYO', ENSAYO_GRID))
+PAGES.append(('PANTALLAS', PANTALLAS_GRID))
 
 # cada pagina lleva su ID (la primera conserva el de la exportacion base); las acciones goto('NOMBRE')
 # saltan por NUMERO de pagina (expresion), que es lo que sobrevive al importar
 page_id = {name: (page1['id'] if i == 1 else nid()) for i, (name, _b) in enumerate(PAGES, start=1)}
 page_no = {name: i for i, (name, _b) in enumerate(PAGES, start=1)}
+
 for _name, buttons in PAGES:
     for b in buttons:
         for a in (b['steps']['0']['action_sets']['down'] if b else []):
@@ -359,7 +379,7 @@ PAGE_BAR = {'MULTIVIEW': AZUL[1], 'SINGLE CAM': AMARILLO[1], 'VISUALES': MORADO[
             'CAMARAS': VERDE[1]}
 out_pages = {}
 for i, (name, buttons) in enumerate(PAGES, start=1):
-    if name in ('MIX', 'MENU', 'ENSAYO'):
+    if name in ('MIX', 'MENU', 'ENSAYO', 'PANTALLAS'):
         # pagina completa 5 x 3: sin navegacion (MIX: VOLVER esta en la fila 2)
         controls = {'0': {}, '1': {}, '2': {}}
         places = [(r, c) for r in range(3) for c in range(5)]
@@ -412,6 +432,15 @@ VARS += [('menu_mv', 'MENU: layout multiview activo', ''), ('menu_sc', 'MENU: la
          ('menu_vis', 'MENU: visual activo', ''), ('menu_fx', 'MENU: FX activo', '')]
 VARS += [('demo', 'DEMO automatico ON/OFF (lo manda TD)', 'OFF'), ('democada', 'DEMO: segundos por escena', '-'),
          ('rec', 'Grabando ON/OFF (lo manda TD)', 'OFF'), ('recfuente', 'Que se graba (lo manda TD)', '-')]
+VARS += [('pantallas', 'MENU: Test pattern (Probar pantallas) ON/vacio (lo manda TD)', '')]
+VARS += [('ui', 'MENU: Ventana UI abierta ON/vacio (lo manda TD)', '')]
+VARS += [('patron', 'PANTALLAS: patron activo (lo manda TD)', '-'),
+         ('monitor', 'PANTALLAS: monitor elegido (lo manda TD)', '-'),
+         ('fullscreen', 'PANTALLAS: full screen ON/vacio (lo manda TD)', ''),
+         ('ndi', 'PANTALLAS: NDI ON/vacio (lo manda TD)', ''),
+         ('glowon', 'PANTALLAS: Glow ON/vacio (lo manda TD)', ''),
+         ('glowforma', 'PANTALLAS: forma del glow (lo manda TD)', '-'),
+         ('glowvel', 'PANTALLAS: velocidad del glow (lo manda TD)', '-')]
 cfg['custom_variables'] = {
     n: {'description': d, 'defaultValue': dv,
         'persistCurrentValue': not n.startswith(('cams', 'slot', 'rotar', 'mix_', 'demo', 'rec')),

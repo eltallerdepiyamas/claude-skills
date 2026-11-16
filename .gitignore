@@ -13,3 +13,6 @@ Thumbs.db
 
 # Skills que sincroniza la app de Claude dentro de ~/.claude/skills (no son del repo)
 synced/
+
+# Token local del servidor MCP de TouchDesigner (se regenera en cada setup)
+**/td_mcp/.token
