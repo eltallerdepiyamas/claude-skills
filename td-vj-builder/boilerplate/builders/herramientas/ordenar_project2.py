@@ -1,3 +1,5 @@
+# !! NO USAR para acomodar /project2 completo (2026-11-15): mezcla bloques y saca los pads de la fila de su
+# !! visual; el usuario lo rechazo. Regla y herramienta: CLAUDE.md -> Acomodo, builders/herramientas/acomodar_pads.py.
 # ─────────────────────────────────────────────────────────────
 # ordenar_project2.py — acomoda /project2 por CADENAS (una fila por señal, de izquierda a derecha
 # como fluye) y por GRUPOS (recuadros de color). SOLO mueve, pinta y pone recuadros: no conecta,
