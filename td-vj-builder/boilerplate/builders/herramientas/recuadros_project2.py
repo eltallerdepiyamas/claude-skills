@@ -21,7 +21,7 @@ GRUPOS = [
     ('zona_audio_io', 'AUDIO ARCHIVO / SALIDA', (0.75, 0.4, 0.85), r'audiofilein\d+|audiodevout\d+'),
     ('zona_visuales', 'VISUALES · una fila por base (pad a la izquierda)', (0.3, 0.8, 0.45),
      r'base\d+|null\d+|vid\d+|switch([3-9]|1\d|2[01])|' + PAD),
-    ('zona_salida', 'SALIDA · switch2 -> master_visuales', (0.95, 0.3, 0.3), r'switch2|level\d+|out\d+|master_\w+'),
+    ('zona_salida', 'SALIDA · switch2 (+ fundido del piloto) -> master_visuales', (0.95, 0.3, 0.3), r'switch2|piloto_\w+|level\d+|out\d+|master_\w+'),
 ]
 
 for a in [o for o in R.children if o.OPType == 'annotateCOMP' and (o.name.startswith('zona_') or re.match(r'annotate\d+$', o.name))]:

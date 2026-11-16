@@ -229,7 +229,7 @@ fila4 = lambda: [
 ]
 
 
-def tira_y_perillas():
+def tira_y_perillas(grupo=''):
     lcd, per = [], []
     for i in range(1, 6):
         b = button('$(custom:mix_p%dn)' % i, MORADO, [osc('/td/audio', 'i', i)], value='$(custom:mix_p%dv)' % i)
@@ -237,6 +237,11 @@ def tira_y_perillas():
         lcd.append(b)
         per.append(perilla([osc('/td/xl/dial%d' % i, 'i', -1)], [osc('/td/xl/dial%d' % i, 'i', 1)],
                            [osc('/td/xl/reset%d' % i, 'i', 1)]))
+    if grupo == 'LOGOS':      # en la pagina de logos la perilla 6 es el TAMANO LOGO estandar (show.Logotamano)
+        lcd.append(button('TAMANO\nLOGO', ROJO, [osc('/td/xl/logotam', 'i', 0)], value='$(custom:logotam)'))
+        per.append(perilla([osc('/td/xl/logotam', 'i', -1)], [osc('/td/xl/logotam', 'i', 1)],
+                           [osc('/td/xl/logotam', 'i', 0)]))
+        return lcd, per
     lcd.append(button('REACCION', VERDE, [osc('/td/xl/reaccion', 'i', 0)], value='$(custom:reaccion)'))
     per.append(perilla([osc('/td/xl/reaccion', 'i', -1)], [osc('/td/xl/reaccion', 'i', 1)],
                        [osc('/td/xl/reaccion', 'i', 0)]))
@@ -253,7 +258,7 @@ for g in GRUPOS:
     for r, g2 in enumerate(GRUPOS[:3]):
         celdas[(r, COL_TABS)] = tab(g2, g)
     celdas[(3, COL_TABS)] = button('REC\nFUENTE', GRIS, [osc('/td/inc/Recsel', 'i', 1)], value='$(custom:recfuente)')
-    lcd, per = tira_y_perillas()
+    lcd, per = tira_y_perillas(g)
     for c, x, y in zip(PERILLA_COLS, lcd, per):
         celdas[(FILA_LCD, c)], celdas[(FILA_PERILLA, c)] = x, y
     todas.append((PAG[g], celdas))
@@ -292,7 +297,8 @@ VARS += [('mix_ir', 'Sube cuando cambia el visual', '0'),
 VARS += [('bs_canal', 'Canal-pad del ultimo pad del Beatstep', '-')]
 VARS += [('demo', 'DEMO automatico ON/OFF', 'OFF'), ('rec', 'Grabando ON/OFF', 'OFF'), ('recfuente', 'Que se graba', '-')]
 VARS += [('blackout', 'BLACKOUT ON/vacio (xl_feedback)', ''), ('modoshow', 'MODO SHOW ON/vacio (xl_feedback)', ''),
-         ('reaccion', 'Reaccion global del audio en % (xl_feedback)', '100%')]
+         ('reaccion', 'Reaccion global del audio en % (xl_feedback)', '100%'),
+         ('logotam', 'Tamano estandar del logo en % del alto (xl_feedback)', '75%')]
 cfg['custom_variables'] = {
     n: {'description': d, 'defaultValue': dv,
         'persistCurrentValue': not n.startswith(('mix_', 'demo', 'rec', 'blackout')),

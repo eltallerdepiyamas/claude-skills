@@ -80,6 +80,12 @@ def _xl(cmd, args):
         if p is not None:
             d = float(a) if a is not None else 0.0
             p.val = p.default if d == 0 else min(max(p.eval() + 0.05 * d, p.normMin), p.normMax)
+    elif cmd == 'logotam':
+        # perilla 6 en la pagina LOGOS: tamano estandar del logo (show.Logotamano) · +1 / -1 = 0.01 · 0 = de fabrica
+        p = getattr(s.par, 'Logotamano', None)
+        if p is not None:
+            d = float(a) if a is not None else 0.0
+            p.val = p.default if d == 0 else min(max(p.eval() + 0.01 * d, p.normMin), p.normMax)
     fb = s.op('xl_feedback') if s is not None else None
     if fb is not None:
         try:
@@ -180,7 +186,8 @@ def _estado():
                  ('modoshow', lambda: 'ON' if s.par.Modoshow.eval() else ''),
                  ('salidaled', lambda: 'ON' if s.par.Salidaled.eval() else ''),
                  ('pantallas', lambda: 'ON' if s.par.Pantallas.eval() else ''),
-                 ('reaccion', lambda: '%d%%' % round(s.par.Reaccion.eval() * 100))):
+                 ('reaccion', lambda: '%d%%' % round(s.par.Reaccion.eval() * 100)),
+                 ('logotam', lambda: '%d%%' % round(s.par.Logotamano.eval() * 100))):
         try:
             d[k] = f()
         except Exception:

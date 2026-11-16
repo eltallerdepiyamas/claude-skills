@@ -50,3 +50,10 @@ Creado el {{FECHA}} desde td-vj-builder ({{VERSION}}). Esta carpeta = `project.f
 - El audio tiene que llegar a todos los visuales siempre. Al abrir un show, antes de ensayar y antes del show: `builders/herramientas/revisar_audio.py` (fuente -> audioAnalysis -> master_audio -> Energy; dice donde se corta).
 - `audio_vigia` (`setup_vigia_audio.py`, lo instala armar.py) despierta `audioAnalysis` cuando su cadena interna se queda sin canales (Energy en 0 en todo, salidas con float(None)).
 - Audio nuevo en un show (VST, otra fuente): no sale del ensayo si `revisar_audio.py` no dice `[ok] audio al cien`. Un VST que no carga (p.ej. neutone.vst3) va en bypass.
+
+## Show sin operador y logo (2026-11-16, de Casa Bacardi x Corona Capital)
+- Show que corre solo: `setup_piloto.py` (armar.py) = PILOTO AUTOMATICO (pestana PILOTO y chip AUTO en la UI; paginas Piloto y Vigia de `show`; apagado por default) + VIGIA DE VIDEO (por pico de brillo; reinicia feedback, luego salta). Los canales siguen siendo grupos de 16 pads aunque no haya Beatstep.
+- Antes de un show sin operador: `revisar_visuales.py` (todos los pads, con musica) y una noche con `noche.py` (soak test: `control/soak_log.csv`, `control/piloto_log.txt`).
+- Logo: `show.Logotamano` (pagina Logo; perilla 6 del XL en la pagina LOGOS) = mismo tamano en todos los visuales de logo; `base.Tamano` = ajuste fino. `logo_tamano.py` (armar.py) y `calibrar_logos.py`. Shaders de logo nuevos: `uniform float u_tamano`, sello con `c / u_tamano`. Pedir el sello en vector o PNG 4096.
+- Referencias para construir: `research/recetario_tecnicas.md` (perfiles + 44 recetas, sintesis de video / LZX incluida).
+

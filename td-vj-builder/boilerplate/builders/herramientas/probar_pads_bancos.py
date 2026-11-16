@@ -5,9 +5,9 @@ sw, fx = R.op('switch2'), R.op('switch23')
 t = R.op('table1')
 mod = R.op('ui_perform/ui_lib').module
 vk = R.op('vis_knobs_lib').module
-print('switch23 entradas', [i.name for i in fx.inputs])
+print('switch23 entradas', [i.name for i in fx.inputs] if fx is not None else '(no hay switch23: show sin FX)')
 print('notas repetidas', [n for n in {t[r, 0].val for r in range(t.numRows)} if n and sum(t[r, 0].val == n for r in range(t.numRows)) > 1])
-antes = int(sw.par.index.eval()), int(fx.par.index.eval())
+antes = int(sw.par.index.eval()), (int(fx.par.index.eval()) if fx is not None else 0)
 bad = 0
 for canal, slots in mod._BANCOS.items():
     for pad, slot in enumerate(slots):
@@ -29,7 +29,9 @@ for canal, slots in mod._BANCOS.items():
         ok = len(filas) == 1 and int(sw.par.index.eval()) == slot[1]
         bad += not ok
         print(canal, pad + 1, note, ex.name, '->', int(sw.par.index.eval()), b.name if b else None, b.fetch('nombre', '') if b else '', 'OK' if ok else 'MAL')
-sw.par.index, fx.par.index = antes
+sw.par.index = antes[0]
+if fx is not None:
+    fx.par.index = antes[1]
 print('fallas', bad, '· switch2 restaurado', sw.par.index.eval())
 if R.op('bs_luces_exec') is not None:          # las luces del Beatstep ya no son parte de los shows
     print('luces', R.op('bs_luces_exec').module.deseados(), t[antes[0], 0].val)

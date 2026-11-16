@@ -151,6 +151,17 @@ def candado():
 
 
 def elegir(tipo, dato):
+    if tipo == 'PILOTO':
+        # chip AUTO de la barra de arriba: prende / apaga el piloto automatico (setup_piloto.py)
+        p = getattr(op('/project2/show').par, 'Pilotoauto', None)
+        if p is not None:
+            p.val = not p.eval()
+        return
+    if tipo == 'PILOTOSIG':
+        p = getattr(op('/project2/show').par, 'Pilotosiguiente', None)
+        if p is not None:
+            p.pulse()
+        return
     if tipo in ('MODOSHOW', 'CANDADOAJ'):
         p = getattr(op('/project2/show').par, 'Modoshow' if tipo == 'MODOSHOW' else 'Candadoajustes', None)
         if p is not None:
@@ -622,7 +633,16 @@ def build():
               " + ('   ·   GRABANDO' if ((op('%s') is not None and op('%s').par.Rec) or getattr(op('/project2/show').par, 'Rec', 0)) else '')"
               % (project.name.replace('.toe', ''), ESC, ESC))
     BW = 200      # botones de la barra: EXTRAS · MODO SHOW · ACTUALIZAR THUMBS · RESET FEEDBACK
-    texto(ui, 'titulo', 0, H - TOP_H, W - 4 * (BW + 10) - 100, TOP_H, estado, (0.1, 0.1, 0.11), 20, expr=True)
+    hay_piloto = getattr(R.op('show').par, 'Pilotoauto', None) is not None
+    texto(ui, 'titulo', 0, H - TOP_H, W - 4 * (BW + 10) - (250 if hay_piloto else 100), TOP_H, estado, (0.1, 0.1, 0.11), 20, expr=True)
+    if hay_piloto:
+        # AUTO: gris apagado · verde corriendo (cuenta regresiva) · ambar en pausa · rojo si el vigia esta actuando
+        pl = "op('/project2/show/piloto/piloto_lib').module"
+        b = texto(ui, 'btn_piloto', W - 4 * (BW + 10) - 244, H - TOP_H + 4, 140, TOP_H - 8, pl + '.estado_txt()', (0.25, 0.25, 0.27), 15, expr=True)
+        for k, ch in enumerate('rgb'):
+            getattr(b.par, 'bgcolor' + ch).expr = pl + '.chip_rgb(%d)' % k
+        b.store('tipo', 'PILOTO')
+        b.store('dato', '')
     # FPS: verde a la velocidad del proyecto, se va a rojo conforme baja (60 % o menos = rojo)
     fps = "(1.0 / max(absTime.stepSeconds, 0.001))"
     t3 = texto(ui, 'bar_fps', W - 4 * (BW + 10) - 94, H - TOP_H + 4, 84, TOP_H - 8, "str(int(round(%s))) + ' FPS'" % fps,
@@ -688,6 +708,7 @@ def build():
         getattr(ts.par, 'bgcolor' + ch).expr = '%g if %s[1] else %g' % (COL['SHOW'][k] * 0.55, nd, (0.85, 0.10, 0.10)[k])
     pestanas(ui, 'show', x3, top - TITLE_H - TAB_H - 4, cw,
              [('hub', 'CONTROLES')] + ([('audio', 'AUDIO EN VIVO')] if hay_audio_vivo else [])
+             + ([('piloto', 'PILOTO')] if hay_piloto else [])
              + [(k, l) for k, l, _ in FX_GLOBALES], COL['SHOW'])
     w_expr, h_expr = _preview_expr(cw)
     cont_show = imagen(ui, 'prev_show', x3, y0 - (PREV_H - 8), cw, PREV_H - 8, "op('/project1/ndiout1')")
@@ -725,6 +746,25 @@ def build():
             bloques.append(pa)
             ya -= hb + 30
         tagear('tab_show_audio', [a1, a2] + bloques)
+    # PILOTO: estado (ahora / cuenta / vigia) + SIGUIENTE + ajustes (paginas Piloto y Vigia del hub)
+    if hay_piloto:
+        pl = "op('/project2/show/piloto')"
+        e1 = texto(ui, 'piloto_estado', x3, ys - 40, cw - 150, 40,
+                   "'AL AIRE: ' + str(%s.fetch('ahora_txt', '-', search=False)) + '   ·   ' + op('/project2/show/piloto/piloto_lib').module.estado_txt()" % pl,
+                   (0.10, 0.30, 0.18), 15, expr=True)
+        e2 = texto(ui, 'piloto_vigia', x3, ys - 74, cw - 150, 30,
+                   "'VIGIA: ' + str(%s.fetch('vigia_txt', '-', search=False))" % pl, (0.12, 0.12, 0.13), 13, expr=True)
+        b = texto(ui, 'btn_piloto_sig', x3 + cw - 144, ys - 74, 144, 74, 'SIGUIENTE', (0.10, 0.40, 0.25), 16)
+        b.store('tipo', 'PILOTOSIG')
+        b.store('dato', '')
+        pp = panel(ui, parameterCOMP, 'par_show_piloto', x3, GAP, cw, ys - 84 - GAP)
+        setp(pp, ['op'], "op('/project2/show')", expr=True)
+        setp(pp, ['pagescope'], 'Piloto Vigia')
+        setp(pp, ['pagenames'], True)
+        setp(pp, ['builtin'], False)
+        setp(pp, ['custom'], True)
+        setp(pp, ['header'], False)
+        tagear('tab_show_piloto', [e1, e2, b, pp])
     for k, opx, pag, alto in (('hub', "op('/project2/show')", '*', ys - 200),) + tuple((k, "op('%s')" % r, '*', ys) for k, _, r in FX_GLOBALES):
         pc = panel(ui, parameterCOMP, 'par_show_' + k, x3, GAP, cw, alto - GAP)
         setp(pc, ['op'], opx, expr=True)

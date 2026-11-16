@@ -49,6 +49,8 @@ paso('test de pantallas (pestana Pantallas)', 'builders/herramientas/setup_test_
 if mods.get('escena_modular', True):
     paso('dispositivos de camara (pestana Dispositivos)', 'builders/herramientas/setup_devices_camaras.py')
 paso('audio global (Autonivel · Reaccion · Suavizado)', 'builders/herramientas/setup_audio_global.py')
+paso('tamano de logo estandar (show.Logotamano)', 'builders/herramientas/logo_tamano.py')
+paso('piloto automatico + vigia de video (shows sin operador)', 'builders/herramientas/setup_piloto.py')
 paso('MODO SHOW (candado)', 'builders/herramientas/setup_modo_show.py')
 paso('sin luces del Beatstep (ya no van en los shows)', 'control/quitar_beatstep_luces.py')
 paso('vigia de audio (despierta audioAnalysis)', 'builders/herramientas/setup_vigia_audio.py')
