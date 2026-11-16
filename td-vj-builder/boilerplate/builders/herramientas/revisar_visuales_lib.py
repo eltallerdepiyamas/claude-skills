@@ -150,7 +150,7 @@ def terminar():
     json.dump(res, open(project.folder + '/control/revision_visuales.json', 'w', encoding='utf-8'), indent=1, ensure_ascii=False)
     L = ['# Revision de visuales (%s)' % time.strftime('%Y-%m-%d %H:%M'), '',
          'Medido en master_visuales con el audio real: %d visuales, %.0f s.' % (len(res), time.time() - st['t0']),
-         'Brillo = media; Pico = brillo del 0.5%% mas brillante (NEGRO solo si pico < 0.08); negro/satura = fraccion de pantalla.',
+         'Brillo = media; Pico = brillo del 0.5% mas brillante (NEGRO solo si pico < 0.08); negro/satura = fraccion de pantalla.',
          'Reaccion = correlacion con low+kick (-1..1); 0.00 exacto = el audio estaba en silencio en esa ventana. FPS vs cookRate %d.' % project.cookRate, '',
          '| Pad | Visual | Base | Brillo | Pico | Negro | Satura | Mov | Reacc brillo | Reacc mov | FPS | Avisos |',
          '|---|---|---|---|---|---|---|---|---|---|---|---|']

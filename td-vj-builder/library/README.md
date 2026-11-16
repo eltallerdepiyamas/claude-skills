@@ -24,6 +24,17 @@ _Origen de cada archivo. Antes de escribir un shader nuevo, busca aquí algo cer
 
 | Archivo | Proyecto |
 |---|---|
+| `physarum.glsl + physarum_sim.glsl` | corona 2026 (CH8, recetario 9: venas vivas, red de simulacion) |
+| `feedback_analogico.glsl` | corona 2026 (CH8, recetario 40: feedback Hypno/Waaaves, flash negativo en kick) |
+| `atractor.glsl + atractor_orbita.glsl` | corona 2026 (CH8, recetario 14: Clifford acumulado en feedback) |
+| `filotaxis.glsl` | corona 2026 (CH8, recetario 30: espiral de Vogel, primos en tinta) |
+| `automata.glsl + automata_sim.glsl` | corona 2026 (CH8, recetario 2/41: automata 1D estilo Ikeda) |
+| `sinte_lzx.glsl` | corona 2026 (CH8, recetario 35-38/42: patch LZX en un shader) |
+| `moire.glsl` | corona 2026 (CH8, recetario 34: interferencia de anillos) |
+| `paralaje.glsl` | corona 2026 (CH8, recetario 26: capas de lineas NONOTAK) |
+| `cimatica.glsl` | corona 2026 (CH10: Chladni con feedback) |
+| `anillos_tiempo.glsl` | corona 2026 (CH10: cordillera en polar; usa cordillera_hist) |
+| `anillo_saturno.glsl` | corona 2026 (CH10: anillo planetario, onda espiral en kick) |
 | `bauhaus_ml.glsl` | mercado libre |
 | `campo_bokeh.glsl` | petite amie |
 | `code_rain.glsl` | corona |

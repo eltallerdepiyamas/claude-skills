@@ -53,12 +53,16 @@ num(pg, 'Pilotodropsens', 'Sensibilidad del drop', 0.5, 0.0, 1.0)
 tog(pg, 'Pilotoenkick', 'Cambiar en kick', True)
 menu(pg, 'Pilototransicion', 'Transicion', ['fundido', 'corte'], ['Fundido', 'Corte (en kick)'], 'fundido')
 num(pg, 'Pilototransdur', 'Duracion transicion (s)', 1.5, 0.0, 4.0)
+tog(pg, 'Pilotoch8', 'CH8 NUEVOS', True)
+num(pg, 'Pilotopeso8', 'Peso CH8', 1.0, 0.0, 3.0)
 tog(pg, 'Pilotoch9', 'CH9 OTROS', True)
 num(pg, 'Pilotopeso9', 'Peso CH9', 1.0, 0.0, 3.0)
 tog(pg, 'Pilotoch10', 'CH10 CIRCULARES', True)
 num(pg, 'Pilotopeso10', 'Peso CH10', 1.0, 0.0, 3.0)
 tog(pg, 'Pilotoch11', 'CH11 LOGOS', True)
 num(pg, 'Pilotopeso11', 'Peso CH11', 1.0, 0.0, 3.0)
+tog(pg, 'Pilotoch12', 'CH12 LOGOS 2', True)
+num(pg, 'Pilotopeso12', 'Peso CH12', 1.0, 0.0, 3.0)
 num(pg, 'Pilotologo', 'Logo cada N cambios (0 = libre)', 4, 0, 12, entero=True)
 menu(pg, 'Pilotoorden', 'Orden', ['aleatorio', 'secuencia'], ['Aleatorio sin repetir', 'En secuencia'], 'aleatorio')
 if not hasattr(S.par, 'Pilotoexcluir'):
@@ -82,6 +86,7 @@ lib.text = open(project.folder + '/builders/herramientas/piloto_lib.py', encodin
 lib.nodeX, lib.nodeY = 0, 0
 P.unstore('pil')
 P.unstore('bancos_cache')
+P.unstore('logos_cache')
 ex = P.op('piloto_exec') or P.create(executeDAT, 'piloto_exec')
 ex.nodeX, ex.nodeY = 200, 0
 ex.text = '\n'.join(['# cada cuadro: piloto automatico + vigia (piloto_lib)', 'def onFrameStart(frame):',

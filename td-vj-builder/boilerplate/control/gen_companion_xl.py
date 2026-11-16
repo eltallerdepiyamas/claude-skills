@@ -189,7 +189,7 @@ GRUPOS = []                              # en el orden de bancos.json: OTROS (CH
 for v in visuales:
     if v.get('grupo') and v['grupo'] not in GRUPOS:
         GRUPOS.append(v['grupo'])
-CANAL = {g: 9 + k for k, g in enumerate(GRUPOS)}
+CANAL = {g: next((v['canal'] for v in visuales if v.get('grupo') == g and v.get('canal')), 9 + k) for k, g in enumerate(GRUPOS)}
 PAG = {g: 'CH%d %s' % (CANAL[g], g) for g in GRUPOS}
 
 
@@ -237,7 +237,7 @@ def tira_y_perillas(grupo=''):
         lcd.append(b)
         per.append(perilla([osc('/td/xl/dial%d' % i, 'i', -1)], [osc('/td/xl/dial%d' % i, 'i', 1)],
                            [osc('/td/xl/reset%d' % i, 'i', 1)]))
-    if grupo == 'LOGOS':      # en la pagina de logos la perilla 6 es el TAMANO LOGO estandar (show.Logotamano)
+    if 'LOGOS' in grupo:      # en las paginas de logos la perilla 6 es el TAMANO LOGO estandar (show.Logotamano)
         lcd.append(button('TAMANO\nLOGO', ROJO, [osc('/td/xl/logotam', 'i', 0)], value='$(custom:logotam)'))
         per.append(perilla([osc('/td/xl/logotam', 'i', -1)], [osc('/td/xl/logotam', 'i', 1)],
                            [osc('/td/xl/logotam', 'i', 0)]))
@@ -255,9 +255,23 @@ for g in GRUPOS:
     celdas = {}
     for k, b in enumerate(pads + fila3() + fila4()):
         celdas[(k // 8, k % 8)] = b
-    for r, g2 in enumerate(GRUPOS[:3]):
-        celdas[(r, COL_TABS)] = tab(g2, g)
-    celdas[(3, COL_TABS)] = button('REC\nFUENTE', GRIS, [osc('/td/inc/Recsel', 'i', 1)], value='$(custom:recfuente)')
+    if len(GRUPOS) <= 3:
+        for r, g2 in enumerate(GRUPOS[:3]):
+            celdas[(r, COL_TABS)] = tab(g2, g)
+        celdas[(3, COL_TABS)] = button('REC\nFUENTE', GRIS, [osc('/td/inc/Recsel', 'i', 1)], value='$(custom:recfuente)')
+    else:
+        # mas de 3 canales: filas 0-2 = canales de visuales, fila 3 = LOGOS (en una pagina de logos lleva al otro)
+        vis = [x for x in GRUPOS if 'LOGO' not in x][:3]
+        logos = [x for x in GRUPOS if 'LOGO' in x]
+        for r, g2 in enumerate(vis):
+            celdas[(r, COL_TABS)] = tab(g2, g)
+        if logos:
+            destino = logos[(logos.index(g) + 1) % len(logos)] if g in logos else logos[0]
+            b = tab(destino, g)
+            if g in logos:          # estas en logos: la tecla se ve encendida y lleva al otro canal de logos
+                c = TURQUESA[1]
+                b = button('CH%d\n>' % CANAL[destino], (c, c), [goto(PAG[destino])], value=g, bar=0xFFFFFF)
+            celdas[(3, COL_TABS)] = b
     lcd, per = tira_y_perillas(g)
     for c, x, y in zip(PERILLA_COLS, lcd, per):
         celdas[(FILA_LCD, c)], celdas[(FILA_PERILLA, c)] = x, y

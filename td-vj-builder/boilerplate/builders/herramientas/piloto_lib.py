@@ -48,8 +48,11 @@ def bancos():
         src = open(project.folder + '/builders/herramientas/ui_bancos.py', encoding='utf-8').read()
         B = next(ast.literal_eval(n.value) for n in ast.parse(src).body
                  if isinstance(n, ast.Assign) and getattr(n.targets[0], 'id', '') == 'BANCOS')
+        G = next(ast.literal_eval(n.value) for n in ast.parse(src).body
+                 if isinstance(n, ast.Assign) and getattr(n.targets[0], 'id', '') == 'GRUPOS')
         c = [(canal, i + 1, p[0], p[1]) for canal, pads in sorted(B.items()) for i, p in enumerate(pads) if p]
         P.store('bancos_cache', c)
+        P.store('logos_cache', [k for k, g in G.items() if 'LOGO' in g])
     return c
 
 
@@ -75,12 +78,12 @@ def base_de(k):
 # ------------------------------------------------------------------ eleccion
 def candidatos(logo):
     excl = set(str(par('Pilotoexcluir', '')).replace(',', ' ').split())
-    on = {9: par('Pilotoch9', True), 10: par('Pilotoch10', True), 11: par('Pilotoch11', True)}
+    logos = P.fetch('logos_cache', [11], search=False)
     out = []
     for canal, pad, nombre, e in bancos():
-        if not on.get(canal, False) or '%d-%d' % (canal, pad) in excl:
+        if not par('Pilotoch%d' % canal, True) or '%d-%d' % (canal, pad) in excl:
             continue
-        if logo is not None and (canal == 11) != logo:
+        if logo is not None and (canal in logos) != logo:
             continue
         out.append((canal, pad, nombre, e))
     return out
@@ -90,7 +93,9 @@ def elegir_siguiente():
     d = st()
     actual = int(R.op('switch2').par.index.eval())
     cada = int(par('Pilotologo', 4) or 0)
-    quiere_logo = cada > 0 and par('Pilotoch11', True) and d['desde_logo'] >= cada - 1
+    bancos()
+    logos = P.fetch('logos_cache', [11], search=False)
+    quiere_logo = cada > 0 and any(par('Pilotoch%d' % k, True) for k in logos) and d['desde_logo'] >= cada - 1
     lista = candidatos(True if quiere_logo else (False if cada > 0 else None)) or candidatos(None)
     if not lista:
         return None
@@ -191,7 +196,7 @@ def terminar_cambio(c, motivo):
     ahora = time.time()
     d['ultimo'] = ahora
     d['cambios'] += 1
-    d['desde_logo'] = 0 if c[0] == 11 else d['desde_logo'] + 1
+    d['desde_logo'] = 0 if c[0] in P.fetch('logos_cache', [11], search=False) else d['desde_logo'] + 1
     d['malo'] = None
     programar(d, ahora)
     deriva_empezar(c[3])

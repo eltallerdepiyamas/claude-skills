@@ -5,7 +5,7 @@ import re
 R = op('/project2')
 M = 30          # margen alrededor de los nodos
 TITULO = 50     # espacio para el titulo arriba
-PAD = r'(constant|logic|chopexec)(\d+|_pad50)'
+PAD = r'(constant|logic|chopexec)(\d+|_pad\d+)'
 # (nombre, titulo, color, regex de nombres). El orden importa: el primero que atrapa un nodo se lo queda.
 GRUPOS = [
     ('zona_midi_entrada', 'MIDI ENTRADA (Beatstep / canales)', (0.35, 0.45, 0.9), r'midi_midiin\d+|bs_canal\w*'),

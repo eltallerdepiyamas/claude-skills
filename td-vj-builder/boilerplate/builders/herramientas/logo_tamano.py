@@ -12,7 +12,10 @@ K = {'murcielago_particulas': 1.0, 'sello_giratorio': 1.0, 'onda_circular': 1.0,
      'eclipse_feedback': 1.0, 'moneda_glitch': 1.0,
      'tunel_circular': 1.0 / 0.75,      # el shader lo divide entre (0.75 + 0.3 * energia)
      'sello_particulas': 0.5,           # su sello() usa 2 * tam
-     'sello_metalico': 1.0, 'sello_prism': 1.0, 'logo_slice': 1.0, 'sello_concentrico': 1.0, 'sello_flare': 1.0}
+     'sello_metalico': 1.0, 'sello_prism': 1.0, 'logo_slice': 1.0, 'sello_concentrico': 1.0, 'sello_flare': 1.0,
+     # CH12 (2026-11-16): todos dibujan el sello con c / u_tamano
+     'anillos_lzx': 1.0, 'rutt_etra_sello': 1.0, 'datamosh_sello': 1.0, 'edge_feedback_sello': 1.0, 'bloom_sello': 1.0,
+     'sello_reaccion': 1.0, 'sello_keyer': 1.0, 'sello_voronoi': 1.0}
 
 # 1. parametro global
 pg = next((p for p in S.customPages if p.name == 'Logo'), None) or S.appendCustomPage('Logo')
@@ -82,7 +85,7 @@ cal = json.load(open(CAL, encoding='utf-8')) if os.path.exists(CAL) else {}
 F = project.folder + '/control/logo_tamano_respaldo.json'
 viejos = json.load(open(F, encoding='utf-8')) if os.path.exists(F) else {}
 hechos, faltan = [], []
-for nombre, k, _ in B.get(11, []):
+for nombre, k, _ in [x for c in sorted(B) if c in (11, 12) for x in B[c] if x]:   # canales de LOGOS
     b = base_de(k)
     if b is None:
         faltan.append(nombre)

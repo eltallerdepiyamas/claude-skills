@@ -56,4 +56,6 @@ Creado el {{FECHA}} desde td-vj-builder ({{VERSION}}). Esta carpeta = `project.f
 - Antes de un show sin operador: `revisar_visuales.py` (todos los pads, con musica) y una noche con `noche.py` (soak test: `control/soak_log.csv`, `control/piloto_log.txt`).
 - Logo: `show.Logotamano` (pagina Logo; perilla 6 del XL en la pagina LOGOS) = mismo tamano en todos los visuales de logo; `base.Tamano` = ajuste fino. `logo_tamano.py` (armar.py) y `calibrar_logos.py`. Shaders de logo nuevos: `uniform float u_tamano`, sello con `c / u_tamano`. Pedir el sello en vector o PNG 4096.
 - Referencias para construir: `research/recetario_tecnicas.md` (perfiles + 44 recetas, sintesis de video / LZX incluida).
+- Mas de 3 canales de pads (p. ej. CH8 nuevos y CH12 logos 2 en Casa Bacardi): las pestanas de thumbs van en filas por tipo con etiqueta (VISUALES arriba, LOGOS abajo) y el Stream Deck XL pone los canales de visuales en la columna derecha y una tecla LOGOS que alterna entre canales de logos. `rig.VISUAL_BASES` se amplia y cada base nueva lleva su cadena de pad `constant/logic/chopexec_padF` (fila de table1 = entrada + 2). El piloto toma todos los canales de BANCOS; los de LOGOS cuentan como logo.
+- `hoja_contacto.py`: captura de varias bases despues de unos segundos de cocinar (visuales con feedback).
 

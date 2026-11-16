@@ -26,10 +26,10 @@ BANCOS = {
 TH_POR_PAG, TH_COLS = 16, 8
 X_COL, W_COL = 10, 1262                     # columna VISUAL (solo visuales: dos columnas de ancho)
 W_GRID, X_GRID = W_COL, X_COL               # thumbs a todo lo ancho abajo del preview
-Y_TOP = 634
+Y_TOP = 664                                 # cabe una segunda fila de pestanas (LOGOS)
 TH_W, TH_H, LAB_H, PASO_X, PASO_Y = 154, 86, 16, 158, 106
 TAB_H = 26
-Y_PREV, H_PREV, W_PREV = 640, 292, 519      # a la altura del preview de SHOW
+Y_PREV, H_PREV, W_PREV = 670, 262, 466      # a la altura del preview de SHOW
 Y_BARRA = 358
 ACTIVO = (0.18, 0.49, 0.88)                 # azul de ESCENA
 # entrada de switch2 -> fila de table1, solo si NO coinciden (p. ej. visuales que se agregaron despues
@@ -231,7 +231,12 @@ def _aplicar():
         m = re.fullmatch(r'(th|lab)_visual_(\d+)(_callbacks)?', c.name)
         if m and int(m.group(2)) >= TH_POR_PAG:
             c.destroy()
-    y_fila1 = Y_TOP - TAB_H - 4 - TH_H
+    # Pestanas en filas por tipo (usabilidad: lo mismo junto): VISUALES arriba, LOGOS abajo (si hay canales de logos)
+    filas_tabs = [[i for i, p in enumerate(PAGINAS) if 'LOGO' not in GRUPOS[p[0]]],
+                  [i for i, p in enumerate(PAGINAS) if 'LOGO' in GRUPOS[p[0]]]]
+    filas_tabs = [f for f in filas_tabs if f]
+    etiquetas = ['VISUALES' if 'LOGO' not in GRUPOS[PAGINAS[f[0]][0]] else 'LOGOS' for f in filas_tabs]
+    y_fila1 = Y_TOP - len(filas_tabs) * (TAB_H + 4) - TH_H
     for i in range(TH_POR_PAG):
         th = u.op('th_visual_%d' % i) or u.copy(u.op('th_visual_0'), name='th_visual_%d' % i)
         lb = u.op('lab_visual_%d' % i) or u.copy(u.op('lab_visual_0'), name='lab_visual_%d' % i)
@@ -248,22 +253,39 @@ def _aplicar():
         th.par.bgalpha.mode = ParMode.CONSTANT
         th.par.bgalpha.val = 1
 
-    # Pestanas: el click pasa por th_click -> elegir('BANCO', pagina)
+    # Pestanas: el click pasa por th_click -> elegir('BANCO', pagina). Una fila por tipo con su etiqueta a la izquierda;
+    # todas del mismo ancho (la fila corta queda alineada a la izquierda).
     n_pag = len(PAGINAS)
-    w_tab = (W_GRID - 4 * (n_pag - 1)) // n_pag
+    w_eti = 110 if len(filas_tabs) > 1 else 0
+    n_cols = max(len(f) for f in filas_tabs)
+    w_tab = (W_GRID - w_eti - (4 if w_eti else 0) - 4 * (n_cols - 1)) // n_cols
     for c in list(u.children):
         if re.fullmatch(r'btn_pag_(\d+)', c.name) and int(c.name.rsplit('_', 1)[1]) > n_pag:
             c.destroy()
-    for i, (_, _, txt) in enumerate(PAGINAS):
-        b = u.op('btn_pag_%d' % (i + 1)) or u.copy(u.op('btn_pag_1'), name='btn_pag_%d' % (i + 1))
-        b.par.text = txt
-        b.par.x, b.par.y, b.par.w, b.par.h = X_GRID + i * (w_tab + 4), Y_TOP - TAB_H, w_tab, TAB_H
-        b.par.display = b.par.enable = True
-        b.store('tipo', 'BANCO')
-        b.store('dato', i)
-        cb = next((p for p in b.pars() if p.label == 'Callbacks DAT'), None)     # sin Callbacks DAT propio
-        if cb is not None:
-            cb.val = ''
+        if re.fullmatch(r'eti_tabs_(\d+)', c.name) and int(c.name.rsplit('_', 1)[1]) >= (len(filas_tabs) if w_eti else 0):
+            c.destroy()
+    for fi, fila in enumerate(filas_tabs):
+        y_tab = Y_TOP - TAB_H - fi * (TAB_H + 4)
+        x0 = X_GRID + (w_eti + 4 if w_eti else 0)
+        if w_eti:
+            et = u.op('eti_tabs_%d' % fi) or u.copy(u.op('btn_pag_1'), name='eti_tabs_%d' % fi)
+            et.par.text = etiquetas[fi]
+            et.par.x, et.par.y, et.par.w, et.par.h = X_GRID, y_tab, w_eti, TAB_H
+            et.par.display, et.par.enable = True, False        # etiqueta: no se toca
+            for k, ch in enumerate('rgb'):
+                getattr(et.par, 'bgcolor' + ch).mode = ParMode.CONSTANT
+                getattr(et.par, 'bgcolor' + ch).val = (0.09, 0.09, 0.10)[k]
+            et.store('tipo', '')
+        for j, i in enumerate(fila):
+            b = u.op('btn_pag_%d' % (i + 1)) or u.copy(u.op('btn_pag_1'), name='btn_pag_%d' % (i + 1))
+            b.par.text = PAGINAS[i][2]
+            b.par.x, b.par.y, b.par.w, b.par.h = x0 + j * (w_tab + 4), y_tab, w_tab, TAB_H
+            b.par.display = b.par.enable = True
+            b.store('tipo', 'BANCO')
+            b.store('dato', i)
+            cb = next((p for p in b.pars() if p.label == 'Callbacks DAT'), None)     # sin Callbacks DAT propio
+            if cb is not None:
+                cb.val = ''
 
     # Preview arriba, thumbs abajo, y al final barra, RESET y parametros a todo lo ancho
     pv = u.op('prev_visual')
