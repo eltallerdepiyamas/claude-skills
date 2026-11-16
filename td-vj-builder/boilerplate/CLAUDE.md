@@ -44,3 +44,8 @@ Creado el {{FECHA}} desde td-vj-builder ({{VERSION}}). Esta carpeta = `project.f
 - Camaras (LJ): `setup_devices_camaras.py` fija cada camara a su puerto USB y agrega Hay camara (`Hay1-6`); UI y Stream Deck solo muestran las que existen. Opcionales: `setup_lut_camaras.py`, `setup_feedback_salto.py`, `setup_salida_led.py`, `prueba_preshow.py` (un dia antes del show).
 - Interior de cada base: `_lib/acomodo.py` lo acomoda solo al construir (bloques por tipo de nodo).
 - Referencias: los visuales tienen que estar al nivel de festivales actuales (MUTEK, Sónar+D, CTM, Unsound, Ars Electronica, Decibel): ver research/referentes_contemporaneos.md; cada show suma sus referencias propias en research/.
+
+## Audio siempre al cien (regla)
+- El audio tiene que llegar a todos los visuales siempre. Al abrir un show, antes de ensayar y antes del show: `builders/herramientas/revisar_audio.py` (fuente -> audioAnalysis -> master_audio -> Energy; dice donde se corta).
+- `audio_vigia` (`setup_vigia_audio.py`, lo instala armar.py) despierta `audioAnalysis` cuando su cadena interna se queda sin canales (Energy en 0 en todo, salidas con float(None)).
+- Audio nuevo en un show (VST, otra fuente): no sale del ensayo si `revisar_audio.py` no dice `[ok] audio al cien`. Un VST que no carga (p.ej. neutone.vst3) va en bypass.

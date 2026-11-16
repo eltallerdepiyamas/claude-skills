@@ -248,3 +248,9 @@ Formato por entrada:
   - `ui_bancos.py`: al destruir paneles, su DAT acoplado se va con ellos → revisar `c.valid` antes de destruir.
   - Companion cambia de carpeta por version (`%APPDATA%/companion/v5.0` → `v5.1`): buscar la `v*` mas nueva, no fijarla.
 - Nombres/convenciones: CH9 = OTROS (no circulares) · CH10 = CIRCULARES · CH11 = LOGOS. El Stream Deck + XL usa una pagina por canal con el mismo 8x2 que la UI.
+
+## 2026-11-15 — CASA BACARDI — audio que deja de llegar
+- Sintoma: Energy en 0 en todos los visuales; `audioAnalysis` con `TypeError: float() argument ... NoneType` en Low/Mid/High/Kick/Snare/Rythm.
+- Causa: la cadena interna de audioAnalysis se queda dormida (CHOPs con 0 canales). Como sus salidas truenan, nada vuelve a pedir el cook. La senal si entraba (audio_gain con pico 0.7).
+- Fix: cook forzado de los CHOPs internos. Permanente: `audio_vigia` (cada 30 cuadros y al abrir) + `revisar_audio.py`. El error puede quedarse escrito aunque ya funcione: un cook del COMP lo borra.
+- Habia un `audiovst` con neutone.vst3 dentro de audioAnalysis que no carga (fuera de la ruta activa, `Neutoneactive` False): en bypass.

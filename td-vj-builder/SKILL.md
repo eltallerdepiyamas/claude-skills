@@ -86,6 +86,8 @@ When invoked for a new project, **ask which modes are needed** before building:
 
 For **visuales specifically, always ask: "¿generativos puros o mezclan un input de video?"** — it decides whether the builder wires a source into `sTD2DInputs[0]` and whether `u_input` is used.
 
+**Audio is always at 100 %.** Every show must have audio reaching every visual at all times. On opening a show, before rehearsal and before the show, run `boilerplate/builders/herramientas/revisar_audio.py` (source → audioAnalysis → master_audio → Energy; it says where the signal stops) and don't call anything done until it prints `[ok] audio al cien`. `audio_vigia` (`setup_vigia_audio.py`, installed by `armar.py`) wakes `audioAnalysis` when its inner chain goes dormant (0 channels, outputs failing with float(None), Energy 0 everywhere) and clears its stale errors. A VST inside the audio chain that does not load goes to bypass.
+
 ## Workflow
 
 1. **Ask which modes** are needed (visuales / efectos / layouts / combinación).
