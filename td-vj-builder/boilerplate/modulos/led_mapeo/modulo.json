@@ -1,0 +1,11 @@
+{
+  "nombre": "led_mapeo",
+  "version": "1.0",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-17)",
+  "familia": "led",
+  "descripcion": "Visual -> tableros de una pantalla LED, en el orden que pide el procesador (Columnas x Filas x Tablero). Modos cuadros / franja / bloque del centro.",
+  "requiere": [],
+  "detecta": "/project1/led/master_banner",
+  "ui": null,
+  "opcional": []
+}

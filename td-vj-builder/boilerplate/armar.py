@@ -54,6 +54,7 @@ paso('piloto automatico + vigia de video (shows sin operador)', 'builders/herram
 paso('MODO SHOW (candado)', 'builders/herramientas/setup_modo_show.py')
 paso('sin luces del Beatstep (ya no van en los shows)', 'control/quitar_beatstep_luces.py')
 paso('vigia de audio (despierta audioAnalysis)', 'builders/herramientas/setup_vigia_audio.py')
+paso('modulos del proyecto (proyecto.json -> modulos)', 'modulos/instalar_proyecto.py')
 paso('UI', 'builders/herramientas/setup_ui.py')
 paso('ventana de perform nativa (escala de Windows)', 'builders/herramientas/ajustar_ventana_perform.py')
 paso('orden de pestanas del hub', 'builders/herramientas/setup_orden_pestanas.py')

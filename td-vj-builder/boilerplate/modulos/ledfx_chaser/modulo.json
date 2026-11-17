@@ -1,0 +1,15 @@
+{
+  "nombre": "ledfx_chaser",
+  "version": "1.0",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-17)",
+  "familia": "ledfx",
+  "descripcion": "Luz por tablero en secuencia (8 patrones) con BPM detectado, kick o BPM fijo.",
+  "requiere": [
+    "led_salida"
+  ],
+  "opcional": [
+    "audio_tempo"
+  ],
+  "detecta": "/project1/led/chaser_led",
+  "ui": null
+}

@@ -1,0 +1,11 @@
+{
+  "nombre": "audio_tempo",
+  "version": "1.0",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-17)",
+  "familia": "audio",
+  "descripcion": "BPM y fase de tiempos desde el kick del audio en vivo; sigue en los breaks. Pagina Tempo del show.",
+  "requiere": [],
+  "detecta": "/project2/audio/tempo",
+  "ui": null,
+  "opcional": []
+}

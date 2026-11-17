@@ -1,0 +1,13 @@
+{
+  "nombre": "led_salida",
+  "version": "1.0",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-17)",
+  "familia": "led",
+  "descripcion": "Ventana al monitor del procesador (lienzo + X/Y), armada con vigia, pixel map de prueba, chip y pestana SALIDA LED en la UI; cadena ordenada de efectos LED.",
+  "requiere": [
+    "led_mapeo"
+  ],
+  "detecta": "/project1/led/lienzo_led",
+  "ui": "ui.py",
+  "opcional": []
+}

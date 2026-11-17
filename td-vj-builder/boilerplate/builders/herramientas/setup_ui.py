@@ -200,6 +200,8 @@ def elegir(tipo, dato):
         getattr(op('%s').par, 'Fuente' + i).val = m
     elif tipo == 'CAM':
         op('%s').par.Menu2 = dato
+    elif tipo == 'LEDVISTA':
+        op('led_ui_lib').module.vista(dato)
     elif tipo == 'TAB':
         tab(*dato.split(':'))
     elif tipo == 'RESET':
@@ -852,3 +854,8 @@ print('[ok] UI vieja al respaldo:', respaldo_ui_vieja())
 _p = project.folder + '/builders/herramientas/ui_bancos.py'
 if os.path.exists(_p):
     exec(compile(open(_p, encoding='utf-8').read(), _p, 'exec'), dict(globals(), __file__=_p))
+
+# UI de los modulos instalados (p.ej. led_salida: pestana SALIDA LED + chip). modulos/modulos.py
+_p = project.folder + '/modulos/modulos.py'
+if os.path.exists(_p):
+    exec(compile(open(_p, encoding='utf-8').read(), _p, 'exec'), dict(globals(), __file__=_p, ACCION='ui'))

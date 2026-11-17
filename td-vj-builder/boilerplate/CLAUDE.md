@@ -59,3 +59,6 @@ Creado el {{FECHA}} desde td-vj-builder ({{VERSION}}). Esta carpeta = `project.f
 - Mas de 3 canales de pads (p. ej. CH8 nuevos y CH12 logos 2 en Casa Bacardi): las pestanas de thumbs van en filas por tipo con etiqueta (VISUALES arriba, LOGOS abajo) y el Stream Deck XL pone los canales de visuales en la columna derecha y una tecla LOGOS que alterna entre canales de logos. `rig.VISUAL_BASES` se amplia y cada base nueva lleva su cadena de pad `constant/logic/chopexec_padF` (fila de table1 = entrada + 2). El piloto toma todos los canales de BANCOS; los de LOGOS cuentan como logo.
 - `hoja_contacto.py`: captura de varias bases despues de unos segundos de cocinar (visuales con feedback).
 
+
+## Modulos (desde 2026-11-17)
+Piezas que se agregan solo si se usan: `modulos/` (ver `modulos/LEEME.md`: nombres, reglas y catalogo). Se piden en `proyecto.json` -> `"modulos"` (true) y `armar.py` las instala con sus dependencias; `modulos/lista.py` dice que hay y que esta instalado. Hoy: `led_mapeo`, `led_salida` (ventana al procesador, armada con vigia, pestana SALIDA LED), `ledfx_chaser`, `ledfx_barrido`, `audio_tempo` (BPM del kick). Lo propio del show va en `proyecto.json` (p.ej. `"led"`: columnas, filas, tablero, lienzo, x, y, pixelmap). Un modulo nuevo: carpeta con `modulo.json` + `instalar.py` + `LEEME.md` (+ `ui.py`), apagado por default.

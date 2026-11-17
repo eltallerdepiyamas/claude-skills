@@ -1,0 +1,13 @@
+{
+  "nombre": "ledfx_barrido",
+  "version": "1.0",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-17)",
+  "familia": "ledfx",
+  "descripcion": "Rampa con halo que barre la pantalla (linea, circulo, barras) en tinta de la paleta o blanco.",
+  "requiere": [
+    "led_salida"
+  ],
+  "detecta": "/project1/led/barrido_led",
+  "ui": null,
+  "opcional": []
+}

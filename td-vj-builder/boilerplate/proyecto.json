@@ -7,7 +7,13 @@
   "modulos": {
     "visuales": true,
     "fx": true,
-    "escena_modular": true
+    "escena_modular": true,
+    "audio_tempo": false,
+    "led_mapeo": false,
+    "led_salida": false,
+    "ledfx_chaser": false,
+    "ledfx_barrido": false,
+    "_nota": "visuales / fx / escena_modular = partes del rig. Lo demas = carpetas de modulos/ (ver modulos/LEEME.md); true = se instala con armar.py, con sus dependencias."
   },
   "resolucion": {
     "w": 1920,
@@ -92,5 +98,16 @@
     "_nota": "TOPs que salen a Resolume / proyector; siguen a la resolucion maestra.",
     "visuales": "/project2/fit1",
     "camaras_fx": "/project2/fit2"
+  },
+  "led": {
+    "_nota": "Solo si hay pantalla LED (modulos led_*). Cuadricula del pixel map y lienzo del procesador; se ajusta en sitio en /project1/led.",
+    "columnas": 4,
+    "filas": 3,
+    "tablero": 256,
+    "lienzo_w": 1024,
+    "lienzo_h": 768,
+    "x": 0,
+    "y": 0,
+    "pixelmap": ""
   }
 }
