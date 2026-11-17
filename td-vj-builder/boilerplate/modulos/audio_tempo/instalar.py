@@ -180,3 +180,7 @@ else:
                "    return\n")
     print('[ok] /project2/audio/tempo | BPM %.1f (conf %.2f) | auto=%s' % (
         S.par.Tempobpm.eval(), S.par.Tempoconf.eval(), S.par.Tempoauto.eval()))
+    # legibilidad: secciones con titulo (modulos/secciones.py)
+    exec(open(project.folder + '/modulos/secciones.py', encoding='utf-8').read())
+    secciones(S, 'Tempo', [('Htempodet', 'Tempo detectado', ['Tempoauto', 'Tempobpm', 'Tempoconf']),
+                           ('Htempoman', 'Manual y rango', ['Tempomanual', 'Tempomin', 'Tempomax'])])

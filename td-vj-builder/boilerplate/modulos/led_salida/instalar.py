@@ -359,3 +359,11 @@ else:
         e = x.errors() or x.warnings()
         if e and not (x is pm and not B.par.Pixelmap.eval()):
             print('[aviso]', x.name, e)
+    # legibilidad: secciones con titulo (modulos/secciones.py)
+    exec(open(project.folder + '/modulos/secciones.py', encoding='utf-8').read())
+    secciones(B, 'LED', [('Hledsalida', 'Salida al LED', ['Ledarmada', 'Abrirled', 'Cerrarled']),
+                         ('Hledprueba', 'Prueba de pantalla', ['Prueba', 'Pixelmap']),
+                         ('Hledlienzo', 'Procesador: lienzo y posicion', ['Lienzow', 'Lienzoh', 'Posx', 'Posy', 'Monitor']),
+                         ('Hledui', 'Vista en la UI', ['Vistaui'])])
+    orden_paginas(B, ['LED', 'Chaser', 'Barrido', 'Banner'])
+    B.par.Posx.label, B.par.Posy.label = 'X (px desde la izquierda)', 'Y (px desde arriba)'

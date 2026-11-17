@@ -222,3 +222,11 @@ else:
     print('[ok] ledfx_chaser | cadena %s | prendido=%s | patron=%s | avanza=%s'
           % (cadena, B.par.Chaseron.eval(), B.par.Chaserpatron.eval(), B.par.Chaseravance.eval()))
     print('kick:', k.numChans and [c.name for c in k.chans()], '| errores:', g.errors() or g.warnings() or 'ninguno')
+    # legibilidad: secciones con titulo (modulos/secciones.py)
+    exec(open(project.folder + '/modulos/secciones.py', encoding='utf-8').read())
+    secciones(B, 'Chaser', [('Hchaser', 'Chaser', ['Chaseron', 'Chaserpatron']),
+                            ('Hchritmo', 'Ritmo', ['Chaseravance', 'Chasercada', 'Chaserbpmdet', 'Chaserbpm', 'Chaserumbral']),
+                            ('Hchforma', 'Como se ve', ['Chaserancho', 'Chaserdecay', 'Chaserataque', 'Chaserfondo']),
+                            ('Hchlectura', 'Lectura', ['Chaserpaso'])])
+    orden_paginas(B, ['LED', 'Chaser', 'Barrido', 'Banner'])
+    B.par.Chaserbpm.label = 'BPM fijo'

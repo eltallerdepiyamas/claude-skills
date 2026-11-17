@@ -157,3 +157,8 @@ else:
     e = g.errors() or g.warnings()
     if e:
         print('[aviso] barrido_led:', e)
+    # legibilidad: secciones con titulo (modulos/secciones.py)
+    exec(open(project.folder + '/modulos/secciones.py', encoding='utf-8').read())
+    secciones(B, 'Barrido', [('Hbarrido', 'Barrido', ['Barridoon', 'Barridoforma', 'Barridorecorre']),
+                             ('Hbalook', 'Como se ve', ['Barridovel', 'Barridoint', 'Barridotinta'])])
+    orden_paginas(B, ['LED', 'Chaser', 'Barrido', 'Banner'])

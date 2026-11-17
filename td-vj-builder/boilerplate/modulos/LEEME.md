@@ -37,7 +37,8 @@ Reinstalar es actualizar: todos los instaladores son idempotentes y conservan lo
 3. **Se conecta en una cadena con orden, no a mano.** Los efectos LED llevan tag `ledfx` y `store('orden', n)`; `led_cadena.encadenar()` los conecta (chaser 10, barrido 20).
 4. **Sale solo en la UI**: si trae `ui` en `modulo.json`, `setup_ui.py` lo corre al final.
 5. **Lo propio de cada show va en parámetros o en `proyecto.json`, no en el código** (por ejemplo la cuadrícula LED: `"led": {"columnas", "filas", "tablero", ...}`).
-6. Carpeta = `modulo.json` (nombre, versión, familia, requiere, opcional, detecta, ui, origen) + `instalar.py` + `LEEME.md` (+ `ui.py` si toca la UI).
+6. **Legible y fácil de navegar** (regla del usuario): cada página se parte en secciones con título en MAYÚSCULAS (Header = separador con nombre) con `modulos/secciones.py`, en orden de uso: lo que se toca en show arriba, ajustes después, lecturas al final. Etiquetas claras con unidades ("Decaimiento (s)", "X (px desde la izquierda)"). Nada amontonado: si una página no cabe sin scroll, se parte en dos.
+7. Carpeta = `modulo.json` (nombre, versión, familia, requiere, opcional, detecta, ui, origen) + `instalar.py` + `LEEME.md` (+ `ui.py` si toca la UI).
 
 ## Cómo crece
 

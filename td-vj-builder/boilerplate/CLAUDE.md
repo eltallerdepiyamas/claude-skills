@@ -62,3 +62,6 @@ Creado el {{FECHA}} desde td-vj-builder ({{VERSION}}). Esta carpeta = `project.f
 
 ## Modulos (desde 2026-11-17)
 Piezas que se agregan solo si se usan: `modulos/` (ver `modulos/LEEME.md`: nombres, reglas y catalogo). Se piden en `proyecto.json` -> `"modulos"` (true) y `armar.py` las instala con sus dependencias; `modulos/lista.py` dice que hay y que esta instalado. Hoy: `led_mapeo`, `led_salida` (ventana al procesador, armada con vigia, pestana SALIDA LED), `ledfx_chaser`, `ledfx_barrido`, `audio_tempo` (BPM del kick). Lo propio del show va en `proyecto.json` (p.ej. `"led"`: columnas, filas, tablero, lienzo, x, y, pixelmap). Un modulo nuevo: carpeta con `modulo.json` + `instalar.py` + `LEEME.md` (+ `ui.py`), apagado por default.
+
+## UI legible (regla del usuario, 2026-11-17)
+Toda pagina de parametros o parte de la UI que se agregue se parte en SECCIONES con titulo en MAYUSCULAS (Header = separador con nombre), en orden de uso: lo que se toca en show arriba, ajustes despues, lecturas al final. Etiquetas con unidades. Nada amontonado: si no cabe sin scroll, se parte en dos paginas. Helper: `modulos/secciones.py` (`secciones(comp, pagina, [(header, TITULO, [pars])])`). Referencia: pestana PILOTO.

@@ -167,3 +167,7 @@ else:
         e = b.op(nombre).errors() or b.op(nombre).warnings()
         if e:
             print('[aviso]', nombre, e)
+    # legibilidad: secciones con titulo (modulos/secciones.py)
+    exec(open(project.folder + '/modulos/secciones.py', encoding='utf-8').read())
+    secciones(b, 'Banner', [('Hcuadricula', 'Cuadricula de la pantalla', ['Columnas', 'Filas', 'Tablero']),
+                            ('Hmapeo', 'Como se reparte el visual', ['Modo', 'Zoom'])])
