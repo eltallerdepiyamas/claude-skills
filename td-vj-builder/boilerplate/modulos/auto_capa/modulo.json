@@ -1,0 +1,11 @@
+{
+  "nombre": "auto_capa",
+  "version": "1.0",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-20)",
+  "familia": "auto",
+  "descripcion": "Alterna solo los efectos de la segunda capa (chaser, barrido, los dos o solo el visual) cada N compases con el BPM detectado o cada N segundos; varia patron / forma al entrar. Pagina Capa.",
+  "requiere": [],
+  "detecta": ["/project1/slices/capa_lib", "/project1/led/capa_lib"],
+  "ui": null,
+  "opcional": ["ledfx_chaser", "ledfx_barrido", "audio_tempo"]
+}

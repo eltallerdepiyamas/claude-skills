@@ -1,13 +1,17 @@
 {
   "nombre": "ledfx_barrido",
-  "version": "1.0",
-  "origen": "Casa Bacardi x Corona Capital (2026-11-17)",
+  "version": "2.1",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-17; v2 slices 2026-11-20)",
   "familia": "ledfx",
-  "descripcion": "Rampa con halo que barre la pantalla (linea, circulo, barras) en tinta de la paleta o blanco.",
-  "requiere": [
-    "led_salida"
+  "descripcion": "Rampa con halo que barre la pantalla (linea, circulo, barras) en tinta de la paleta o blanco. v2: segunda capa sobre los slices de led_slices (slice por slice) o, sin slices, sobre la LED de led_salida. Necesita uno de los dos. v2.1: ritmo libre / al tiempo / al compas (una pasada exacta por beat o compas) / disparado por el kick, y brillo que sigue la energia.",
+  "requiere": [],
+  "detecta": [
+    "/project1/slices/barrido_led",
+    "/project1/led/barrido_led"
   ],
-  "detecta": "/project1/led/barrido_led",
   "ui": null,
-  "opcional": []
+  "opcional": [
+    "led_slices",
+    "led_salida"
+  ]
 }

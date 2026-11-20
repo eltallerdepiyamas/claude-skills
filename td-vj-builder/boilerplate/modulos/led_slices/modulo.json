@@ -1,0 +1,15 @@
+{
+  "nombre": "led_slices",
+  "version": "1.2",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-20)",
+  "familia": "led",
+  "descripcion": "Advanced Output de Resolume rehecho en TD desde su XML (alternativa / respaldo de Resolume): slices, prueba (bordes / guia), avisos de lo que no reproduce, ventana /salida_slices armada con vigia, pestana SLICES y chip SALIDA TD. Aloja la segunda capa de efectos (ledfx_chaser, ledfx_barrido) slice por slice. v1.1: QUE SALE (visual + efectos / solo efectos sobre color) y mascara redonda automatica (solo visuales no circulares). v1.2: PANORAMICO (una sola imagen en todas las bocinas, lienzo por celdas; solo canal PANORAMICOS / automatico / siempre / nunca).",
+  "requiere": [],
+  "detecta": "/project1/slices/out_slices",
+  "ui": "ui.py",
+  "opcional": [
+    "ledfx_chaser",
+    "ledfx_barrido",
+    "ctl_celular"
+  ]
+}

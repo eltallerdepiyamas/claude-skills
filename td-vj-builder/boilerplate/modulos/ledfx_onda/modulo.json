@@ -1,0 +1,18 @@
+{
+  "nombre": "ledfx_onda",
+  "version": "1.0",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-20)",
+  "familia": "ledfx",
+  "descripcion": "ONDA DE KICK: cada kick (o cada N) lanza un pulso de luz que viaja de bocina en bocina (en orden, del centro, de los extremos, ida y vuelta). Luz en la tinta o brillo del visual. Segunda capa.",
+  "requiere": [],
+  "detecta": [
+    "/project1/slices/onda_led",
+    "/project1/led/onda_led"
+  ],
+  "ui": null,
+  "opcional": [
+    "led_slices",
+    "led_salida",
+    "auto_capa"
+  ]
+}

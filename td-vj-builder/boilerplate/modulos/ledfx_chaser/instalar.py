@@ -1,4 +1,5 @@
-# ledfx_chaser — chaser por tableros en la salida LED (idea del Chaser de Resolume, hecho en TD).
+# ledfx_chaser — chaser por tableros / slices (idea del Chaser de Resolume, hecho en TD). v2 (2026-11-20): va en
+# los slices de led_slices si existen (segunda capa sobre el visual, slice por slice en el orden del XML), si no en la LED.
 # Va en la cadena LED (led_cadena, orden 10): fuente_led -> chaser_led -> (barrido) -> lienzo_led.
 # Cada tablero tiene una "luz" que prende y se apaga encima del visual, en el orden en que cuelgan (fila de
 # arriba primero, todos en una linea). Lo apagado queda en Fondo (0 = negro, 1 = sin efecto).
@@ -7,14 +8,53 @@
 # Avanza: BPM detectado (modulo audio_tempo: sigue en los breaks, se engancha al kick), cada N kicks
 # (canal kick de /project2/audio/master_audio) o BPM fijo. Ataque minimo para que no sea strobe.
 # Pagina Chaser de /project1/led. Apagado por default. Requiere led_salida (audio_tempo opcional).
-B = op('/project1/led')
+import json
+
+
+def _host():
+    """Donde va el efecto: slices (led_slices) si existe, si no la cadena LED (led_salida).
+    proyecto.json -> "ledfx": {"en": "led"} lo fuerza a la LED."""
+    try:
+        pref = json.load(open(project.folder + '/proyecto.json', encoding='utf-8')).get('ledfx', {}).get('en', '')
+    except Exception:
+        pref = ''
+    S_, L_ = op('/project1/slices'), op('/project1/led')
+    s_ok = S_ is not None and S_.op('slices_cadena') is not None
+    l_ok = L_ is not None and L_.op('led_cadena') is not None
+    if pref == 'led' and l_ok:
+        return L_, 'led'
+    if s_ok:
+        return S_, 'slices'
+    if l_ok:
+        return L_, 'led'
+    return None, ''
+
+
+B, MODO = _host()
+CADENA = 'slices_cadena' if MODO == 'slices' else 'led_cadena'
+PAGINAS = ['Salida', 'Efectos', 'Capa', 'Chaser', 'Barrido', 'EQ', 'Onda', 'Cascada', 'Giro', 'Respira', 'Slices', 'LED', 'Banner'] if MODO == 'slices' else ['LED', 'Chaser', 'Barrido', 'Banner']
+
+
+def migrar(nombres):
+    """Al pasar a slices: trae los valores que tenia el efecto en /project1/led (una sola vez)."""
+    L_ = op('/project1/led')
+    if MODO != 'slices' or L_ is None or B.fetch('ledfx_migrado_' + nombres[0], False, search=False):
+        return []
+    hechos = []
+    for n in nombres:
+        a, b = getattr(L_.par, n, None), getattr(B.par, n, None)
+        if a is not None and b is not None and a.mode == ParMode.CONSTANT and not b.readOnly:
+            b.val = a.eval()
+            hechos.append(n)
+    B.store('ledfx_migrado_' + nombres[0], True)
+    return hechos
 AUDIO = '/project2/audio/master_audio'
 
 SHADER = r'''// chaser_led — luz por tablero, secuenciada por pasos
 uniform vec4 uCh;      // x on · y patron · z ancho (tableros) · w fondo
 uniform vec4 uPaso;    // x paso · y segundos desde el paso · z segundos entre pasos · w decaimiento (s)
 uniform vec4 uAtq;     // x ataque (s)
-uniform vec4 uGrid;    // x columnas, y filas
+uniform vec4 uGrid;    // x columnas, y filas (LED) · z 1 = slices (indice en la entrada 1)
 out vec4 fragColor;
 
 float COLS, ROWS, N;
@@ -50,13 +90,20 @@ void main() {
     vec2 uv = vUV.st;
     vec4 src = texture(sTD2DInputs[0], uv);
     if (uCh.x < 0.5) { fragColor = TDOutputSwizzle(vec4(src.rgb, 1.0)); return; }
-    COLS = max(uGrid.x, 1.0);
-    ROWS = max(uGrid.y, 1.0);
-    N = COLS * ROWS;
-
-    float c = floor(uv.x * COLS);
-    float rTop = ROWS - 1.0 - floor(uv.y * ROWS);       // fila de arriba primero
-    float p = rTop * COLS + c;                          // posicion en el banner colgado (0..N-1)
+    float p;
+    if (uGrid.z > 0.5) {                                // SLICES: indice de led_slices en la entrada 1
+        vec4 m = texelFetch(sTD2DInputs[1], ivec2(gl_FragCoord.xy), 0);
+        if (m.r < -0.5) { fragColor = TDOutputSwizzle(vec4(src.rgb, 1.0)); return; }
+        N = max(m.g, 1.0);
+        p = m.r;                                        // orden del XML (A-1, A-2, ...)
+    } else {                                            // LED: tableros Columnas x Filas
+        COLS = max(uGrid.x, 1.0);
+        ROWS = max(uGrid.y, 1.0);
+        N = COLS * ROWS;
+        float c = floor(uv.x * COLS);
+        float rTop = ROWS - 1.0 - floor(uv.y * ROWS);   // fila de arriba primero
+        p = rTop * COLS + c;                            // posicion en el banner colgado (0..N-1)
+    }
 
     int pat = int(uCh.y + 0.5);
     float w = max(1.0, floor(uCh.z + 0.5));
@@ -150,8 +197,8 @@ def par(pg, kind, nombre, label, default=None, rango=None, **kw):
     return p
 
 
-if B is None or B.op('led_cadena') is None:
-    print('[fallo] falta /project1/led con led_salida: instala antes led_salida')
+if B is None:
+    print('[fallo] chaser: no hay donde ponerlo: instala antes led_slices (o led_salida)')
 else:
     pg = pagina(B, 'Chaser')
     par(pg, 'Toggle', 'Chaseron', 'Chaser prendido', False)
@@ -168,7 +215,7 @@ else:
     d.expr = "op('/project2/show').par.Tempobpm if hasattr(op('/project2/show').par, 'Tempobpm') else 0"
     d.readOnly = True
     par(pg, 'Float', 'Chaserumbral', 'Umbral del kick', 0.5, (0.05, 1.0))
-    par(pg, 'Int', 'Chaserancho', 'Ancho (tableros)', 1, (1, 6))
+    par(pg, 'Int', 'Chaserancho', 'Ancho (tableros / slices)', 1, (1, 6))
     par(pg, 'Float', 'Chaserdecay', 'Decaimiento (s)', 0.35, (0.02, 2.0))
     par(pg, 'Float', 'Chaserataque', 'Ataque (s)', 0.04, (0.0, 0.3))
     par(pg, 'Float', 'Chaserfondo', 'Fondo (lo apagado)', 0.15, (0.0, 1.0))
@@ -194,6 +241,7 @@ else:
                "    mod('chaser_lib').kick(val, prev)\n"
                "    return\n")
 
+    migrados = migrar(['Chaseron', 'Chaserpatron', 'Chaseravance', 'Chasercada', 'Chaserbpm', 'Chaserumbral', 'Chaserancho', 'Chaserdecay', 'Chaserataque', 'Chaserfondo'])
     dat = nuevo(B, textDAT, 'chaser_led_pixel', 800, 500)
     dat.text = SHADER
     g = nuevo(B, glslTOP, 'chaser_led', 800, 400)
@@ -212,12 +260,18 @@ else:
     g.par.vec2name = 'uAtq'
     g.par.vec2valuex.expr = 'parent().par.Chaserataque'
     g.par.vec3name = 'uGrid'
-    g.par.vec3valuex.expr, g.par.vec3valuey.expr = 'parent().par.Columnas', 'parent().par.Filas'
+    if MODO == 'slices':                     # uGrid.z = 1: la posicion sale del indice de led_slices (entrada 1)
+        g.par.vec3valuex.expr, g.par.vec3valuey.expr = '', ''
+        g.par.vec3valuex.mode = g.par.vec3valuey.mode = ParMode.CONSTANT
+        g.par.vec3valuex, g.par.vec3valuey, g.par.vec3valuez = 1, 1, 1
+    else:
+        g.par.vec3valuex.expr, g.par.vec3valuey.expr = 'parent().par.Columnas', 'parent().par.Filas'
+        g.par.vec3valuez = 0
 
     # en la cadena LED antes del barrido (el barrido va encima del chaser, no se apaga con el)
     g.tags.add('ledfx')
     g.store('orden', 10)
-    cadena = B.op('led_cadena').module.encadenar()
+    cadena = B.op(CADENA).module.encadenar()
     g.cook(force=True)
     print('[ok] ledfx_chaser | cadena %s | prendido=%s | patron=%s | avanza=%s'
           % (cadena, B.par.Chaseron.eval(), B.par.Chaserpatron.eval(), B.par.Chaseravance.eval()))
@@ -228,5 +282,5 @@ else:
                             ('Hchritmo', 'Ritmo', ['Chaseravance', 'Chasercada', 'Chaserbpmdet', 'Chaserbpm', 'Chaserumbral']),
                             ('Hchforma', 'Como se ve', ['Chaserancho', 'Chaserdecay', 'Chaserataque', 'Chaserfondo']),
                             ('Hchlectura', 'Lectura', ['Chaserpaso'])])
-    orden_paginas(B, ['LED', 'Chaser', 'Barrido', 'Banner'])
+    orden_paginas(B, PAGINAS)
     B.par.Chaserbpm.label = 'BPM fijo'

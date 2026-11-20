@@ -4,7 +4,7 @@ Piezas que se agregan a un show **solo si se usan**. Viven en el boilerplate (`B
 
 ## Usar
 
-1. En `proyecto.json` → `"modulos"`, poner en `true` los que quieras (por ejemplo `"ledfx_chaser": true`). Las dependencias se instalan solas.
+1. En `proyecto.json` → `"modulos"`, poner en `true` los que quieras (por ejemplo `"ledfx_chaser": true`). Las dependencias se instalan solas. `detecta` en `modulo.json` puede ser una lista de rutas (basta una).
 2. Correr `armar.py`, o solo `modulos/instalar_proyecto.py`.
 3. `modulos/lista.py` muestra qué hay, la versión y qué está instalado en el `.toe`.
 
@@ -34,7 +34,7 @@ Reinstalar es actualizar: todos los instaladores son idempotentes y conservan lo
 
 1. **Apagado por default.** Instalarlo nunca cambia lo que se ve.
 2. **Su propia página de parámetros** y nodos con su nombre; nada se mezcla.
-3. **Se conecta en una cadena con orden, no a mano.** Los efectos LED llevan tag `ledfx` y `store('orden', n)`; `led_cadena.encadenar()` los conecta (chaser 10, barrido 20).
+3. **Se conecta en una cadena con orden, no a mano.** Los efectos LED llevan tag `ledfx` y `store('orden', n)`; `slices_cadena.encadenar()` (en `led_slices`) o `led_cadena.encadenar()` (en `led_salida`) los conecta (cascada 5, giro 7, chaser 10, barrido 20, EQ 30, onda 40, respira 50). Lo comun de los efectos (donde van, paginas, registro y aviso a `auto_capa`) esta en `modulos/ledfx_comun.py`.
 4. **Sale solo en la UI**: si trae `ui` en `modulo.json`, `setup_ui.py` lo corre al final.
 5. **Lo propio de cada show va en parámetros o en `proyecto.json`, no en el código** (por ejemplo la cuadrícula LED: `"led": {"columnas", "filas", "tablero", ...}`).
 6. **Legible y fácil de navegar** (regla del usuario): cada página se parte en secciones con título en MAYÚSCULAS (Header = separador con nombre) con `modulos/secciones.py`, en orden de uso: lo que se toca en show arriba, ajustes después, lecturas al final. Etiquetas claras con unidades ("Decaimiento (s)", "X (px desde la izquierda)"). Nada amontonado: si una página no cabe sin scroll, se parte en dos.
@@ -50,8 +50,16 @@ Se hace en un show; si sirve, se sube aquí como módulo (y a su espejo `td-vj-b
 |---|---|---|
 | `led_mapeo` | Visual → tableros (Columnas × Filas × Tablero) en el orden del procesador. Modos cuadros / franja / bloque del centro | — |
 | `led_salida` | Ventana al procesador (lienzo + X/Y), armada con vigía, pixel map de prueba, MODO SHOW apaga la prueba, chip y pestaña SALIDA LED | `led_mapeo` |
-| `ledfx_chaser` | Luz por tablero en secuencia, 8 patrones, con BPM detectado, kick o BPM fijo | `led_salida` (`audio_tempo` opcional) |
-| `ledfx_barrido` | Rampa con halo que barre la pantalla, en tinta de la paleta o blanco | `led_salida` |
+| `ledfx_chaser` | Luz por tablero / slice en secuencia, 8 patrones, con BPM detectado, kick o BPM fijo. v2: segunda capa sobre `led_slices` | `led_slices` o `led_salida` (`audio_tempo` opcional) |
+| `ledfx_barrido` | Rampa con halo que barre la pantalla, en tinta de la paleta o blanco; v2.1 al beat (tiempo / compás / kick) y con la energía. Segunda capa sobre `led_slices` | `led_slices` o `led_salida` |
+| `ledfx_eq` | EQ de bocinas: cada slice / tablero es una banda (12 bocinas = 12 bandas, autonivel por banda); brillo, anillo o nivel tipo VU | `led_slices` o `led_salida` |
+| `ledfx_onda` | Onda de kick: un pulso de luz que viaja de bocina en bocina con cada kick | `led_slices` o `led_salida` |
+| `ledfx_cascada` | Cascada de tiempo: cada bocina ensena el visual unos cuadros despues que la anterior (eco que corre) | `led_slices` o `led_salida` |
+| `ledfx_giro` | Giro por bocina: cada slice gira su contenido como un disco (igual, alternado, ola, paso por kick), recorte circular | `led_slices` o `led_salida` |
+| `ledfx_respira` | Respiración: la luz sube y baja con el compás (suave, latido, ola por las bocinas), sin strobe | `led_slices` o `led_salida` |
 | `audio_tempo` | BPM y fase de tiempos desde el kick; sigue en los breaks | — |
+| `led_slices` | Advanced Output de Resolume rehecho en TD desde su XML (alternativa / respaldo): slices, prueba, avisos de lo que no reproduce, ventana armada con vigía, pestaña SLICES y chip TD. **El proceso** (armar en TD → mapear en Resolume en sitio → probar → sacar el XML → cargarlo) está en su LEEME | — |
+| `ctl_celular` | Control desde el celular (página web de TD, misma red): anterior / siguiente, tamaño, PAUSA, piloto y sus ajustes, slices, patrón, guardar, audio, ESTADO y avisos ntfy | — (`auto_piloto`, `led_slices` opcionales) |
+| `auto_capa` | Alterna sola la segunda capa (chaser, barrido, los dos o solo el visual) cada N compases con el BPM detectado o cada N segundos; varía patrón / forma al entrar. Página Capa | un `ledfx_*` (`audio_tempo` opcional) |
 
 Pendientes para convertir en módulo: `fx_circuit_bending`, `fx_feedback_hsv`, `auto_piloto`, `vig_audio`, `vig_video`, `test_pantallas` (Little Jesus), `rec_reel`, `ctl_streamdeck_xl`.

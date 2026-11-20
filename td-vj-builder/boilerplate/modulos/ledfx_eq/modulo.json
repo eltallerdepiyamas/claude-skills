@@ -1,0 +1,18 @@
+{
+  "nombre": "ledfx_eq",
+  "version": "1.0",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-20)",
+  "familia": "ledfx",
+  "descripcion": "EQ DE BOCINAS: cada slice / tablero es una banda del espectro (12 bocinas = 12 bandas, autonivel por banda). Brillo · anillo que crece · nivel tipo VU. Segunda capa.",
+  "requiere": [],
+  "detecta": [
+    "/project1/slices/eq_led",
+    "/project1/led/eq_led"
+  ],
+  "ui": null,
+  "opcional": [
+    "led_slices",
+    "led_salida",
+    "auto_capa"
+  ]
+}

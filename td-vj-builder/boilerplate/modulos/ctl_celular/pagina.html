@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Show · Celular</title>
+<style>
+  :root { --bg:#0b0b0c; --sup:#18181b; --ctrl:#26262b; --txt:#f2f2f4; --txt2:#9a9aa2; --acento:#6DC49A; --rojo:#e5484d; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html, body { margin:0; background:var(--bg); color:var(--txt); font:16px -apple-system, system-ui, sans-serif; }
+  body { padding:16px; max-width:520px; margin:0 auto; user-select:none; -webkit-user-select:none; }
+  .estado { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--txt2); }
+  .punto { width:9px; height:9px; border-radius:50%; background:var(--rojo); }
+  .punto.ok { background:var(--acento); }
+  .aire { margin:14px 0 18px; padding:16px; background:var(--sup); border-radius:16px; text-align:center; }
+  .canal { font-size:13px; letter-spacing:.08em; color:var(--txt2); }
+  .nombre { font-size:26px; font-weight:700; margin-top:4px; }
+  .nav { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .nav button { height:120px; font-size:22px; font-weight:700; }
+  .canales { display:flex; flex-wrap:wrap; gap:6px; }
+  .canales button { height:44px; padding:0 12px; font-size:13px; font-weight:700; letter-spacing:.03em; }
+  .canales button.on { background:var(--acento); color:#08130d; }
+  .pads { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:10px; }
+  .pads:empty { display:none; }
+  .pads button { min-height:52px; font-size:13px; font-weight:600; text-align:left; padding:6px 12px; }
+  .pads button .num { color:var(--txt2); font-weight:400; margin-right:6px; }
+  .pads button.on { background:var(--acento); color:#08130d; }
+  .pads button.on .num { color:#08130d; }
+  button { border:0; border-radius:16px; background:var(--ctrl); color:var(--txt); font:inherit; }
+  button:active { background:#3a3a41; }
+  .sec { margin-top:22px; padding:14px 16px 16px; background:var(--sup); border-radius:16px; }
+  .sec h2 { margin:0 0 10px; font-size:12px; letter-spacing:.1em; color:var(--txt2); font-weight:600; display:flex; justify-content:space-between; }
+  .sec h2 span { color:var(--txt); font-size:15px; letter-spacing:0; }
+  .fila { display:grid; grid-template-columns:52px 1fr 52px; gap:10px; align-items:center; }
+  .fila button { height:52px; font-size:24px; }
+  input[type=range] { width:100%; height:44px; accent-color:var(--acento); }
+  .nota { margin-top:22px; font-size:13px; color:var(--txt2); text-align:center; }
+  .estado_box { margin:12px 0 0; padding:10px 14px; background:var(--sup); border-radius:16px; }
+  .fila_est { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid #222226; font-size:14px; }
+  .fila_est:last-child { border-bottom:0; }
+  .fila_est .k { width:78px; font-size:11px; letter-spacing:.08em; color:var(--txt2); }
+  .fila_est .v { flex:1; }
+  .sem { width:11px; height:11px; border-radius:50%; flex:none; }
+  .n0 { background:var(--acento); } .n1 { background:#f5a524; } .n2 { background:var(--rojo); } .n-1 { background:#55555c; }
+  .avisos { margin-top:22px; padding:12px 16px; background:var(--sup); border-radius:16px; font-size:13px; }
+  .avisos h2 { margin:0 0 8px; font-size:12px; letter-spacing:.1em; color:var(--txt2); font-weight:600; }
+  .aviso { padding:6px 0; border-bottom:1px solid #222226; } .aviso:last-child { border-bottom:0; }
+  .aviso b { color:var(--txt); } .aviso span { color:var(--txt2); }
+  .suscribir { display:block; margin-top:10px; color:var(--acento); text-decoration:none; font-size:13px; }
+  .prueba { margin-top:8px; height:40px; width:100%; font-size:14px; }
+  select { width:100%; height:48px; margin-top:10px; border:0; border-radius:12px; background:var(--ctrl); color:var(--txt); font:inherit; font-size:14px; padding:0 12px; }
+  .patron { width:100%; height:56px; margin-top:12px; font-size:16px; font-weight:700; }
+  .patron.on { background:#f5a524; color:#1a1200; }
+  .guardar { width:100%; height:64px; margin-top:22px; font-size:18px; font-weight:700; }
+  .guardar.ok { background:var(--acento); color:#08130d; }
+  .modo { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:12px; padding:4px; background:var(--sup); border-radius:14px; }
+  .modo button { height:52px; font-size:16px; font-weight:700; background:transparent; color:var(--txt2); border-radius:11px; }
+  .modo button.on { background:var(--ctrl); color:var(--txt); }
+  .modo button.on.auto { background:var(--acento); color:#08130d; }
+  .auto_txt { margin:-4px 0 12px; text-align:center; font-size:13px; color:var(--txt2); min-height:16px; }
+  .pausa { width:100%; height:64px; margin-top:12px; font-size:18px; font-weight:700; }
+  .pausa.on { background:#f5a524; color:#1a1200; }
+  details.piloto { margin-top:22px; background:var(--sup); border-radius:16px; }
+  details.piloto summary { list-style:none; padding:16px; font-size:12px; letter-spacing:.1em; color:var(--txt2); font-weight:600; display:flex; justify-content:space-between; }
+  details.piloto summary::-webkit-details-marker { display:none; }
+  details.piloto summary::after { content:'▸'; color:var(--txt); }
+  details.piloto[open] summary::after { content:'▾'; }
+  .psec { padding:4px 16px 14px; border-top:1px solid #222226; }
+  .psec h3 { margin:12px 0 6px; font-size:11px; letter-spacing:.1em; color:var(--acento); font-weight:700; }
+  .prow { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:48px; font-size:14px; }
+  .prow .pv { color:var(--txt); font-weight:600; }
+  .pl { color:var(--txt); }
+  .tog { width:72px; height:38px; font-size:13px; font-weight:700; flex:none; }
+  .tog.on { background:var(--acento); color:#08130d; }
+  .seg { display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+  .seg button { height:38px; padding:0 12px; font-size:13px; }
+  .seg button.on { background:var(--acento); color:#08130d; font-weight:700; }
+  .pul { width:100%; height:44px; margin:4px 0; font-size:14px; font-weight:600; }
+  .pstr { display:flex; gap:8px; margin-bottom:6px; }
+  .pstr input { flex:1; height:44px; border:0; border-radius:12px; background:var(--ctrl); color:var(--txt); font:inherit; font-size:15px; padding:0 12px; }
+  .pstr button { width:64px; height:44px; font-size:14px; font-weight:700; }
+  .pnum { padding:4px 0 6px; }
+  .pnum .fila button { height:44px; font-size:22px; }
+  .pnum input[type=range] { height:40px; }
+  details.sub { border-top:1px solid #222226; }
+  details.sub summary { list-style:none; padding:14px 16px; font-size:13px; letter-spacing:.06em; font-weight:700; color:var(--txt); display:flex; justify-content:space-between; }
+  details.sub summary::-webkit-details-marker { display:none; }
+  details.sub summary .fxon { color:var(--txt2); font-weight:600; }
+  details.sub summary .fxon.on { color:var(--acento); }
+  details.sub .psec { border-top:0; padding-top:0; }
+  .pro { color:var(--txt2); font-weight:600; }
+  .fxgrid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
+  .fxgrid button { height:56px; font-size:14px; font-weight:700; letter-spacing:.04em; }
+  .fxgrid button.on { background:var(--acento); color:#08130d; }
+  .fxgrid button.solo.on { background:#f5a524; color:#1a1200; }
+  .sl_est { letter-spacing:.04em; font-weight:700; }
+  .sl_est.n0 { color:var(--txt2); background:none; } .sl_est.n1 { color:var(--acento); background:none; }
+  .sl_est.n2 { color:#f5a524; background:none; } .sl_est.n3 { color:var(--rojo); background:none; }
+  #det_slices summary::after { margin-left:8px; }
+  #det_slices summary { gap:8px; }
+  .sl_seg { justify-content:flex-start; }
+  .nota_sl { font-size:13px; color:var(--txt2); }
+  #b_sl_abrir.on { background:var(--acento); color:#08130d; }
+</style>
+</head>
+<body>
+  <div class="estado"><div class="punto" id="punto"></div><span id="conexion">conectando…</span></div>
+
+  <div class="estado_box" id="estado_box"></div>
+
+  <button class="patron" id="b_patron" onclick="patron()">PATRÓN DE PRUEBA (slices)</button>
+
+  <details class="piloto" id="det_slices" style="display:none"
+           ontoggle="try { localStorage.setItem('det_slices', this.open ? '1' : '') } catch (e) {}">
+    <summary><span>SALIDA DESDE TD (SLICES)</span><span id="sl_estado" class="sl_est"></span></summary>
+    <div class="psec">
+      <h3>PRUEBA</h3>
+      <div class="seg sl_seg" id="sl_prueba"></div>
+      <h3>VENTANA</h3>
+      <div class="nota_sl" id="sl_nota"></div>
+      <div class="modo" style="margin:6px 0 4px">
+        <button id="b_sl_abrir" onclick="slicesAbrir()">ABRIR</button>
+        <button id="b_sl_cerrar" onclick="slices('accion=cerrar')">CERRAR</button>
+      </div>
+    </div>
+  </details>
+
+  <div class="aire">
+    <div class="canal" id="canal">—</div>
+    <div class="nombre" id="nombre">—</div>
+  </div>
+
+  <div class="modo" id="modo_piloto">
+    <button id="b_manual" onclick="modo(0)">MANUAL</button>
+    <button id="b_auto" class="auto" onclick="modo(1)">AUTO</button>
+  </div>
+  <div class="auto_txt" id="auto_txt"></div>
+
+  <div class="nav">
+    <button onclick="ir(-1)">◀ ANTERIOR</button>
+    <button onclick="ir(1)">SIGUIENTE ▶</button>
+  </div>
+  <div class="sec" id="canal_sec" style="display:none">
+    <h2>CANAL<span id="canal_txt"></span></h2>
+    <div class="canales" id="canales"></div>
+    <div class="pads" id="pads"></div>
+  </div>
+  <button class="pausa" id="b_pausa" onclick="pausa()">❚❚ PAUSAR VISUAL</button>
+
+  <div id="sliders"></div>
+  <details class="piloto" id="det_piloto" ontoggle="try { localStorage.setItem('det_piloto', this.open ? '1' : '') } catch (e) {}">
+    <summary>AJUSTES DEL PILOTO</summary>
+    <div id="piloto"></div>
+  </details>
+  <div class="sec" id="fx_rapido_sec" style="display:none">
+    <h2>EFECTOS<span id="fx_rapido_txt"></span></h2>
+    <div class="fxgrid" id="fx_rapido"></div>
+  </div>
+  <details class="piloto" id="det_efectos" style="display:none" ontoggle="try { localStorage.setItem('det_efectos', this.open ? '1' : '') } catch (e) {}">
+    <summary>EFECTOS Y MÁSCARA</summary>
+    <div id="efectos"></div>
+  </details>
+  <div class="nota" id="nota"></div>
+  <button class="guardar" id="b_guardar" onclick="guardarToe()">GUARDAR</button>
+  <div class="sec" id="audio_sec">
+    <h2>FUENTE DE AUDIO<span id="audio_estado"></span></h2>
+    <div class="modo" style="margin:0">
+      <button id="b_archivo" onclick="audio('fuente=archivo')">ARCHIVO</button>
+      <button id="b_vivo" class="auto" onclick="audio('fuente=vivo')">EN VIVO</button>
+    </div>
+    <select id="dev" onchange="audio('dev=' + encodeURIComponent(this.value))"></select>
+  </div>
+  <div class="avisos">
+    <h2>AVISOS</h2>
+    <div id="avisos_lista"><span style="color:var(--txt2)">sin avisos</span></div>
+    <a class="suscribir" id="suscribir" href="#" target="_blank">Recibir avisos en este cel (app ntfy) →</a>
+    <button class="prueba" onclick="llamar('/prueba')">Mandar aviso de prueba</button>
+  </div>
+
+<script>
+let estado = null, arrastrando = null, ultimoEnvio = 0, pendiente = null;
+
+function fmt(s, v) { return s.pct ? Math.round(v * 100) + '%' : v.toFixed(2); }
+
+function pintar() {
+  const box = document.getElementById('sliders');
+  const lista = estado.sliders;
+  // se rehace solo si cambiaron los sliders (otro visual); si no, solo se actualiza el valor
+  const firma = estado.k + ':' + lista.map(s => s.id).join('|');
+  if (box.dataset.firma !== firma) {
+    box.dataset.firma = firma;
+    box.dataset.k = estado.k;          // el visual de estos sliders: cada /set lo lleva
+    box.innerHTML = lista.map(s => `
+      <div class="sec">
+        <h2>${s.titulo}<span id="v_${s.id}"></span></h2>
+        <div class="fila">
+          <button onclick="paso('${s.id}', -1)">−</button>
+          <input type="range" id="r_${s.id}" min="${s.min}" max="${s.max}" step="0.005"
+                 oninput="mover('${s.id}', this.value)" onpointerdown="arrastrando='${s.id}'"
+                 onpointerup="soltar()" ontouchend="soltar()">
+          <button onclick="paso('${s.id}', 1)">+</button>
+        </div>
+      </div>`).join('');
+  }
+  for (const s of lista) {
+    if (arrastrando !== s.id) document.getElementById('r_' + s.id).value = s.v;
+    document.getElementById('v_' + s.id).textContent = fmt(s, s.v);
+  }
+  document.getElementById('nota').textContent = lista.length ? '' : 'Este visual no tiene ajuste de tamaño.';
+}
+
+function soltar() {
+  arrastrando = null;
+  if (pendiente) { enviar(...pendiente); pendiente = null; }
+  if (pPend) { ppar(...pPend); pPend = null; }
+}
+
+// ---- ajustes del piloto (salen de las paginas Piloto / Repertorio / Vigia del hub)
+let pPend = null, pUlt = 0;
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+function todasSecs() { return (estado.piloto || []).concat(...(estado.efectos || []).map(g => g.secs)); }
+function pBusca(n) { for (const s of todasSecs()) { const p = s.pars.find(x => x.n === n); if (p) return p; } return null; }
+function pPaso(p) { return p.s === 'Int' ? 1 : Math.max(0.001, +((p.max - p.min) / 100).toFixed(3)); }
+function pFmt(p, v) { return p.s === 'Int' ? String(Math.round(v)) : (+v).toFixed(2); }
+
+function ctrl(p) {
+  const n = p.n;
+  if (p.s === 'Toggle') return `<div class="prow"><span class="pl">${esc(p.l)}</span>
+    <button class="tog" id="p_${n}" onclick="ppar('${n}', pBusca('${n}').v ? 0 : 1)"></button></div>`;
+  if (p.s === 'Pulse') return `<button class="pul" onclick="ppar('${n}', 1)">${esc(p.l)}</button>`;
+  if (p.s === 'Menu') return `<div class="prow"><span class="pl">${esc(p.l)}</span><div class="seg">` +
+    p.op.map((o, i) => `<button id="p_${n}_${i}" onclick="ppar('${n}', '${esc(o[0])}')">${esc(o[1])}</button>`).join('') + '</div></div>';
+  if (p.s === 'Str' && p.ro) return `<div class="prow"><span class="pl">${esc(p.l)}</span><span class="pro" id="p_${n}"></span></div>`;
+  if (p.s === 'Str') return `<div class="prow"><span class="pl">${esc(p.l)}</span></div>
+    <div class="pstr"><input id="p_${n}" type="text" autocomplete="off">
+    <button onclick="ppar('${n}', document.getElementById('p_${n}').value)">OK</button></div>`;
+  return `<div class="pnum"><div class="prow"><span class="pl">${esc(p.l)}</span><span class="pv" id="pv_${n}"></span></div>
+    <div class="fila"><button onclick="pmas('${n}', -1)">−</button>
+    <input type="range" id="p_${n}" min="${p.min}" max="${p.max}" step="${pPaso(p)}"
+      oninput="pmover('${n}', this.value)" onpointerdown="arrastrando='p_${n}'" onpointerup="soltar()" ontouchend="soltar()">
+    <button onclick="pmas('${n}', 1)">+</button></div></div>`;
+}
+
+function pintarPiloto() {
+  const box = document.getElementById('piloto');
+  const P = estado.piloto || [];
+  const firma = P.map(s => s.t + ':' + s.pars.map(p => p.n).join(',')).join('|');
+  if (box.dataset.firma !== firma) {
+    box.dataset.firma = firma;
+    box.innerHTML = P.map(s => `<div class="psec"><h3>${esc(s.t)}</h3>${s.pars.map(ctrl).join('')}</div>`).join('');
+  }
+  actualizar(P);
+}
+
+function actualizar(secs) {
+  for (const s of secs) for (const p of s.pars) {
+    const el = document.getElementById('p_' + p.n);
+    if (!el && p.s !== 'Menu') continue;               // los menus no tienen elemento propio: sus botones son p_<n>_<i>
+    if (p.s === 'Str' && p.ro) { el.textContent = p.v; continue; }
+    if (p.s === 'Toggle') { el.className = 'tog' + (p.v ? ' on' : ''); el.textContent = p.v ? 'SÍ' : 'NO'; }
+    else if (p.s === 'Menu') p.op.forEach((o, i) => { document.getElementById('p_' + p.n + '_' + i).className = o[0] === p.v ? 'on' : ''; });
+    else if (p.s === 'Str') { if (document.activeElement !== el) el.value = p.v; }
+    else if (p.s === 'Float' || p.s === 'Int') {
+      if (arrastrando !== 'p_' + p.n) el.value = p.v;
+      document.getElementById('pv_' + p.n).textContent = pFmt(p, p.v);
+    }
+  }
+}
+
+function pintarEfectos() {
+  const E = estado.efectos || [];
+  document.getElementById('det_efectos').style.display = E.length ? '' : 'none';
+  const box = document.getElementById('efectos');
+  const firma = E.map(g => g.pg + ':' + g.secs.map(s => s.pars.map(p => p.n).join(',')).join(';')).join('|');
+  if (box.dataset.firma !== firma) {
+    box.dataset.firma = firma;
+    let abiertos = {};
+    try { abiertos = JSON.parse(localStorage.getItem('fx_abiertos') || '{}'); } catch (e) {}
+    box.innerHTML = E.map(g => `<details class="sub" id="fx_${g.pg}" ${abiertos[g.pg] ? 'open' : ''}
+        ontoggle="fxToggle('${g.pg}', this.open)">
+      <summary><span>${esc(g.t)}</span><span class="fxon" id="fxon_${g.pg}"></span></summary>
+      ${g.secs.map(s => `<div class="psec"><h3>${esc(s.t)}</h3>${s.pars.map(ctrl).join('')}</div>`).join('')}
+    </details>`).join('');
+  }
+  for (const g of E) {
+    const o = document.getElementById('fxon_' + g.pg);
+    if (o) { o.textContent = g.on === null ? '' : (g.on ? 'ON' : 'off'); o.className = 'fxon' + (g.on ? ' on' : ''); }
+    actualizar(g.secs);
+  }
+}
+// tira de botones rapidos: un toque prende / apaga cada efecto (el detalle esta en EFECTOS Y MASCARA)
+const CORTO = {Capa: 'AUTO', Chaser: 'CHASER', Barrido: 'BARRIDO', EQ: 'EQ', Onda: 'ONDA', Cascada: 'CASCADA',
+               Giro: 'GIRO', Respira: 'RESPIRA'};
+function pintarRapido() {
+  const E = (estado.efectos || []).filter(g => g.on_n);
+  const sm = pBusca('Salemezcla');
+  document.getElementById('fx_rapido_sec').style.display = E.length ? '' : 'none';
+  const box = document.getElementById('fx_rapido');
+  const firma = E.map(g => g.pg).join('|') + (sm ? '|solo' : '');
+  if (box.dataset.firma !== firma) {
+    box.dataset.firma = firma;
+    box.innerHTML = E.map(g => `<button id="fxr_${g.pg}" onclick="fxRapido('${g.pg}')">${esc(CORTO[g.pg] || g.t)}</button>`).join('') +
+      (sm ? `<button class="solo" id="fxr_solo" onclick="fxSolo()">SOLO EFECTOS</button>` : '');
+  }
+  let n = 0;
+  for (const g of E) {
+    const b = document.getElementById('fxr_' + g.pg);
+    if (b) b.className = g.on ? 'on' : '';
+    if (g.on && g.pg !== 'Capa') n++;
+  }
+  if (sm) document.getElementById('fxr_solo').className = 'solo' + (sm.v === 'efectos' ? ' on' : '');
+  document.getElementById('fx_rapido_txt').textContent = n ? n + ' prendido' + (n > 1 ? 's' : '') : 'ninguno';
+}
+function fxRapido(pg) {
+  const g = (estado.efectos || []).find(x => x.pg === pg);
+  if (g && g.on_n) ppar(g.on_n, g.on ? 0 : 1);
+}
+function fxSolo() {
+  const sm = pBusca('Salemezcla');
+  if (sm) ppar('Salemezcla', sm.v === 'efectos' ? 'visual' : 'efectos');
+}
+
+function fxToggle(pg, abierto) {
+  try { const a = JSON.parse(localStorage.getItem('fx_abiertos') || '{}'); a[pg] = abierto; localStorage.setItem('fx_abiertos', JSON.stringify(a)); } catch (e) {}
+}
+
+function pmover(n, v) {
+  const p = pBusca(n); p.v = parseFloat(v);
+  document.getElementById('pv_' + n).textContent = pFmt(p, p.v);
+  if (Date.now() - pUlt > 80) ppar(n, p.v);
+  else { pPend = [n, p.v]; setTimeout(() => { if (pPend) { ppar(...pPend); pPend = null; } }, 100); }
+}
+function pmas(n, dir) {
+  const p = pBusca(n);
+  p.v = Math.min(p.max, Math.max(p.min, +(p.v + dir * pPaso(p)).toFixed(3)));
+  pintarPiloto(); pintarEfectos(); ppar(n, p.v);
+}
+function ppar(n, v) {
+  pUlt = Date.now(); if (navigator.vibrate) navigator.vibrate(10);
+  const p = pBusca(n);
+  llamar('/par?n=' + n + '&v=' + encodeURIComponent(v) + (p && p.c === 'slices' ? '&c=slices' : ''));
+}
+
+function mover(id, v) {
+  v = parseFloat(v);
+  const s = estado.sliders.find(x => x.id === id); s.v = v;
+  document.getElementById('v_' + id).textContent = fmt(s, v);
+  const ahora = Date.now();
+  if (ahora - ultimoEnvio > 60) { enviar(id, v); } else { pendiente = [id, v]; setTimeout(() => { if (pendiente) { enviar(...pendiente); pendiente = null; } }, 80); }
+}
+
+function paso(id, dir) {
+  const s = estado.sliders.find(x => x.id === id);
+  s.v = Math.min(s.max, Math.max(s.min, +(s.v + dir * 0.01).toFixed(3)));
+  pintar(); enviar(id, s.v);
+}
+
+async function llamar(url) {
+  try {
+    const r = await fetch(url, { cache: 'no-store' });
+    estado = await r.json();
+    document.getElementById('punto').className = 'punto ok';
+    document.getElementById('conexion').textContent = 'conectado a TouchDesigner';
+    document.getElementById('canal').textContent = estado.canal;
+    document.getElementById('nombre').textContent = estado.nombre;
+    document.getElementById('b_manual').className = estado.auto ? '' : 'on';
+    document.getElementById('b_auto').className = 'auto' + (estado.auto ? ' on' : '');
+    document.getElementById('auto_txt').textContent = !estado.auto ? '' :
+      estado.auto_txt.replace(/^AUTO · PAUSA (\d+)/, 'en pausa $1 s (tocaste un visual)')
+                     .replace(/^AUTO · AQUI/, 'se queda en este visual')
+                     .replace(/^AUTO (\d+:\d+)/, 'siguiente visual en $1');
+    if (estado.color_txt) document.getElementById('auto_txt').textContent +=
+      (document.getElementById('auto_txt').textContent ? ' · ' : '') + estado.color_txt;
+    const bp = document.getElementById('b_patron');
+    bp.className = 'patron' + (estado.patron ? ' on' : '');
+    bp.textContent = estado.patron ? 'PATRÓN AL AIRE · toca para regresar al visual' : 'PATRÓN DE PRUEBA (slices)';
+    if (estado.guardar) {
+      const bg = document.getElementById('b_guardar');
+      bg.textContent = estado.guardar.txt.replace('Guardado', 'Guardado ✓');
+      bg.className = 'guardar' + (estado.guardar.reciente ? ' ok' : '');
+    }
+    const au = estado.audio;
+    if (au) {
+      document.getElementById('b_archivo').className = au.fuente === 'archivo' ? 'on' : '';
+      document.getElementById('b_vivo').className = 'auto' + (au.fuente === 'vivo' ? ' on' : '');
+      const sel = document.getElementById('dev');
+      const firma = au.devs.map(d => d[0]).join('|');
+      if (sel.dataset.firma !== firma) {
+        sel.dataset.firma = firma;
+        sel.innerHTML = au.devs.map(d => `<option value="${d[0].replace(/"/g, '&quot;')}">${d[1]}</option>`).join('');
+      }
+      if (document.activeElement !== sel) sel.value = au.dev;
+      sel.style.display = au.fuente === 'vivo' ? '' : 'none';
+      const fa = estado.monitor && estado.monitor.filas.find(f => f.k === 'AUDIO');
+      document.getElementById('audio_estado').textContent = fa ? fa.v : '';
+    }
+    const mon = estado.monitor;
+    if (mon) {
+      document.getElementById('estado_box').innerHTML = mon.filas.map(f =>
+        `<div class="fila_est"><div class="sem n${f.n}"></div><div class="k">${f.k}</div><div class="v">${f.v}</div></div>`).join('');
+      document.getElementById('avisos_lista').innerHTML = mon.avisos.length ? mon.avisos.map(a =>
+        `<div class="aviso"><span>${a.t}</span> <b>${a.titulo}</b><br>${a.txt}</div>`).join('') :
+        '<span style="color:var(--txt2)">sin avisos</span>';
+      document.getElementById('suscribir').href = 'https://ntfy.sh/' + mon.tema;
+      document.getElementById('suscribir').textContent = (mon.avisos_on ? '' : '(avisos apagados) ') +
+        'Recibir avisos en este cel: app ntfy, tema ' + mon.tema + ' →';
+    }
+    const sl = estado.slices;
+    const ds = document.getElementById('det_slices');
+    ds.style.display = sl ? '' : 'none';
+    if (sl) {
+      const se = document.getElementById('sl_estado');
+      se.textContent = sl.txt; se.className = 'sl_est n' + sl.n;
+      const sp = document.getElementById('sl_prueba');
+      const firma = sl.pruebas.map(p => p[0]).join('|');
+      if (sp.dataset.firma !== firma) {
+        sp.dataset.firma = firma;
+        sp.innerHTML = sl.pruebas.map(p => `<button data-v="${esc(p[0])}" onclick="slices('accion=prueba&v=${esc(p[0])}')">${esc(p[1])}</button>`).join('');
+      }
+      sp.querySelectorAll('button').forEach(b => b.className = b.dataset.v === sl.prueba ? 'on' : '');
+      document.getElementById('b_sl_abrir').className = sl.armada ? 'on' : '';
+      document.getElementById('sl_nota').textContent = sl.led
+        ? 'La salida LED está armada: ciérrala antes (solo hay un monitor externo).'
+        : (sl.armada ? 'Armada: si se pierde el monitor se cierra y vuelve sola.'
+                     : 'Cerrada. Resolume sigue siendo la salida.');
+    }
+    // lo que el show no tenga no sale (modulos opcionales: auto_piloto, led_slices, patron de prueba)
+    const ver = (id, si) => { const e = document.getElementById(id); if (e) e.style.display = si ? '' : 'none'; };
+    ver('modo_piloto', estado.hay_piloto !== false); ver('auto_txt', estado.hay_piloto !== false);
+    ver('det_piloto', (estado.piloto || []).length > 0);
+    ver('b_pausa', estado.hay_pausa !== false);
+    ver('b_patron', estado.hay_patron !== false);
+    ver('audio_sec', !!estado.audio);
+    ver('canal', !!estado.canal);
+    const bz = document.getElementById('b_pausa');
+    bz.className = 'pausa' + (estado.pausa ? ' on' : '');
+    bz.textContent = estado.pausa ? '▶ PLAY · visual en pausa' : '❚❚ PAUSAR VISUAL';
+    pintar();
+    pintarPiloto();
+    pintarEfectos();
+    pintarRapido();
+    pintarCanal();
+  } catch (e) {
+    document.getElementById('punto').className = 'punto';
+    document.getElementById('conexion').textContent = 'sin conexión con la compu';
+  }
+}
+
+function enviar(id, v) { ultimoEnvio = Date.now(); llamar('/set?id=' + id + '&v=' + v + '&k=' + document.getElementById('sliders').dataset.k); }
+function patron() { if (navigator.vibrate) navigator.vibrate(15); llamar('/patron?on=' + (estado && estado.patron ? 0 : 1)); }
+function guardarToe() { if (navigator.vibrate) navigator.vibrate([15, 40, 15]); llamar('/guardar'); }
+function audio(q) { if (navigator.vibrate) navigator.vibrate(15); llamar('/audio?' + q); }
+function modo(on) { if (navigator.vibrate) navigator.vibrate(15); llamar('/auto?on=' + on); }
+function pintarCanal() {
+  const C = estado.canales || [];
+  document.getElementById('canal_sec').style.display = C.length ? '' : 'none';
+  const box = document.getElementById('canales');
+  const firma = C.map(c => c[0]).join('|');
+  if (box.dataset.firma !== firma) {
+    box.dataset.firma = firma;
+    box.innerHTML = `<button data-c="0" onclick="canal(0)">TODOS</button>` +
+      C.map(c => `<button data-c="${c[0]}" onclick="canal(${c[0]})">CH${c[0]} ${esc(c[1])}</button>`).join('');
+  }
+  box.querySelectorAll('button').forEach(b => b.className = +b.dataset.c === estado.canal_sel ? 'on' : '');
+  const sel = C.find(c => c[0] === estado.canal_sel);
+  document.getElementById('canal_txt').textContent = sel ? 'anterior / siguiente: solo CH' + sel[0] : 'anterior / siguiente: todos';
+  const pb = document.getElementById('pads');
+  const P = estado.pads || [];
+  const fp = estado.canal_sel + ':' + P.map(p => p.k).join(',');
+  if (pb.dataset.firma !== fp) {
+    pb.dataset.firma = fp;
+    pb.innerHTML = P.map(p => `<button data-k="${p.k}" onclick="padIr(${p.k})"><span class="num">${p.pad}</span>${esc(p.n)}</button>`).join('');
+  }
+  pb.querySelectorAll('button').forEach(b => b.className = +b.dataset.k === estado.k ? 'on' : '');
+}
+function canal(c) { if (navigator.vibrate) navigator.vibrate(10); llamar('/canal?c=' + c); }
+function padIr(k) { if (navigator.vibrate) navigator.vibrate(15); llamar('/pad?k=' + k); }
+function ir(dir) { if (navigator.vibrate) navigator.vibrate(15); llamar('/ir?dir=' + dir); }
+
+function pausa() { if (navigator.vibrate) navigator.vibrate([15, 30, 15]); llamar('/pausa?on=' + (estado && estado.pausa ? 0 : 1)); }
+
+function slices(q) { if (navigator.vibrate) navigator.vibrate(15); llamar('/slices?' + q); }
+function slicesAbrir() {
+  if (estado && estado.slices && estado.slices.armada) return;
+  if (confirm('Abrir la salida desde TD en el monitor externo.\nTapa lo que manda Resolume a esa pantalla.\n¿Abrir?')) slices('accion=abrir');
+}
+
+try { document.getElementById('det_piloto').open = localStorage.getItem('det_piloto') === '1'; } catch (e) {}
+try { document.getElementById('det_slices').open = localStorage.getItem('det_slices') === '1'; } catch (e) {}
+try { document.getElementById('det_efectos').open = localStorage.getItem('det_efectos') === '1'; } catch (e) {}
+llamar('/estado');
+setInterval(() => { if (!arrastrando) llamar('/estado'); }, 1000);
+</script>
+</body>
+</html>

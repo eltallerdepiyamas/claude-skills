@@ -1,0 +1,19 @@
+{
+  "nombre": "ledfx_respira",
+  "version": "1.0",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-20)",
+  "familia": "ledfx",
+  "descripcion": "RESPIRACION: la luz de las bocinas sube y baja con el compas (suave, latido o en ola por las bocinas). Pulso sin strobe. Segunda capa.",
+  "requiere": [],
+  "detecta": [
+    "/project1/slices/respira_led",
+    "/project1/led/respira_led"
+  ],
+  "ui": null,
+  "opcional": [
+    "led_slices",
+    "led_salida",
+    "auto_capa",
+    "audio_tempo"
+  ]
+}

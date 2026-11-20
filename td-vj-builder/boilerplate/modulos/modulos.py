@@ -36,7 +36,9 @@ def catalogo():
 
 
 def instalado(m):
-    return bool(m.get('detecta')) and op(m['detecta']) is not None
+    d = m.get('detecta')
+    d = d if isinstance(d, list) else ([d] if d else [])     # varias rutas: basta una (p. ej. ledfx en slices o en LED)
+    return any(op(x) is not None for x in d)
 
 
 def _correr(nombre, archivo):
@@ -76,7 +78,12 @@ def instalar(nombres):
             traceback.print_exc()
             print('[X] %s fallo; los que dependen de el se saltan' % n)
             break
-    ui(hechos)
+    # UI al dia: setup_ui.py completo, de una vez y en este mismo cuadro (corre los ui.py de todos los modulos).
+    # NO usar tdvj_core.refresh_ui() (reconstruccion diferida) desde un instalador: con show_titulos dejo a TD
+    # colgado dos veces (2026-11-18).
+    if hechos and op('/project2/ui_perform') is not None:
+        p = project.folder + '/builders/herramientas/setup_ui.py'
+        exec(compile(open(p, encoding='utf-8').read(), p, 'exec'), dict(globals(), __file__=p))
     return hechos
 
 

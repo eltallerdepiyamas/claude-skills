@@ -1,0 +1,14 @@
+{
+  "nombre": "ctl_celular",
+  "version": "1.1",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-19 / 2026-11-20)",
+  "familia": "ctl",
+  "descripcion": "Control desde el celular (pagina web que sirve TD, misma red): anterior / siguiente, tamano de logo y circulos, PAUSA / PLAY, piloto y sus ajustes, salida de slices, patron, guardar, fuente de audio, ESTADO y avisos por ntfy. v1.1: EFECTOS Y MASCARA (las paginas de los efectos de la segunda capa, para ajustar desde afuera).",
+  "requiere": [],
+  "detecta": "/project2/show/celular/web",
+  "ui": null,
+  "opcional": [
+    "auto_piloto",
+    "led_slices"
+  ]
+}

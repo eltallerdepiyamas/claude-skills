@@ -1,0 +1,19 @@
+{
+  "nombre": "ledfx_giro",
+  "version": "1.0",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-20)",
+  "familia": "ledfx",
+  "descripcion": "GIRO POR BOCINA: cada slice gira su contenido sobre su centro como un disco (todas igual, alternado, en ola o un paso por kick), con recorte circular. Segunda capa.",
+  "requiere": [],
+  "detecta": [
+    "/project1/slices/giro_led",
+    "/project1/led/giro_led"
+  ],
+  "ui": null,
+  "opcional": [
+    "led_slices",
+    "led_salida",
+    "auto_capa",
+    "audio_tempo"
+  ]
+}

@@ -1,15 +1,18 @@
 {
   "nombre": "ledfx_chaser",
-  "version": "1.0",
-  "origen": "Casa Bacardi x Corona Capital (2026-11-17)",
+  "version": "2.0",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-17; v2 slices 2026-11-20)",
   "familia": "ledfx",
-  "descripcion": "Luz por tablero en secuencia (8 patrones) con BPM detectado, kick o BPM fijo.",
-  "requiere": [
-    "led_salida"
-  ],
+  "descripcion": "Luz por tablero en secuencia (8 patrones) con BPM detectado, kick o BPM fijo. v2: segunda capa sobre los slices de led_slices (slice por slice) o, sin slices, sobre la LED de led_salida. Necesita uno de los dos.",
+  "requiere": [],
   "opcional": [
+    "led_slices",
+    "led_salida",
     "audio_tempo"
   ],
-  "detecta": "/project1/led/chaser_led",
+  "detecta": [
+    "/project1/slices/chaser_led",
+    "/project1/led/chaser_led"
+  ],
   "ui": null
 }

@@ -1,0 +1,18 @@
+{
+  "nombre": "ledfx_cascada",
+  "version": "1.0",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-20)",
+  "familia": "ledfx",
+  "descripcion": "CASCADA DE TIEMPO: cada bocina ensena el visual unos cuadros despues que la anterior; el movimiento corre por las bocinas como un eco (Texture 3D + Time Machine). Va primero en la cadena. Segunda capa.",
+  "requiere": [],
+  "detecta": [
+    "/project1/slices/cascada_led",
+    "/project1/led/cascada_led"
+  ],
+  "ui": null,
+  "opcional": [
+    "led_slices",
+    "led_salida",
+    "auto_capa"
+  ]
+}

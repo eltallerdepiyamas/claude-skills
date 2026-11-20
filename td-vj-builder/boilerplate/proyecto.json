@@ -11,8 +11,16 @@
     "audio_tempo": false,
     "led_mapeo": false,
     "led_salida": false,
+    "led_slices": false,
     "ledfx_chaser": false,
     "ledfx_barrido": false,
+    "ledfx_cascada": false,
+    "ledfx_eq": false,
+    "ledfx_onda": false,
+    "ledfx_giro": false,
+    "ledfx_respira": false,
+    "auto_capa": false,
+    "ctl_celular": false,
     "_nota": "visuales / fx / escena_modular = partes del rig. Lo demas = carpetas de modulos/ (ver modulos/LEEME.md); true = se instala con armar.py, con sus dependencias."
   },
   "resolucion": {
@@ -109,5 +117,14 @@
     "x": 0,
     "y": 0,
     "pixelmap": ""
+  },
+  "slices": {
+    "_nota": "modulo led_slices: XML de Advanced Output de Resolume (Documentos/Resolume Arena/Presets/Screensetup), lo que va a Resolume (vacio = la entrada del Spout / NDI) y la guia (python modulos/led_slices/gen_guia.py <xml>).",
+    "xml": "",
+    "entrada": "",
+    "guia": ""
+  },
+  "celular": {
+    "puerto": 9990
   }
 }
