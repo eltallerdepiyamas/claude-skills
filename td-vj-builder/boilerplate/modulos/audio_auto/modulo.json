@@ -1,0 +1,11 @@
+{
+  "nombre": "audio_auto",
+  "version": "1.1",
+  "origen": "Casa Bacardi x Corona Capital (2026-11-20)",
+  "familia": "audio",
+  "descripcion": "Cambio automatico de la fuente de audio: el micro escucha siempre; si pasa un umbral N s cambia a EN VIVO, si se queda bajo otro umbral N s regresa a la CANCION (archivo). Histeresis, lectura del nivel del micro para calibrar, se apaga si eliges la fuente a mano. v1.1: CALIBRAR CON EL AMBIENTE y registro por minuto. Pagina Audio del show (seccion CAMBIO AUTOMATICO) y pestana AUDIO del cel.",
+  "requiere": [],
+  "detecta": "/project2/audio/audio_auto",
+  "ui": null,
+  "opcional": ["ctl_celular"]
+}

@@ -1,9 +1,9 @@
 {
   "nombre": "ctl_celular",
-  "version": "1.1",
+  "version": "1.4",
   "origen": "Casa Bacardi x Corona Capital (2026-11-19 / 2026-11-20)",
   "familia": "ctl",
-  "descripcion": "Control desde el celular (pagina web que sirve TD, misma red): anterior / siguiente, tamano de logo y circulos, PAUSA / PLAY, piloto y sus ajustes, salida de slices, patron, guardar, fuente de audio, ESTADO y avisos por ntfy. v1.1: EFECTOS Y MASCARA (las paginas de los efectos de la segunda capa, para ajustar desde afuera).",
+  "descripcion": "Control desde el celular (pagina web que sirve TD, misma red): anterior / siguiente, tamano de logo y circulos, PAUSA / PLAY, piloto y sus ajustes, salida de slices, patron, guardar, fuente de audio, ESTADO y avisos por ntfy. v1.1: EFECTOS Y MASCARA (las paginas de los efectos de la segunda capa, para ajustar desde afuera). v1.2: ONDA DE AUDIO (medidor en vivo para revisar el microfono: pico de entrada, graves/medios/agudos/kick, espectro; solo lee mientras esta prendida), Gain y Autonivel, BLACKOUT y RESET FEEDBACK con confirmacion. v1.3: pestanas por categoria (VISUAL · PADS · PILOTO · EFECTOS · AUDIO · ESTADO) con lo que esta al aire siempre arriba. v1.4: MODO SHOW (candado del cel): el cel solo mira; el servidor ignora todo cambio hasta quitarlo (con confirmacion).",
   "requiere": [],
   "detecta": "/project2/show/celular/web",
   "ui": null,

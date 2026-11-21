@@ -12,7 +12,8 @@
 #   MANUAL / AUTO + AJUSTES DEL PILOTO (paginas Piloto / Repertorio / Vigia, con sus secciones)   [auto_piloto]
 #   PAUSA / PLAY · PATRON DE PRUEBA (show.Patronprueba) · SALIDA DESDE TD (SLICES)                  [led_slices]
 #   EFECTOS Y MASCARA: que sale, mascara redonda, capa automatica y cada efecto (paginas de /project1/slices) [ledfx_*]
-#   GUARDAR (el de la UI) · FUENTE DE AUDIO (show.Audiofuente / Audiodevice) · ESTADO y AVISOS (ntfy)
+#   GUARDAR (el de la UI) · FUENTE DE AUDIO (show.Audiofuente / Audiodevice) + ONDA en vivo, Gain y Autonivel
+#   BLACKOUT y RESET FEEDBACK (los de la UI, con confirmacion) · ESTADO y AVISOS (ntfy)
 # En el cel: http://<ip de la lap>:<puerto> (al instalar se imprime la direccion).
 import json, os, socket, secrets
 
@@ -152,11 +153,23 @@ def estado():
             'patron': bool(getattr(S.par, 'Patronprueba', None) is not None and S.par.Patronprueba.eval()),
             'hay_patron': getattr(S.par, 'Patronprueba', None) is not None,
             'pausa': pausa_k() is not None,
+            'negro': bool(getattr(S.par, 'Master', None) is not None and S.par.Master.eval() < 0.5),
+            'hay_blackout': op('/project2/ui_perform/ui_lib') is not None,
             'hay_pausa': R.op('pausa_sw') is not None,
             'slices': slices_info(),
             'piloto': piloto_pars(),
             'efectos': efectos_pars(),
+            'candado': candado(),
             'monitor': C.op('monitor_lib').module.estado() if C.op('monitor_lib') else None}
+
+
+# ---- MODO SHOW del cel (v1.4): con el candado puesto el cel solo MIRA; nada de lo que se toque cambia el show.
+# Lo hace el servidor (no la pagina): aunque un toque se cuele, se ignora. Solo del cel: la UI de la lap no cambia.
+SOLO_VER = ('/estado', '/audio_nivel', '/candado', '/canal')     # /canal solo cambia lo que el cel ensena
+
+
+def candado():
+    return bool(C.fetch('candado', False, search=False))
 
 
 # ---- SALIDA DESDE TD (modulo led_slices): estado, prueba y abrir / cerrar la ventana /salida_slices
@@ -353,8 +366,52 @@ def audio_info():
     if p is None:
         return None
     lab = lambda n: (n.split('||')[1] if '||' in n else n).replace('_', ' ')
+    g = getattr(S.par, 'Audiogain', None)
+    a = getattr(S.par, 'Autonivel', None)
     return {'fuente': p.eval(), 'dev': d.eval() if d is not None else '',
-            'devs': [[n, lab(n)] for n in (d.menuNames if d is not None else [])]}
+            'devs': [[n, lab(n)] for n in (d.menuNames if d is not None else [])],
+            'gain': round(float(g.eval()), 3) if g is not None else None,
+            'gain_max': max(4.0, g.normMax) if g is not None else 4.0,
+            'autonivel': bool(a.eval()) if a is not None else None,
+            'auto': auto_info()}
+
+
+AUTO_PARS = (('sube', 'Audioautosube'), ('subeseg', 'Audioautosubeseg'), ('baja', 'Audioautobaja'), ('bajaseg', 'Audioautobajaseg'))
+
+
+def auto_info():
+    # modulo audio_auto (opcional): micro <-> cancion solo
+    if getattr(S.par, 'Audioauto', None) is None:
+        return None
+    d = {'on': bool(S.par.Audioauto.eval()), 'nivel': round(float(S.par.Audioautonivel.eval()), 4),
+         'estado': S.par.Audioautoestado.eval()}
+    for k, n in AUTO_PARS:
+        pp = getattr(S.par, n)
+        d[k] = round(float(pp.eval()), 4)
+        d[k + '_max'] = pp.normMax
+    return d
+
+
+def audio_nivel():
+    # lectura rapida para la ONDA del cel (solo se pide mientras esta prendida): pico de entrada, bandas y espectro
+    out = {'pico': 0.0, 'b': [0, 0, 0, 0], 'esp': []}
+    try:
+        e = op('/project2/audio/audio_gain')
+        if e is not None and e.numChans:
+            import numpy as np
+            out['pico'] = round(float(np.abs(e.numpyArray()).max()), 4)
+        m = op('/project2/audio/master_audio')
+        if m is not None:
+            out['b'] = [round(float(m[c].eval()), 3) if m[c] is not None else 0 for c in ('low', 'mid', 'high', 'kick')]
+        x = op('/project2/audio/esp_bandas')
+        if x is not None and x.numChans:
+            v = x[0].vals
+            out['esp'] = [round(sum(v[i:i + 2]) / 2.0, 3) for i in range(0, len(v), 2)]
+        if getattr(S.par, 'Audioautonivel', None) is not None:
+            out['mic'] = round(float(S.par.Audioautonivel.eval()), 4)
+    except Exception as ex:
+        out['error'] = str(ex)
+    return out
 
 
 def audio_poner(q):
@@ -362,6 +419,20 @@ def audio_poner(q):
         S.par.Audiofuente = q['fuente']
     if 'dev' in q and getattr(S.par, 'Audiodevice', None) is not None and q['dev'] in S.par.Audiodevice.menuNames:
         S.par.Audiodevice = q['dev']
+    if 'gain' in q and getattr(S.par, 'Audiogain', None) is not None:
+        g = S.par.Audiogain
+        g.val = min(max(float(q['gain']), 0.0), max(4.0, g.normMax))
+    if 'autonivel' in q and getattr(S.par, 'Autonivel', None) is not None:
+        S.par.Autonivel = str(q['autonivel']) == '1'
+    if getattr(S.par, 'Audioauto', None) is not None:          # modulo audio_auto
+        if 'auto' in q:
+            S.par.Audioauto = str(q['auto']) == '1'
+        if 'calibrar' in q and getattr(S.par, 'Audioautocalibrar', None) is not None:
+            S.par.Audioautocalibrar.pulse()
+        for k, n in AUTO_PARS:
+            if k in q:
+                pp = getattr(S.par, n)
+                pp.val = min(max(float(q[k]), pp.normMin), pp.normMax)
 
 
 def guardar_info():
@@ -436,9 +507,35 @@ def onHTTPRequest(webServerDAT, request, response):
             response['content-type'] = 'text/html; charset=utf-8'
             response['data'] = C.op('pagina').text
             return response
-        if uri == '/ir':
+        if candado() and uri not in SOLO_VER:
+            log('MODO SHOW: ignorado ' + uri)
+            response['content-type'] = 'application/json'
+            response['Cache-Control'] = 'no-store'
+            d = estado()
+            d['bloqueado'] = uri
+            response['data'] = json.dumps(d)
+            return response
+        if uri == '/candado':
+            C.store('candado', str(q.get('on', '0')) == '1')
+            log('MODO SHOW ' + ('PUESTO' if candado() else 'QUITADO') + ' (cel)')
+        elif uri == '/ir':
             pausar(False)
             ir(1 if int(q.get('dir', 1)) > 0 else -1)
+        elif uri == '/audio_nivel':                      # rapido: no manda todo el estado
+            response['content-type'] = 'application/json'
+            response['Cache-Control'] = 'no-store'
+            response['data'] = json.dumps(audio_nivel())
+            return response
+        elif uri == '/blackout':
+            ul = op('/project2/ui_perform/ui_lib')
+            if ul is not None:
+                ul.module.elegir('BLACKOUT', '')        # el mismo BLACKOUT de la UI (fundido; otro toque regresa)
+                log('BLACKOUT (cel)')
+        elif uri == '/resetfb':
+            ul = op('/project2/ui_perform/ui_lib')
+            if ul is not None:
+                ul.module.resetear_feedbacks()
+                log('RESET FEEDBACK (cel)')
         elif uri == '/canal':
             C.store('canal_sel', int(q.get('c', 0) or 0))
         elif uri == '/pad':

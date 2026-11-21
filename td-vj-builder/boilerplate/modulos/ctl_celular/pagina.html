@@ -90,6 +90,30 @@
   details.sub summary .fxon.on { color:var(--acento); }
   details.sub .psec { border-top:0; padding-top:0; }
   .pro { color:var(--txt2); font-weight:600; }
+  .emerg { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
+  .emerg button { height:52px; font-size:14px; font-weight:700; }
+  .emerg .blk { background:#2a1214; color:var(--rojo); }
+  .emerg .blk.on { background:var(--rojo); color:#fff; }
+  .auton { display:flex; align-items:center; justify-content:space-between; margin-top:10px; font-size:14px; }
+  .onda_b { width:100%; height:46px; margin-top:12px; font-size:14px; font-weight:700; }
+  .onda_b.on { background:var(--acento); color:#08130d; }
+  #onda_c { width:100%; height:110px; margin-top:10px; background:#0d0d0f; border-radius:10px; display:block; }
+  .barras { display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; margin-top:8px; }
+  .barra { height:56px; background:#0d0d0f; border-radius:8px; position:relative; overflow:hidden; }
+  .barra i { position:absolute; left:0; right:0; bottom:0; height:0; background:var(--acento); }
+  .barra span { position:absolute; left:0; right:0; top:4px; text-align:center; font-size:10px; color:var(--txt2); letter-spacing:.06em; }
+  .onda_txt { margin-top:6px; font-size:12px; color:var(--txt2); text-align:center; }
+  .onda_txt.mal { color:var(--rojo); font-weight:700; }
+  .aa_est { margin:6px 0 10px; font-size:14px; font-weight:700; color:var(--acento); }
+  .aa_est.off { color:var(--txt2); font-weight:600; }
+  .aa_med { position:relative; height:22px; background:#0d0d0f; border-radius:8px; overflow:hidden; }
+  .aa_med i { position:absolute; left:0; top:0; bottom:0; width:0; background:var(--acento); opacity:.85; transition:width .15s; }
+  .aa_med b { position:absolute; top:0; bottom:0; width:3px; margin-left:-1px; background:#f5a524; }
+  .aa_med b.baja { background:#7aa7ff; }
+  .aa_ley { display:flex; justify-content:space-between; margin-top:6px; font-size:12px; color:var(--txt2); }
+  .aa_ley em { display:inline-block; width:8px; height:8px; border-radius:2px; margin:0 4px 0 6px; }
+  .aa_ley em.s { background:#f5a524; } .aa_ley em.b { background:#7aa7ff; }
+  .aa_nota { margin-top:8px; font-size:12px; color:var(--txt2); }
   .fxgrid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
   .fxgrid button { height:56px; font-size:14px; font-weight:700; letter-spacing:.04em; }
   .fxgrid button.on { background:var(--acento); color:#08130d; }
@@ -102,15 +126,151 @@
   .sl_seg { justify-content:flex-start; }
   .nota_sl { font-size:13px; color:var(--txt2); }
   #b_sl_abrir.on { background:var(--acento); color:#08130d; }
+  /* MODO SHOW (v1.4): el cel solo mira; se puede navegar y ver, no cambiar */
+  .candado { margin-left:auto; height:34px; padding:0 12px; font-size:12px; font-weight:700; letter-spacing:.04em; }
+  .candado.on { background:#f5a524; color:#1a1200; }
+  body.bloq .panel button, body.bloq .panel input, body.bloq .panel select { pointer-events:none; opacity:.35; }
+  body.bloq .canales button, body.bloq #b_onda { pointer-events:auto; opacity:1; }   /* solo cambian lo que se ve */
+  body.bloq .cabeza .aire { box-shadow:inset 0 0 0 2px #f5a524; }
+  .bloq_txt { display:none; margin:8px 0 0; padding:10px 12px; border-radius:12px; background:#2a2108; color:#f5a524;
+              font-size:13px; font-weight:600; text-align:center; }
+  body.bloq .bloq_txt { display:block; }
+  /* pestanas por categoria (v1.3): arriba siempre lo que esta al aire */
+  body { padding-top:0; }
+  .cabeza { position:sticky; top:0; z-index:5; background:var(--bg); padding:12px 0 8px; }
+  .cabeza .aire { margin:10px 0 10px; padding:10px 14px; }
+  .cabeza .nombre { font-size:22px; }
+  .marcas { display:flex; gap:6px; justify-content:center; flex-wrap:wrap; }
+  .marcas:empty { display:none; }
+  .marcas b { margin-top:6px; font-size:11px; letter-spacing:.06em; padding:3px 8px; border-radius:8px; background:var(--ctrl); }
+  .marcas b.amb { background:#f5a524; color:#1a1200; } .marcas b.roj { background:var(--rojo); color:#fff; }
+  .marcas b.ok { background:var(--acento); color:#08130d; }
+  .tabs { display:grid; grid-template-columns:repeat(6, 1fr); gap:3px; padding:3px; background:var(--sup); border-radius:14px; }
+  .tabs button { height:40px; padding:0; font-size:10.5px; font-weight:700; letter-spacing:.02em; background:transparent;
+                 color:var(--txt2); border-radius:11px; position:relative; }
+  .tabs button.on { background:var(--ctrl); color:var(--txt); }
+  .tabs button i { position:absolute; top:5px; right:5px; width:7px; height:7px; border-radius:50%; display:none; }
+  .tabs button i.n1 { display:block; background:#f5a524; } .tabs button i.n2 { display:block; background:var(--rojo); }
+  .panel { display:none; padding-bottom:40px; }
+  .panel.on { display:block; }
+  .panel > .sec:first-child, .panel > .estado_box:first-child { margin-top:8px; }
+  .panel > .modo:first-child, .panel > .nav:first-child { margin-top:8px; }
+  .pil_box { padding:14px 0 4px; }
+  .pil_box > h2 { padding:0 16px; }
+  #t_estado .guardar { margin-top:12px; }
 </style>
 </head>
 <body>
-  <div class="estado"><div class="punto" id="punto"></div><span id="conexion">conectando…</span></div>
+  <div class="cabeza">
+  <div class="estado"><div class="punto" id="punto"></div><span id="conexion">conectando…</span>
+    <button class="candado libre" id="b_candado" onclick="candado()">🔓 MODO SHOW</button></div>
+  <div class="aire">
+    <div class="canal" id="canal">—</div>
+    <div class="nombre" id="nombre">—</div>
+    <div class="marcas" id="marcas"></div>
+  </div>
+  <div class="bloq_txt">MODO SHOW · el cel solo muestra · nada se puede cambiar</div>
+  <nav class="tabs" id="tabs">
+    <button data-t="visual" onclick="tab('visual')">VISUAL</button>
+    <button data-t="pads" onclick="tab('pads')">PADS</button>
+    <button data-t="piloto" onclick="tab('piloto')">PILOTO</button>
+    <button data-t="efectos" onclick="tab('efectos')">EFECTOS</button>
+    <button data-t="audio" onclick="tab('audio')">AUDIO<i></i></button>
+    <button data-t="estado" onclick="tab('estado')">ESTADO<i></i></button>
+  </nav>
+  </div>
 
+  <section class="panel" id="t_visual">
+  <div class="nav">
+    <button onclick="ir(-1)">◀ ANTERIOR</button>
+    <button onclick="ir(1)">SIGUIENTE ▶</button>
+  </div>
+  <button class="pausa" id="b_pausa" onclick="pausa()">❚❚ PAUSAR VISUAL</button>
+  <div class="emerg" id="emerg">
+    <button class="blk" id="b_blk" onclick="blackout()">BLACKOUT</button>
+    <button id="b_rfb" onclick="resetFb()">RESET FEEDBACK</button>
+  </div>
+  <div id="sliders"></div>
+  <div class="nota" id="nota"></div>
+  </section>
+
+  <section class="panel" id="t_pads">
+  <div class="sec" id="canal_sec" style="display:none">
+    <h2>CANAL<span id="canal_txt"></span></h2>
+    <div class="canales" id="canales"></div>
+    <div class="pads" id="pads"></div>
+  </div>
+  </section>
+
+  <section class="panel" id="t_piloto">
+  <div class="modo" id="modo_piloto">
+    <button id="b_manual" onclick="modo(0)">MANUAL</button>
+    <button id="b_auto" class="auto" onclick="modo(1)">AUTO</button>
+  </div>
+  <div class="auto_txt" id="auto_txt"></div>
+  <div class="sec pil_box" id="det_piloto">
+    <h2>AJUSTES DEL PILOTO</h2>
+    <div id="piloto"></div>
+  </div>
+  </section>
+
+  <section class="panel" id="t_efectos">
+  <div class="sec" id="fx_rapido_sec" style="display:none">
+    <h2>EFECTOS<span id="fx_rapido_txt"></span></h2>
+    <div class="fxgrid" id="fx_rapido"></div>
+  </div>
+  <div class="sec pil_box" id="det_efectos" style="display:none">
+    <h2>EFECTOS Y MÁSCARA</h2>
+    <div id="efectos"></div>
+  </div>
+  </section>
+
+  <section class="panel" id="t_audio">
+  <div class="sec" id="audio_sec">
+    <h2>FUENTE DE AUDIO<span id="audio_estado"></span></h2>
+    <div class="modo" style="margin:0">
+      <button id="b_archivo" onclick="audio('fuente=archivo')">ARCHIVO</button>
+      <button id="b_vivo" class="auto" onclick="audio('fuente=vivo')">EN VIVO</button>
+    </div>
+    <select id="dev" onchange="audio('dev=' + encodeURIComponent(this.value))"></select>
+  </div>
+  <div class="sec" id="auto_sec" style="display:none">
+    <h2>CAMBIO AUTOMÁTICO MICRO / CANCIÓN</h2>
+    <div class="auton" style="margin-top:0"><span>El micro escucha siempre y cambia solo</span>
+      <button class="tog" id="b_aauto" onclick="audio('auto=' + (estado.audio.auto.on ? 0 : 1))"></button></div>
+    <div class="aa_est" id="aa_est"></div>
+    <div class="aa_med"><i id="aa_niv"></i><b id="aa_sube" title="pasa a MICRO"></b><b id="aa_baja" class="baja" title="regresa a CANCIÓN"></b></div>
+    <div class="aa_ley"><span>nivel del micro <b id="aa_v"></b></span><span><em class="s"></em>micro · <em class="b"></em>canción</span></div>
+    <button class="onda_b" id="b_acal" onclick="aaCalibrar()">CALIBRAR CON EL AMBIENTE (10 s)</button>
+    <div class="aa_nota">Tócalo cuando el escenario de enfrente NO esté tocando: mide lo que llega de lejos y pone los
+      límites arriba de eso (canción abajo del ambiente + 15 %, micro arriba del ambiente + 60 %).</div>
+    <div id="aa_pars"></div>
+    <div class="aa_nota">Si eliges ARCHIVO o EN VIVO a mano, el automático se apaga.</div>
+  </div>
+  <div class="sec" id="nivel_sec">
+    <h2>NIVEL DE ENTRADA</h2>
+    <div id="gain_box" style="display:none">
+      <h2 style="margin:0 0 4px">GAIN <span id="gain_v"></span></h2>
+      <div class="fila"><button onclick="gainPaso(-1)">−</button>
+        <input type="range" id="gain_r" min="0" max="4" step="0.05" oninput="gainMover(this.value)"
+               onpointerdown="arrastrando='gain'" onpointerup="soltar()" ontouchend="soltar()">
+        <button onclick="gainPaso(1)">+</button></div>
+    </div>
+    <div class="auton" id="auton_box" style="display:none"><span>Autonivel</span>
+      <button class="tog" id="b_auton" onclick="audio('autonivel=' + (estado.audio.autonivel ? 0 : 1))"></button></div>
+    <button class="onda_b" id="b_onda" onclick="ondaToggle()">VER ONDA DE AUDIO</button>
+    <div id="onda_box" style="display:none">
+      <canvas id="onda_c" width="600" height="140"></canvas>
+      <div class="barras" id="barras"></div>
+      <div class="onda_txt" id="onda_txt"></div>
+    </div>
+  </div>
+  </section>
+
+  <section class="panel" id="t_estado">
   <div class="estado_box" id="estado_box"></div>
-
+  <button class="guardar" id="b_guardar" onclick="guardarToe()">GUARDAR</button>
   <button class="patron" id="b_patron" onclick="patron()">PATRÓN DE PRUEBA (slices)</button>
-
   <details class="piloto" id="det_slices" style="display:none"
            ontoggle="try { localStorage.setItem('det_slices', this.open ? '1' : '') } catch (e) {}">
     <summary><span>SALIDA DESDE TD (SLICES)</span><span id="sl_estado" class="sl_est"></span></summary>
@@ -125,58 +285,13 @@
       </div>
     </div>
   </details>
-
-  <div class="aire">
-    <div class="canal" id="canal">—</div>
-    <div class="nombre" id="nombre">—</div>
-  </div>
-
-  <div class="modo" id="modo_piloto">
-    <button id="b_manual" onclick="modo(0)">MANUAL</button>
-    <button id="b_auto" class="auto" onclick="modo(1)">AUTO</button>
-  </div>
-  <div class="auto_txt" id="auto_txt"></div>
-
-  <div class="nav">
-    <button onclick="ir(-1)">◀ ANTERIOR</button>
-    <button onclick="ir(1)">SIGUIENTE ▶</button>
-  </div>
-  <div class="sec" id="canal_sec" style="display:none">
-    <h2>CANAL<span id="canal_txt"></span></h2>
-    <div class="canales" id="canales"></div>
-    <div class="pads" id="pads"></div>
-  </div>
-  <button class="pausa" id="b_pausa" onclick="pausa()">❚❚ PAUSAR VISUAL</button>
-
-  <div id="sliders"></div>
-  <details class="piloto" id="det_piloto" ontoggle="try { localStorage.setItem('det_piloto', this.open ? '1' : '') } catch (e) {}">
-    <summary>AJUSTES DEL PILOTO</summary>
-    <div id="piloto"></div>
-  </details>
-  <div class="sec" id="fx_rapido_sec" style="display:none">
-    <h2>EFECTOS<span id="fx_rapido_txt"></span></h2>
-    <div class="fxgrid" id="fx_rapido"></div>
-  </div>
-  <details class="piloto" id="det_efectos" style="display:none" ontoggle="try { localStorage.setItem('det_efectos', this.open ? '1' : '') } catch (e) {}">
-    <summary>EFECTOS Y MÁSCARA</summary>
-    <div id="efectos"></div>
-  </details>
-  <div class="nota" id="nota"></div>
-  <button class="guardar" id="b_guardar" onclick="guardarToe()">GUARDAR</button>
-  <div class="sec" id="audio_sec">
-    <h2>FUENTE DE AUDIO<span id="audio_estado"></span></h2>
-    <div class="modo" style="margin:0">
-      <button id="b_archivo" onclick="audio('fuente=archivo')">ARCHIVO</button>
-      <button id="b_vivo" class="auto" onclick="audio('fuente=vivo')">EN VIVO</button>
-    </div>
-    <select id="dev" onchange="audio('dev=' + encodeURIComponent(this.value))"></select>
-  </div>
   <div class="avisos">
     <h2>AVISOS</h2>
     <div id="avisos_lista"><span style="color:var(--txt2)">sin avisos</span></div>
     <a class="suscribir" id="suscribir" href="#" target="_blank">Recibir avisos en este cel (app ntfy) →</a>
     <button class="prueba" onclick="llamar('/prueba')">Mandar aviso de prueba</button>
   </div>
+  </section>
 
 <script>
 let estado = null, arrastrando = null, ultimoEnvio = 0, pendiente = null;
@@ -391,7 +506,18 @@ async function llamar(url) {
         sel.innerHTML = au.devs.map(d => `<option value="${d[0].replace(/"/g, '&quot;')}">${d[1]}</option>`).join('');
       }
       if (document.activeElement !== sel) sel.value = au.dev;
-      sel.style.display = au.fuente === 'vivo' ? '' : 'none';
+      sel.style.display = (au.fuente === 'vivo' || au.auto) ? '' : 'none';   // con audio_auto el micro escucha siempre
+      if (au.gain !== null && au.gain !== undefined) {
+        document.getElementById('gain_box').style.display = '';
+        const gr = document.getElementById('gain_r'); gr.max = au.gain_max || 4;
+        if (arrastrando !== 'gain') { gr.value = au.gain; document.getElementById('gain_v').textContent = (+au.gain).toFixed(2); }
+      }
+      if (au.autonivel !== null && au.autonivel !== undefined) {
+        document.getElementById('auton_box').style.display = '';
+        const ba = document.getElementById('b_auton');
+        ba.className = 'tog' + (au.autonivel ? ' on' : ''); ba.textContent = au.autonivel ? 'SÍ' : 'NO';
+      }
+      pintarAuto(au.auto);
       const fa = estado.monitor && estado.monitor.filas.find(f => f.k === 'AUDIO');
       document.getElementById('audio_estado').textContent = fa ? fa.v : '';
     }
@@ -432,6 +558,11 @@ async function llamar(url) {
     ver('b_pausa', estado.hay_pausa !== false);
     ver('b_patron', estado.hay_patron !== false);
     ver('audio_sec', !!estado.audio);
+    ver('nivel_sec', !!estado.audio);
+    ver('emerg', estado.hay_blackout !== false);
+    const bk = document.getElementById('b_blk');
+    bk.className = 'blk' + (estado.negro ? ' on' : '');
+    bk.textContent = estado.negro ? 'EN NEGRO · tocar para volver' : 'BLACKOUT';
     ver('canal', !!estado.canal);
     const bz = document.getElementById('b_pausa');
     bz.className = 'pausa' + (estado.pausa ? ' on' : '');
@@ -441,15 +572,192 @@ async function llamar(url) {
     pintarEfectos();
     pintarRapido();
     pintarCanal();
+    pintarTabs();
+    const bl = !!estado.candado;
+    document.body.classList.toggle('bloq', bl);
+    const bc = document.getElementById('b_candado');
+    bc.className = 'candado libre' + (bl ? ' on' : '');
+    bc.textContent = bl ? '🔒 MODO SHOW' : '🔓 MODO SHOW';
   } catch (e) {
     document.getElementById('punto').className = 'punto';
     document.getElementById('conexion').textContent = 'sin conexión con la compu';
   }
 }
 
+// ---- pestanas por categoria: la ultima elegida se recuerda; una sin contenido en este show no sale
+let tabSel = 'visual';
+try { tabSel = localStorage.getItem('tab') || 'visual'; } catch (e) {}
+function candado() {
+  if (estado && estado.candado) {
+    if (!confirm('Quitar MODO SHOW: el cel vuelve a poder cambiar el show. ¿Quitar?')) return;
+    llamar('/candado?on=0');
+  } else {
+    if (navigator.vibrate) navigator.vibrate([15, 40, 15]);
+    llamar('/candado?on=1');
+  }
+}
+function tab(t) {
+  tabSel = t;
+  try { localStorage.setItem('tab', t); } catch (e) {}
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('on', p.id === 't_' + t));
+  window.scrollTo(0, 0);
+}
+function pintarTabs() {
+  // pestana vacia (todo lo de adentro oculto) = no sale
+  for (const b of document.querySelectorAll('.tabs button')) {
+    const p = document.getElementById('t_' + b.dataset.t);
+    const algo = [...p.children].some(c => c.style.display !== 'none' && c.id !== 'nota' && c.id !== 'auto_txt');
+    b.style.display = algo ? '' : 'none';
+  }
+  const visibles = [...document.querySelectorAll('.tabs button')].filter(b => b.style.display !== 'none');
+  document.getElementById('tabs').style.gridTemplateColumns = 'repeat(' + visibles.length + ', 1fr)';
+  if (!visibles.some(b => b.dataset.t === tabSel)) tab('visual');
+  // punto de aviso: AUDIO = su fila del monitor; ESTADO = la peor fila
+  const filas = (estado.monitor && estado.monitor.filas) || [];
+  const fa = filas.find(f => f.k === 'AUDIO');
+  const peor = filas.reduce((m, f) => Math.max(m, f.n), 0);
+  document.querySelector('.tabs [data-t=audio] i').className = fa ? 'n' + fa.n : '';
+  document.querySelector('.tabs [data-t=estado] i').className = 'n' + peor;
+  // marcas bajo el nombre: lo que hay que saber de un vistazo
+  const m = [];
+  if (estado.negro) m.push('<b class="roj">EN NEGRO</b>');
+  if (estado.pausa) m.push('<b class="amb">EN PAUSA</b>');
+  if (estado.patron) m.push('<b class="amb">PATRÓN AL AIRE</b>');
+  if (estado.hay_piloto !== false) m.push(estado.auto ? '<b class="ok">AUTO</b>' : '<b>MANUAL</b>');
+  document.getElementById('marcas').innerHTML = m.join('');
+}
+tab(tabSel);
+
 function enviar(id, v) { ultimoEnvio = Date.now(); llamar('/set?id=' + id + '&v=' + v + '&k=' + document.getElementById('sliders').dataset.k); }
 function patron() { if (navigator.vibrate) navigator.vibrate(15); llamar('/patron?on=' + (estado && estado.patron ? 0 : 1)); }
 function guardarToe() { if (navigator.vibrate) navigator.vibrate([15, 40, 15]); llamar('/guardar'); }
+// ---- ONDA DE AUDIO: lectura rapida (/audio_nivel ~7 veces por s) solo mientras esta prendida
+let ondaOn = false, ondaT = null, ondaHist = [];
+function ondaToggle() {
+  ondaOn = !ondaOn;
+  try { localStorage.setItem('onda', ondaOn ? '1' : ''); } catch (e) {}
+  const b = document.getElementById('b_onda');
+  b.className = 'onda_b' + (ondaOn ? ' on' : '');
+  b.textContent = ondaOn ? 'OCULTAR ONDA DE AUDIO' : 'VER ONDA DE AUDIO';
+  document.getElementById('onda_box').style.display = ondaOn ? '' : 'none';
+  if (ondaT) { clearTimeout(ondaT); ondaT = null; }
+  if (ondaOn) ondaPedir();
+}
+async function ondaPedir() {
+  if (!ondaOn) return;
+  if (tabSel !== 'audio' || document.hidden) { ondaT = setTimeout(ondaPedir, 500); return; }
+  try {
+    const r = await fetch('/audio_nivel', { cache: 'no-store' });
+    ondaPintar(await r.json());
+  } catch (e) { document.getElementById('onda_txt').textContent = 'sin conexión'; }
+  if (ondaOn) ondaT = setTimeout(ondaPedir, 140);
+}
+function ondaPintar(d) {
+  if (d.mic !== undefined) aaNivel(d.mic);
+  ondaHist.push(d.pico || 0); if (ondaHist.length > 120) ondaHist.shift();
+  const c = document.getElementById('onda_c'), g = c.getContext('2d'), W = c.width, H = c.height;
+  g.clearRect(0, 0, W, H);
+  if (d.esp && d.esp.length) {                                   // espectro tenue al fondo (graves a la izquierda)
+    g.fillStyle = 'rgba(255,255,255,0.10)';
+    const bw = W / d.esp.length;
+    d.esp.forEach((v, i) => { const h = v * (H - 8); g.fillRect(i * bw + 1, H - h, bw - 2, h); });
+  }
+  g.fillStyle = '#6DC49A';                                       // onda de entrada (pico), corre a la izquierda
+  const n = ondaHist.length, paso = W / 120;
+  for (let i = 0; i < n; i++) {
+    const v = Math.min(1, Math.sqrt(ondaHist[i])), h = Math.max(2, v * (H - 8));
+    g.fillStyle = ondaHist[i] > 0.98 ? '#e5484d' : '#6DC49A';
+    g.fillRect(W - (n - i) * paso, (H - h) / 2, Math.max(1, paso - 1), h);
+  }
+  const nom = ['GRAVES', 'MEDIOS', 'AGUDOS', 'KICK'];
+  const bb = document.getElementById('barras');
+  if (!bb.dataset.ok) { bb.dataset.ok = 1; bb.innerHTML = nom.map((x, i) => `<div class="barra"><i id="bar${i}"></i><span>${x}</span></div>`).join(''); }
+  (d.b || []).forEach((v, i) => { const el = document.getElementById('bar' + i); if (el) el.style.height = Math.min(100, v * 100) + '%'; });
+  const pico = d.pico || 0, t = document.getElementById('onda_txt');
+  const mal = pico < 0.003 || pico > 0.98;
+  t.className = 'onda_txt' + (mal ? ' mal' : '');
+  t.textContent = pico < 0.003 ? 'NO LLEGA AUDIO · revisa micrófono / dispositivo' :
+    (pico > 0.98 ? 'SATURA (pico ' + pico.toFixed(2) + ') · baja el Gain' : 'llegando · pico de entrada ' + pico.toFixed(2));
+}
+// ---- CAMBIO AUTOMATICO micro <-> cancion (modulo audio_auto)
+const AA = [['sube', 'Pasa a MICRO arriba de', 0.005, 3], ['subeseg', 'durante (s)', 0.5, 1],
+            ['baja', 'Regresa a CANCIÓN abajo de', 0.002, 3], ['bajaseg', 'durante (s)', 1, 0]];
+const AA_ESC = 0.6;                                  // la barra del nivel va de 0 a 0.5 (= tope de "Pasa a MICRO")
+function aaX(v) { return Math.min(100, v / AA_ESC * 100) + '%'; }
+function pintarAuto(a) {
+  document.getElementById('auto_sec').style.display = a ? '' : 'none';
+  if (!a) return;
+  const b = document.getElementById('b_aauto');
+  b.className = 'tog' + (a.on ? ' on' : ''); b.textContent = a.on ? 'ON' : 'OFF';
+  const e = document.getElementById('aa_est');
+  e.className = 'aa_est' + (a.on ? '' : ' off'); e.textContent = a.on ? a.estado : 'apagado · la fuente se elige a mano';
+  aaNivel(a.nivel);
+  document.getElementById('aa_sube').style.left = aaX(a.sube);
+  document.getElementById('aa_baja').style.left = aaX(a.baja);
+  const box = document.getElementById('aa_pars');
+  if (!box.dataset.ok) {
+    box.dataset.ok = 1;
+    box.innerHTML = AA.map(([k, l]) => `<div class="pnum"><div class="prow"><span class="pl">${l}</span><span class="pv" id="aa_${k}_v"></span></div>
+      <div class="fila"><button onclick="aaPaso('${k}', -1)">−</button>
+      <input type="range" id="aa_${k}_r" min="0" step="any" oninput="aaMover('${k}', this.value)"
+             onpointerdown="arrastrando='aa_${k}'" onpointerup="soltar()" ontouchend="soltar()">
+      <button onclick="aaPaso('${k}', 1)">+</button></div></div>`).join('');
+  }
+  for (const [k, , , dec] of AA) {
+    const r = document.getElementById('aa_' + k + '_r');
+    r.max = a[k + '_max'];
+    if (arrastrando !== 'aa_' + k) { r.value = a[k]; document.getElementById('aa_' + k + '_v').textContent = (+a[k]).toFixed(dec); }
+  }
+}
+function aaCalibrar() {
+  if (!confirm('Calibrar: mide 10 s lo que suena AHORA como ambiente (sin el escenario de enfrente) y ajusta los límites. ¿Medir?')) return;
+  if (navigator.vibrate) navigator.vibrate(15);
+  llamar('/audio?calibrar=1');
+}
+function aaNivel(v) {
+  if (v === undefined || v === null) return;
+  document.getElementById('aa_niv').style.width = aaX(v);
+  document.getElementById('aa_v').textContent = (+v).toFixed(3);
+}
+let aaUlt = 0, aaPend = {};
+function aaMover(k, v) {
+  const d = AA.find(x => x[0] === k);
+  document.getElementById('aa_' + k + '_v').textContent = (+v).toFixed(d[3]);
+  if (k === 'sube') document.getElementById('aa_sube').style.left = aaX(v);
+  if (k === 'baja') document.getElementById('aa_baja').style.left = aaX(v);
+  if (Date.now() - aaUlt > 120) { aaUlt = Date.now(); llamar('/audio?' + k + '=' + v); }
+  else { if (!aaPend[k]) setTimeout(() => { llamar('/audio?' + k + '=' + aaPend[k]); delete aaPend[k]; }, 160); aaPend[k] = v; }
+}
+function aaPaso(k, dir) {
+  const d = AA.find(x => x[0] === k), r = document.getElementById('aa_' + k + '_r');
+  const v = Math.min(+r.max, Math.max(0, +(+r.value + dir * d[2]).toFixed(4)));
+  r.value = v; aaMover(k, v);
+}
+
+let gUlt = 0, gPend = null;
+function gainMover(v) {
+  document.getElementById('gain_v').textContent = (+v).toFixed(2);
+  if (Date.now() - gUlt > 100) { gUlt = Date.now(); llamar('/audio?gain=' + v); }
+  else { if (gPend === null) setTimeout(() => { if (gPend !== null) { llamar('/audio?gain=' + gPend); gPend = null; } }, 150); gPend = v; }
+}
+function gainPaso(d) {
+  const r = document.getElementById('gain_r');
+  const v = Math.min(+r.max, Math.max(0, +(+r.value + d * 0.05).toFixed(2)));
+  r.value = v; gainMover(v);
+}
+function blackout() {
+  if (estado && estado.negro) { llamar('/blackout'); return; }   // regresar de negro no pide confirmar
+  if (confirm('BLACKOUT: fundido a negro de toda la salida. ¿Mandar a negro?')) {
+    if (navigator.vibrate) navigator.vibrate([20, 40, 20]); llamar('/blackout');
+  }
+}
+function resetFb() {
+  if (confirm('RESET FEEDBACK: reinicia las estelas / feedback de los visuales. ¿Reiniciar?')) {
+    if (navigator.vibrate) navigator.vibrate(15); llamar('/resetfb');
+  }
+}
+
 function audio(q) { if (navigator.vibrate) navigator.vibrate(15); llamar('/audio?' + q); }
 function modo(on) { if (navigator.vibrate) navigator.vibrate(15); llamar('/auto?on=' + on); }
 function pintarCanal() {
@@ -486,9 +794,8 @@ function slicesAbrir() {
   if (confirm('Abrir la salida desde TD en el monitor externo.\nTapa lo que manda Resolume a esa pantalla.\n¿Abrir?')) slices('accion=abrir');
 }
 
-try { document.getElementById('det_piloto').open = localStorage.getItem('det_piloto') === '1'; } catch (e) {}
 try { document.getElementById('det_slices').open = localStorage.getItem('det_slices') === '1'; } catch (e) {}
-try { document.getElementById('det_efectos').open = localStorage.getItem('det_efectos') === '1'; } catch (e) {}
+try { if (localStorage.getItem('onda') === '1') ondaToggle(); } catch (e) {}
 llamar('/estado');
 setInterval(() => { if (!arrastrando) llamar('/estado'); }, 1000);
 </script>

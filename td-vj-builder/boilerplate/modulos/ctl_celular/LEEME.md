@@ -26,7 +26,18 @@ Sale solo lo que el show tenga (si no hay piloto, slices o patrón, ese bloque n
 | EFECTOS (botones rápidos) | Siempre visible: AUTO · CHASER · BARRIDO · EQ · ONDA · CASCADA · GIRO · RESPIRA · SOLO EFECTOS; un toque prende / apaga (verde = prendido) y arriba dice cuántos hay | `led_slices` + `ledfx_*` |
 | EFECTOS Y MÁSCARA | Una sub-página por página de `/project1/slices` (qué sale y máscara · capa automática · chaser · barrido · EQ · onda · cascada · giro · respiración), con sus secciones; el encabezado dice si el efecto está ON. Un parámetro nuevo en esas páginas sale solo | `led_slices` + `ledfx_*` |
 | GUARDAR | El GUARDAR de la UI (siguiente versión) | `ui_guardar` |
-| FUENTE DE AUDIO | Archivo / en vivo y dispositivo | `show.Audiofuente` |
+| FUENTE DE AUDIO | Archivo / en vivo y dispositivo · GAIN de entrada (−/+) · Autonivel · **VER ONDA DE AUDIO** (v1.2): pico de entrada que corre, barras graves · medios · agudos · kick y espectro tenue; dice NO LLEGA AUDIO / SATURA. Solo lee (`/audio_nivel`, ~7 por s) mientras está prendida; el cel recuerda si la dejaste prendida | `show.Audiofuente`, `Audiogain`, `Autonivel` |
+| BLACKOUT · RESET FEEDBACK | Bajo PAUSA (v1.2). BLACKOUT = el de la UI (fundido; pide confirmar, regresar no); RESET FEEDBACK reinicia las estelas. Los dos con confirmación | `ui_lib.elegir('BLACKOUT')`, `ui_lib.resetear_feedbacks()` |
+
+## Pestañas (v1.3)
+
+Arriba, fijo: conexión, canal y visual al aire con marcas (EN NEGRO · EN PAUSA · PATRÓN AL AIRE · AUTO / MANUAL) y las pestañas:
+**VISUAL** (anterior / siguiente, pausa, blackout, reset feedback, tamaños) · **PADS** (canal y sus pads) · **PILOTO** (manual / auto y ajustes) · **EFECTOS** (botones rápidos y páginas de efectos y máscara) · **AUDIO** (fuente, gain, autonivel, onda) · **ESTADO** (semáforo, guardar, patrón, salida de slices, avisos).
+Una pestaña sin contenido en el show no sale. AUDIO y ESTADO llevan un punto ámbar / rojo si algo falla. El cel recuerda la última pestaña. La onda solo lee con AUDIO a la vista.
+
+## MODO SHOW del cel (v1.4)
+
+Botón 🔓 / 🔒 **MODO SHOW** arriba a la derecha. Puesto: el cel **solo mira** (se navega entre pestañas, se ve el estado, la onda y los pads de cada canal) y **el servidor ignora** cualquier cambio (`/set`, `/ir`, `/pad`, `/par`, `/audio`, `/blackout`, …): aunque un toque se cuele, no pasa nada (queda en el log). Quitarlo pide confirmación. Es solo del cel: la UI de la lap y su `Modoshow` no cambian. Se guarda en el COMP (`C.store('candado')`).
 
 ## PAUSA / PLAY (cómo funciona)
 

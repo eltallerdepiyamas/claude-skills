@@ -318,5 +318,8 @@ def _aplicar():
 
 if PAGINAS:
     _aplicar()
+    # la pestana de thumbs sigue al visual al aire (2026-11-20, Casa Bacardi x Corona Capital)
+    _p = project.folder + '/builders/herramientas/ui_seguir_aire.py'
+    exec(compile(open(_p, encoding='utf-8').read(), _p, 'exec'), dict(globals(), __file__=_p))
 else:
     print('[ui_bancos] BANCOS vacio: table1, pads, luces y thumbs se quedan de fabrica')

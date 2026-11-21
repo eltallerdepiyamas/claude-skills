@@ -58,6 +58,7 @@ Se hace en un show; si sirve, se sube aquí como módulo (y a su espejo `td-vj-b
 | `ledfx_giro` | Giro por bocina: cada slice gira su contenido como un disco (igual, alternado, ola, paso por kick), recorte circular | `led_slices` o `led_salida` |
 | `ledfx_respira` | Respiración: la luz sube y baja con el compás (suave, latido, ola por las bocinas), sin strobe | `led_slices` o `led_salida` |
 | `audio_tempo` | BPM y fase de tiempos desde el kick; sigue en los breaks | — |
+| `audio_auto` | Micro <-> canción solo: el micro escucha siempre; arriba de un umbral N s pasa a EN VIVO, abajo de otro N s regresa al ARCHIVO (histéresis). Página Audio + pestaña AUDIO del cel | cadena de `setup_show.py` (`ctl_celular` opcional) |
 | `led_slices` | Advanced Output de Resolume rehecho en TD desde su XML (alternativa / respaldo): slices, prueba, avisos de lo que no reproduce, ventana armada con vigía, pestaña SLICES y chip TD. **El proceso** (armar en TD → mapear en Resolume en sitio → probar → sacar el XML → cargarlo) está en su LEEME | — |
 | `ctl_celular` | Control desde el celular (página web de TD, misma red): anterior / siguiente, tamaño, PAUSA, piloto y sus ajustes, slices, patrón, guardar, audio, ESTADO y avisos ntfy | — (`auto_piloto`, `led_slices` opcionales) |
 | `auto_capa` | Alterna sola la segunda capa (chaser, barrido, los dos o solo el visual) cada N compases con el BPM detectado o cada N segundos; varía patrón / forma al entrar. Página Capa | un `ledfx_*` (`audio_tempo` opcional) |
