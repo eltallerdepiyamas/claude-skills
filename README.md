@@ -11,6 +11,7 @@ Colección de skills de Claude Code para producción audiovisual y VJ.
 - **td-glsl-vertex** — Vertex shaders para GLSL MAT (displacement, deformation, instancing)
 - **td-pops** — Compute shaders para el sistema POP (partículas, point clouds)
 - **td-python** — Python en TouchDesigner: API, patrones, scripts de red, callbacks
+- **td-video-synth** — Recrea sintetizadores de video LZX (Videomancer, Mainbow, Rutt/Etra, colorizers) como patches GLSL en TouchDesigner
 
 ### Otros
 - **hou-vex** — VEX code para Houdini SOPs, DOPs, COPs y shaders
